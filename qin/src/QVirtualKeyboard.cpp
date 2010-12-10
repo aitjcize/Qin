@@ -83,7 +83,7 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (keyId == Qt::Key_Shift
       || keyId == Qt::Key_Control
       || keyId == Qt::Key_Alt
-      || keyId == 0xff /* 0xff: ch button */
+      || keyId == Qt::Key_CapsLock
      )
     return;
 
@@ -187,33 +187,8 @@ void QVirtualKeyboard::changeTextShift(bool select) {
     btnComma->setText(QChar('<'));
     btnPeriod->setText(QChar('>'));
     btnSlash->setText(QChar('?'));
-  }
-  else {
-    btnTilt->setText(QChar('`'));
-    btn1->setText(QChar('1'));
-    btn2->setText(QChar('2'));
-    btn3->setText(QChar('3'));
-    btn4->setText(QChar('4'));
-    btn5->setText(QChar('5'));
-    btn6->setText(QChar('6'));
-    btn7->setText(QChar('7'));
-    btn8->setText(QChar('8'));
-    btn9->setText(QChar('9'));
-    btn0->setText(QChar('0'));
-    btnHiphen->setText(QChar('-'));
-    btnAssign->setText(QChar('='));
-
-    btnStartSquare->setText(QChar('['));
-    btnCloseSquare->setText(QChar(']'));
-    btnBckSlash->setText(QChar('\\'));
-
-    btnSemiColon->setText(QChar(';'));
-    btnSp->setText(QChar('\''));
-
-    btnComma->setText(QChar(','));
-    btnPeriod->setText(QChar('.'));
-    btnSlash->setText(QChar('/'));
-  }
+  } else
+    restoreStdKeyMap();
 }
 
 void QVirtualKeyboard::changeTextCaps(bool select) {

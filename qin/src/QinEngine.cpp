@@ -58,7 +58,7 @@ void QinEngine::sendContent(QString ch, int uni, int keyId,
       inputBuffer += ch;
       sendPreeditString(inputBuffer, 0);
     } else {
-      if (inputBuffer.length())
+      if (inputBuffer.length() && keyId == Qt::Key_Return)
         confirmContent();
       else
         QWSServer::sendKeyEvent(0, keyId, mod, true, false);
