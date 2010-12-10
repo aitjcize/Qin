@@ -23,9 +23,14 @@
 #include "QinEngine.h"
 #include "QVirtualKeyboard.h"
 
+#include "plugins/QinEnglish.h"
+#include "plugins/QinChewing.h"
+
 QinEngine::QinEngine() {
   usingDefaultIM = true;
   vkeyboard = new QVirtualKeyboard(this);
+  vkeyboard->insertInputMethod("English", new QinEnglish());
+  vkeyboard->insertInputMethod("Chewing", new QinChewing());
 }
 
 QinEngine::~QinEngine() {

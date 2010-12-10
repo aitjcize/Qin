@@ -22,6 +22,7 @@
 
 #include "QVirtualKeyboard.h"
 #include "QinEngine.h"
+#include "QinIMBase.h"
 
 #include <QKeyEvent>
 #include <QSignalMapper>
@@ -36,15 +37,17 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
   setupUi(this);
-  this->move(0, 480);
+  this->move(0, 380);
 
   imEngine = im;
+  currentIM = 0;
   Capsed = false;
   Shifted = false;
   Ctrled = false;
   Alted = false;
-  Chinesed = false;
+  isStdKeyMap = true;
   changeTextCaps(false);
+
   allButtons = findChildren<QToolButton*>();
   signalMapper = new QSignalMapper(this);
 
@@ -52,56 +55,17 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
     connect(allButtons.at(i), SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(allButtons.at(i), i);
   }
-
   connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(s_on_btn_clicked(int)));
-
-  chewing2ascii["ㄅ"] = "1";
-  chewing2ascii["ㄉ"] = "2";
-  chewing2ascii["ˇ"] = "3";
-  chewing2ascii["ˋ"] = "4";
-  chewing2ascii["ㄓ"] = "5";
-  chewing2ascii["ˊ"] = "6";
-  chewing2ascii["˙"] = "7";
-  chewing2ascii["ㄚ"] = "8";
-  chewing2ascii["ㄞ"] = "9";
-  chewing2ascii["ㄢ"] = "0";
-
-  chewing2ascii["ㄆ"] = "q";
-  chewing2ascii["ㄊ"] = "w";
-  chewing2ascii["ㄍ"] = "e";
-  chewing2ascii["ㄐ"] = "r";
-  chewing2ascii["ㄔ"] = "t";
-  chewing2ascii["ㄗ"] = "y";
-  chewing2ascii["ㄧ"] = "u";
-  chewing2ascii["ㄛ"] = "i";
-  chewing2ascii["ㄟ"] = "o";
-  chewing2ascii["ㄣ"] = "p";
-
-  chewing2ascii["ㄇ"] = "a";
-  chewing2ascii["ㄋ"] = "s";
-  chewing2ascii["ㄎ"] = "d";
-  chewing2ascii["ㄑ"] = "f";
-  chewing2ascii["ㄕ"] = "g";
-  chewing2ascii["ㄘ"] = "h";
-  chewing2ascii["ㄨ"] = "j";
-  chewing2ascii["ㄜ"] = "k";
-  chewing2ascii["ㄠ"] = "l";
-  chewing2ascii["ㄠ"] = ";";
-
-  chewing2ascii["ㄈ"] = "z";
-  chewing2ascii["ㄌ"] = "x";
-  chewing2ascii["ㄏ"] = "c";
-  chewing2ascii["ㄒ"] = "v";
-  chewing2ascii["ㄖ"] = "b";
-  chewing2ascii["ㄙ"] = "n";
-  chewing2ascii["ㄩ"] = "m";        
-  chewing2ascii["ㄝ"] = ",";
-  chewing2ascii["ㄡ"] = ".";
-  chewing2ascii["ㄥ"] = "/";
 }
 
 QVirtualKeyboard::~QVirtualKeyboard() {
   delete signalMapper;
+}
+
+int QVirtualKeyboard::insertInputMethod(const QString name, QinIMBase* imb) {
+  IMSelect->addItem(name);
+  inputMethods.push_back(imb);
+  return IMSelect->count() -1;
 }
 
 void QVirtualKeyboard::s_on_btn_clicked(int btn) {
@@ -139,8 +103,9 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (keyId == Qt::Key_Space)
     ch = QString(" ");
 
-  if (Chinesed && chewing2ascii.find(ch) != chewing2ascii.end())
-    ch = chewing2ascii[ch];
+  if (!isStdKeyMap && inputMethods[currentIM]->toStdKB.find(ch) !=
+      inputMethods[currentIM]->toStdKB.end())
+    ch = inputMethods[currentIM]->toStdKB[ch];
 
   imEngine->sendContent((isTextKey(keyId)?ch:QString()),
       ch.unicode()[0].unicode(), keyId, Modifier);
@@ -160,8 +125,7 @@ void QVirtualKeyboard::on_btnShiftLeft_toggled(bool checked) {
   Shifted = checked;
   if (Capsed) {
     changeTextShift(checked);
-  }
-  else {
+  } else {
     changeTextShift(checked);
     changeTextCaps(checked);
   }
@@ -179,17 +143,24 @@ void QVirtualKeyboard::on_btnAltLeft_toggled(bool checked) {
   Alted = checked;
 }
 
-void QVirtualKeyboard::on_btnCh_toggled(bool checked) {
-  imEngine->setUseDefaultIM(!checked);
-  Chinesed = checked;
-  changeTextChinese(Chinesed);
+void QVirtualKeyboard::on_IMSelect_currentIndexChanged(int index) {
+  if (index < 0  || index >= inputMethods.size()) return;
+
+  currentIM = index;
+  if (index == 0)
+    imEngine->setUseDefaultIM(!isStdKeyMap);
+  if (inputMethods[index]->useCustomKeyMap()) {
+    isStdKeyMap = false;
+    changeKeyMap(inputMethods[index]);
+  } else
+    restoreStdKeyMap();
 }
 
-void QVirtualKeyboard::changeTextShift(bool Shifted) {    
-  if (Chinesed) return;
+void QVirtualKeyboard::changeTextShift(bool select) {    
+  if (!isStdKeyMap) return;
 
-  changeTextCaps(!Shifted);
-  if (Shifted) {
+  changeTextCaps(!select);
+  if (select) {
     btnTilt->setText(QChar('~'));
     btn1->setText(QChar('!'));
     btn2->setText(QChar('@'));
@@ -243,10 +214,9 @@ void QVirtualKeyboard::changeTextShift(bool Shifted) {
   }
 }
 
-void QVirtualKeyboard::changeTextCaps(bool Capsed)
-{
-  if (Chinesed) return;
-  if (Capsed) {
+void QVirtualKeyboard::changeTextCaps(bool select) {
+  if (!isStdKeyMap) return;
+  if (select) {
     btnQ->setText(QChar('Q'));
     btnW->setText(QChar('W'));
     btnE->setText(QChar('E'));
@@ -275,131 +245,112 @@ void QVirtualKeyboard::changeTextCaps(bool Capsed)
     btnB->setText(QChar('B'));
     btnN->setText(QChar('N'));
     btnM->setText(QChar('M'));        
-  }
-  else {
-    btnQ->setText(QChar('q'));
-    btnW->setText(QChar('w'));
-    btnE->setText(QChar('e'));
-    btnR->setText(QChar('r'));
-    btnT->setText(QChar('t'));
-    btnY->setText(QChar('y'));
-    btnU->setText(QChar('u'));
-    btnI->setText(QChar('i'));
-    btnO->setText(QChar('o'));
-    btnP->setText(QChar('p'));
-
-    btnA->setText(QChar('a'));
-    btnS->setText(QChar('s'));
-    btnD->setText(QChar('d'));
-    btnF->setText(QChar('f'));
-    btnG->setText(QChar('g'));
-    btnH->setText(QChar('h'));
-    btnJ->setText(QChar('j'));
-    btnK->setText(QChar('k'));
-    btnL->setText(QChar('l'));
-
-    btnZ->setText(QChar('z'));
-    btnX->setText(QChar('x'));
-    btnC->setText(QChar('c'));
-    btnV->setText(QChar('v'));
-    btnB->setText(QChar('b'));
-    btnN->setText(QChar('n'));
-    btnM->setText(QChar('m'));
-  }
+  } else
+    restoreStdKeyMap();
 }
 
-void QVirtualKeyboard::changeTextChinese(bool Chinesed) {
-  if (Chinesed) {
-    btn1->setText(QString("ㄅ"));
-    btn2->setText(QString("ㄉ"));
-    btn3->setText(QString("ˇ"));
-    btn4->setText(QString("ˋ"));
-    btn5->setText(QString("ㄓ"));
-    btn6->setText(QString("ˊ"));
-    btn7->setText(QString("˙"));
-    btn8->setText(QString("ㄚ"));
-    btn9->setText(QString("ㄞ"));
-    btn0->setText(QString("ㄢ"));
+void QVirtualKeyboard::changeKeyMap(QinIMBase* imb) {
+  btn1->setText(imb->fromStdKB["1"]);
+  btn2->setText(imb->fromStdKB["2"]);
+  btn3->setText(imb->fromStdKB["3"]);
+  btn4->setText(imb->fromStdKB["4"]);
+  btn5->setText(imb->fromStdKB["5"]);
+  btn6->setText(imb->fromStdKB["6"]);
+  btn7->setText(imb->fromStdKB["7"]);
+  btn8->setText(imb->fromStdKB["8"]);
+  btn9->setText(imb->fromStdKB["9"]);
+  btn0->setText(imb->fromStdKB["0"]);
 
-    btnQ->setText(QString("ㄆ"));
-    btnW->setText(QString("ㄊ"));
-    btnE->setText(QString("ㄍ"));
-    btnR->setText(QString("ㄐ"));
-    btnT->setText(QString("ㄔ"));
-    btnY->setText(QString("ㄗ"));
-    btnU->setText(QString("ㄧ"));
-    btnI->setText(QString("ㄛ"));
-    btnO->setText(QString("ㄟ"));
-    btnP->setText(QString("ㄣ"));
+  btnQ->setText(imb->fromStdKB["q"]);
+  btnW->setText(imb->fromStdKB["w"]);
+  btnE->setText(imb->fromStdKB["e"]);
+  btnR->setText(imb->fromStdKB["r"]);
+  btnT->setText(imb->fromStdKB["t"]);
+  btnY->setText(imb->fromStdKB["y"]);
+  btnU->setText(imb->fromStdKB["u"]);
+  btnI->setText(imb->fromStdKB["i"]);
+  btnO->setText(imb->fromStdKB["o"]);
+  btnP->setText(imb->fromStdKB["p"]);
+  btnStartSquare->setText(imb->fromStdKB["["]);
+  btnCloseSquare->setText(imb->fromStdKB["]"]);
 
-    btnA->setText(QString("ㄇ"));
-    btnS->setText(QString("ㄋ"));
-    btnD->setText(QString("ㄎ"));
-    btnF->setText(QString("ㄑ"));
-    btnG->setText(QString("ㄕ"));
-    btnH->setText(QString("ㄘ"));
-    btnJ->setText(QString("ㄨ"));
-    btnK->setText(QString("ㄜ"));
-    btnL->setText(QString("ㄠ"));
-    btnSemiColon->setText(QString("ㄤ"));
+  btnA->setText(imb->fromStdKB["a"]);
+  btnS->setText(imb->fromStdKB["s"]);
+  btnD->setText(imb->fromStdKB["d"]);
+  btnF->setText(imb->fromStdKB["f"]);
+  btnG->setText(imb->fromStdKB["g"]);
+  btnH->setText(imb->fromStdKB["h"]);
+  btnJ->setText(imb->fromStdKB["j"]);
+  btnK->setText(imb->fromStdKB["k"]);
+  btnL->setText(imb->fromStdKB["l"]);
+  btnSemiColon->setText(imb->fromStdKB[";"]);
 
-    btnZ->setText(QString("ㄈ"));
-    btnX->setText(QString("ㄌ"));
-    btnC->setText(QString("ㄏ"));
-    btnV->setText(QString("ㄒ"));
-    btnB->setText(QString("ㄖ"));
-    btnN->setText(QString("ㄙ"));
-    btnM->setText(QString("ㄩ"));        
-    btnComma->setText(QString("ㄝ"));
-    btnPeriod->setText(QString("ㄡ"));
-    btnSlash->setText(QString("ㄥ"));
-  } else {
-    btn1->setText(QString("1"));
-    btn2->setText(QString("2"));
-    btn3->setText(QString("3"));
-    btn4->setText(QString("4"));
-    btn5->setText(QString("5"));
-    btn6->setText(QString("6"));
-    btn7->setText(QString("7"));
-    btn8->setText(QString("8"));
-    btn9->setText(QString("9"));
-    btn0->setText(QString("0"));
-
-    btnQ->setText(QChar('q'));
-    btnW->setText(QChar('w'));
-    btnE->setText(QChar('e'));
-    btnR->setText(QChar('r'));
-    btnT->setText(QChar('t'));
-    btnY->setText(QChar('y'));
-    btnU->setText(QChar('u'));
-    btnI->setText(QChar('i'));
-    btnO->setText(QChar('o'));
-    btnP->setText(QChar('p'));
-
-    btnA->setText(QChar('a'));
-    btnS->setText(QChar('s'));
-    btnD->setText(QChar('d'));
-    btnF->setText(QChar('f'));
-    btnG->setText(QChar('g'));
-    btnH->setText(QChar('h'));
-    btnJ->setText(QChar('j'));
-    btnK->setText(QChar('k'));
-    btnL->setText(QChar('l'));
-    btnSemiColon->setText(QString(";"));
-
-    btnZ->setText(QChar('z'));
-    btnX->setText(QChar('x'));
-    btnC->setText(QChar('c'));
-    btnV->setText(QChar('v'));
-    btnB->setText(QChar('b'));
-    btnN->setText(QChar('n'));
-    btnM->setText(QChar('m'));
-    btnComma->setText(QString(","));
-    btnPeriod->setText(QString("."));
-    btnSlash->setText(QString("/"));
-  }
+  btnZ->setText(imb->fromStdKB["z"]);
+  btnX->setText(imb->fromStdKB["x"]);
+  btnC->setText(imb->fromStdKB["c"]);
+  btnV->setText(imb->fromStdKB["v"]);
+  btnB->setText(imb->fromStdKB["b"]);
+  btnN->setText(imb->fromStdKB["n"]);
+  btnM->setText(imb->fromStdKB["m"]);        
+  btnComma->setText(imb->fromStdKB[","]);
+  btnPeriod->setText(imb->fromStdKB["."]);
+  btnSlash->setText(imb->fromStdKB["/"]);
 }
 
+void QVirtualKeyboard::restoreStdKeyMap(void) {
+  isStdKeyMap = true;
+
+  btnTilt->setText(QChar('`'));
+  btn1->setText(QChar('1'));
+  btn2->setText(QChar('2'));
+  btn3->setText(QChar('3'));
+  btn4->setText(QChar('4'));
+  btn5->setText(QChar('5'));
+  btn6->setText(QChar('6'));
+  btn7->setText(QChar('7'));
+  btn8->setText(QChar('8'));
+  btn9->setText(QChar('9'));
+  btn0->setText(QChar('0'));
+  btnHiphen->setText(QChar('-'));
+  btnAssign->setText(QChar('='));
+
+  btnQ->setText(QChar('q'));
+  btnW->setText(QChar('w'));
+  btnE->setText(QChar('e'));
+  btnR->setText(QChar('r'));
+  btnT->setText(QChar('t'));
+  btnY->setText(QChar('y'));
+  btnU->setText(QChar('u'));
+  btnI->setText(QChar('i'));
+  btnO->setText(QChar('o'));
+  btnP->setText(QChar('p'));
+  btnStartSquare->setText(QChar('['));
+  btnCloseSquare->setText(QChar(']'));
+  btnBckSlash->setText(QChar('\\'));
+
+  btnA->setText(QChar('a'));
+  btnS->setText(QChar('s'));
+  btnD->setText(QChar('d'));
+  btnF->setText(QChar('f'));
+  btnG->setText(QChar('g'));
+  btnH->setText(QChar('h'));
+  btnJ->setText(QChar('j'));
+  btnK->setText(QChar('k'));
+  btnL->setText(QChar('l'));
+  btnSemiColon->setText(QString(";"));
+  btnSp->setText(QChar('\''));
+
+  btnZ->setText(QChar('z'));
+  btnX->setText(QChar('x'));
+  btnC->setText(QChar('c'));
+  btnV->setText(QChar('v'));
+  btnB->setText(QChar('b'));
+  btnN->setText(QChar('n'));
+  btnM->setText(QChar('m'));
+  btnComma->setText(QString(","));
+  btnPeriod->setText(QString("."));
+  btnSlash->setText(QString("/"));
+}
 
 bool QVirtualKeyboard::isTextKey(int keyId)
 {

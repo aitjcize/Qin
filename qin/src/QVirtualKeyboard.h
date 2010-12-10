@@ -25,8 +25,10 @@
 
 #include "ui_QVirtualKeyboard.h"
 #include "QinEngine.h"
+#include "QinIMBase.h"
 
 #include <QWidget>
+#include <QVector>
 #include <QWSInputMethod>
 
 QT_BEGIN_NAMESPACE
@@ -40,6 +42,7 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
   public:
     QVirtualKeyboard(QinEngine* im);
     ~QVirtualKeyboard();
+    int insertInputMethod(const QString name, QinIMBase* imb);
 
   private:
     QinEngine* imEngine;
@@ -47,10 +50,11 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     bool Shifted;
     bool Ctrled;
     bool Alted;
-    bool Chinesed;
+    bool isStdKeyMap;
+    QVector<QinIMBase*> inputMethods;
     QSignalMapper *signalMapper;
     QList<QToolButton *> allButtons;
-    QHash<QString, QString> chewing2ascii;
+    int currentIM;
 
   private slots:
     void s_on_btn_clicked(int btn);
@@ -59,10 +63,11 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     void on_btnShiftRight_toggled(bool checked);
     void on_btnCtrlLeft_toggled(bool checked);
     void on_btnAltLeft_toggled(bool checked);
-    void on_btnCh_toggled(bool checked);
-    void changeTextShift(bool Shifted);
-    void changeTextCaps(bool Capsed);
-    void changeTextChinese(bool Chinesed);
+    void on_IMSelect_currentIndexChanged(int index);
+    void changeTextShift(bool select);
+    void changeTextCaps(bool select);
+    void changeKeyMap(QinIMBase* imb);
+    void restoreStdKeyMap(void);
     bool isTextKey(int keyId);
 };
 

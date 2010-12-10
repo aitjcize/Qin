@@ -1,5 +1,5 @@
 /**
- * @file   QinEngine.h
+ * @file   QinIMBase.h
  * @author Wei-Ning Huang (AZ) <aitjcize@gmail.com>
  *
  * Copyright (C) 2010 -  Wei-Ning Huang (AZ) <aitjcize@gmail.com>
@@ -20,35 +20,34 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#ifndef __QIN_SRC_QIN_IM_BASE_H__
+#define __QIN_SRC_QIN_IM_BASE_H__
 
-#ifndef __QIN_QIN_QIN_H__
-#define __QIN_QIN_QIN_H__
+#include <QHash>
 
-#include <QWSInputMethod>
-#include "QVirtualKeyboard.h"
+#define QIN_KEYMAP_REG(a, b) \
+  toStdKB[a] = b; \
+  fromStdKB[b] = a;
 
-QT_BEGIN_NAMESPACE
-class QVirtualKeyboard;
-QT_END_NAMESPACE
+#define QIN_SHIFT_KEYMAP_REG(a, b) \
+  ShiftToStdKB[a] = b; \
+  ShiftFromStdKB[b] = a;
 
-class QinEngine: public QWSInputMethod {
-  Q_OBJECT
+class QinIMBase {
+  private:
+    bool CustomKeyMap;
 
   public:
-    QinEngine();
-    ~QinEngine();
-    void updateHandler(int type);
-    void setUseDefaultIM(bool select);
-    void sendContent(QString ch, int uni = 0, int keyId = 0,
-        Qt::KeyboardModifiers mod = Qt::NoModifier);
+    /* Public members */
+    QHash<QString, QString> toStdKB;
+    QHash<QString, QString> fromStdKB;
 
-  private:
-    bool usingDefaultIM;
-    QVirtualKeyboard* vkeyboard;
-    QString inputBuffer;
-
-  private slots:
-    void confirmContent();
+    /* Public methods */
+    QinIMBase(bool u = false): CustomKeyMap(u) { }
+    void setupAll(void) { setupKeyMap(); };
+    void setCustomKeyMap(bool s) { CustomKeyMap = s; }
+    bool useCustomKeyMap(void) { return CustomKeyMap; }
+    virtual void setupKeyMap(void) {}
 };
 
-#endif /* __QIN_QIN_QIN_H__ */
+#endif /* __QIN_SRC_QIN_IM_BASE_H__ */
