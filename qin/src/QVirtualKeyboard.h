@@ -51,10 +51,11 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     bool Ctrled;
     bool Alted;
     bool isStdKeyMap;
+    int currentIM;
+    int opacity;
     QVector<QinIMBase*> inputMethods;
     QSignalMapper *signalMapper;
     QList<QToolButton *> allButtons;
-    int currentIM;
 
   private slots:
     void s_on_btn_clicked(int btn);
@@ -64,6 +65,7 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     void on_btnCtrlLeft_toggled(bool checked);
     void on_btnAltLeft_toggled(bool checked);
     void on_IMSelect_currentIndexChanged(int index);
+    void on_opacitySlide_valueChanged(int value);
     void changeTextShift(bool select);
     void changeTextCaps(bool select);
     void changeKeyMap(QinIMBase* imb);

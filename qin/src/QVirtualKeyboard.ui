@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>220</height>
+    <width>600</width>
+    <height>210</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -55,7 +55,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -79,7 +79,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -103,7 +103,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -127,7 +127,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -151,7 +151,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -175,7 +175,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -199,7 +199,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -223,7 +223,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -247,7 +247,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -271,7 +271,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -295,7 +295,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -319,7 +319,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -343,7 +343,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -367,7 +367,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -398,7 +398,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -422,7 +422,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -446,7 +446,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -470,7 +470,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -494,7 +494,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -518,7 +518,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -542,7 +542,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -566,7 +566,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -590,7 +590,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -614,7 +614,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -638,7 +638,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -662,7 +662,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -686,7 +686,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -710,7 +710,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -741,7 +741,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -768,7 +768,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -792,7 +792,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -816,7 +816,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -840,7 +840,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -864,7 +864,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -888,7 +888,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -912,7 +912,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -936,7 +936,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -960,7 +960,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -984,7 +984,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1008,7 +1008,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1032,7 +1032,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1063,7 +1063,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1090,7 +1090,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1114,7 +1114,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1138,7 +1138,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1162,7 +1162,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1186,7 +1186,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1210,7 +1210,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1234,7 +1234,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1258,7 +1258,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1282,7 +1282,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1306,7 +1306,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1330,7 +1330,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1364,7 +1364,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1391,7 +1391,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1418,7 +1418,7 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>8</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="accessibleName">
@@ -1449,7 +1449,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QSlider" name="transparencySlide">
+        <widget class="QSlider" name="opacitySlide">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -1458,6 +1458,9 @@
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedAppearance">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

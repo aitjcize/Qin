@@ -38,7 +38,7 @@ class QinEngine: public QWSInputMethod {
     QinEngine();
     ~QinEngine();
     void updateHandler(int type);
-    void setUseDefaultIM(bool select);
+    void setUseDefaultIM(bool select) { usingDefaultIM = select; };
     void sendContent(QString ch, int uni = 0, int keyId = 0,
         Qt::KeyboardModifiers mod = Qt::NoModifier);
 

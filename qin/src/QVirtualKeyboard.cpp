@@ -37,7 +37,8 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
   setupUi(this);
-  this->move(0, 380);
+  this->move((QApplication::desktop()->width() - 600)/2,
+      QApplication::desktop()->height() - 210);
 
   imEngine = im;
   currentIM = 0;
@@ -47,6 +48,7 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   Alted = false;
   isStdKeyMap = true;
   changeTextCaps(false);
+  opacitySlide->setRange(20, 100);
 
   allButtons = findChildren<QToolButton*>();
   signalMapper = new QSignalMapper(this);
@@ -66,6 +68,10 @@ int QVirtualKeyboard::insertInputMethod(const QString name, QinIMBase* imb) {
   IMSelect->addItem(name);
   inputMethods.push_back(imb);
   return IMSelect->count() -1;
+}
+
+void QVirtualKeyboard::on_opacitySlide_valueChanged(int value) {
+  setWindowOpacity((120.0 - value) / 100.0);
 }
 
 void QVirtualKeyboard::s_on_btn_clicked(int btn) {

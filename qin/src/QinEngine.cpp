@@ -27,7 +27,6 @@
 #include "plugins/QinChewing.h"
 
 QinEngine::QinEngine() {
-  usingDefaultIM = true;
   vkeyboard = new QVirtualKeyboard(this);
   vkeyboard->insertInputMethod("English", new QinEnglish());
   vkeyboard->insertInputMethod("Chewing", new QinChewing());
@@ -35,10 +34,6 @@ QinEngine::QinEngine() {
 
 QinEngine::~QinEngine() {
   delete vkeyboard;
-}
-
-void QinEngine::setUseDefaultIM(bool select) {
-  usingDefaultIM = select;
 }
 
 void QinEngine::sendContent(QString ch, int uni, int keyId,
