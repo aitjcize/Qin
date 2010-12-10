@@ -38,10 +38,12 @@ class QinEngine: public QWSInputMethod {
     QinEngine();
     ~QinEngine();
     void updateHandler(int type);
-    void sendContent(const QString&);
-    void sendKeyEventById(int keyId, Qt::KeyboardModifiers modifiers);
+    void setUseDefaultIM(bool select);
+    void sendContent(QString ch, int uni = 0, int keyId = 0,
+        Qt::KeyboardModifiers mod = Qt::NoModifier);
 
   private:
+    bool usingDefaultIM;
     QVirtualKeyboard* vkeyboard;
     QString inputBuffer;
 

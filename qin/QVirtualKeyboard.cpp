@@ -36,7 +36,7 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
   setupUi(this);
-  this->move(0, 260);
+  this->move(0, 480);
 
   imEngine = im;
   Capsed = false;
@@ -142,10 +142,8 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (Chinesed && chewing2ascii.find(ch) != chewing2ascii.end())
     ch = chewing2ascii[ch];
 
-  if (isTextKey(keyId))
-    imEngine->sendContent(ch);
-  else
-    imEngine->sendKeyEventById(keyId, Modifier);
+  imEngine->sendContent((isTextKey(keyId)?ch:QString()),
+      ch.unicode()[0].unicode(), keyId, Modifier);
 
   btnShiftLeft->setChecked(false);
   btnShiftRight->setChecked(false);
@@ -182,6 +180,7 @@ void QVirtualKeyboard::on_btnAltLeft_toggled(bool checked) {
 }
 
 void QVirtualKeyboard::on_btnCh_toggled(bool checked) {
+  imEngine->setUseDefaultIM(!checked);
   Chinesed = checked;
   changeTextChinese(Chinesed);
 }

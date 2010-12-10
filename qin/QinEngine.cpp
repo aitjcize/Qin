@@ -24,6 +24,7 @@
 #include "QVirtualKeyboard.h"
 
 QinEngine::QinEngine() {
+  usingDefaultIM = true;
   vkeyboard = new QVirtualKeyboard(this);
 }
 
@@ -31,16 +32,25 @@ QinEngine::~QinEngine() {
   delete vkeyboard;
 }
 
-void QinEngine::sendContent(const QString& newcontent) {
-  inputBuffer += newcontent;
-  sendPreeditString(inputBuffer, 0);
+void QinEngine::setUseDefaultIM(bool select) {
+  usingDefaultIM = select;
 }
 
-void QinEngine::sendKeyEventById(int keyId, Qt::KeyboardModifiers modifiers) {
-  if (keyId == Qt::Key_Return && inputBuffer.length())
-    confirmContent();
-  else
-    QWSServer::sendKeyEvent(0, keyId, modifiers, true, false);
+void QinEngine::sendContent(QString ch, int uni, int keyId,
+        Qt::KeyboardModifiers mod) {
+  if (usingDefaultIM)
+    QWSServer::sendKeyEvent(uni, keyId, mod, true, false);
+  else {
+    if (ch.length()) {
+      inputBuffer += ch;
+      sendPreeditString(inputBuffer, 0);
+    } else {
+      if (inputBuffer.length())
+        confirmContent();
+      else
+        QWSServer::sendKeyEvent(0, keyId, mod, true, false);
+    }
+  }
 }
 
 void QinEngine::confirmContent() {
@@ -60,6 +70,7 @@ void QinEngine::updateHandler(int type) {
       break;
 
     default:
+      inputBuffer.clear();
       break;
   }
 }
