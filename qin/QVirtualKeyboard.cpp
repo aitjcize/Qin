@@ -20,26 +20,25 @@
  * along with Virtual Keyboard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "qvirtualkeyboard.h"
+#include "QVirtualKeyboard.h"
+#include "QinEngine.h"
+
 #include <QKeyEvent>
 #include <QSignalMapper>
-#include <QSound>
-#include <QMessageBox>
 #include <QDesktopWidget>
-#include <QClipboard>
 #include <QTextCodec>
-#include <QList>
 #include <QDebug>
 #include <cstdio>
 
-QVirtualKeyboard::QVirtualKeyboard(QWidget *parent) : QWidget(0)
+QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
+  :QWidget(0, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 {
   QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
   setupUi(this);
-  resize(0,0);
-  this->setWindowFlags(Qt::Tool);
-  m_pParent = parent;
+  this->move(0, 260);
+
+  imEngine = im;
   Capsed = false;
   Shifted = false;
   Ctrled = false;
@@ -110,10 +109,8 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   bool isOk;
   int keyId = strKeyId.toInt(&isOk, 16);
 
-  if (strKeyId.isEmpty() || !isOk) {
-    QMessageBox::information(0, 0, "Key Not Found");
+  if (strKeyId.isEmpty() || !isOk)
     return;
-  }
 
   if (keyId == Qt::Key_Shift
       || keyId == Qt::Key_Control
@@ -145,13 +142,10 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (Chinesed && chewing2ascii.find(ch) != chewing2ascii.end())
     ch = chewing2ascii[ch];
 
-  //if(isTextKey) {
-  //  QKeyEvent keyEventIns(QEvent::KeyPress, Qt::Key_Delete, Qt::NoModifier);
-  //  QApplication::sendEvent(m_pParent->focusWidget(), &keyEventIns);
-  //}
-
-  QKeyEvent keyEvent(QEvent::KeyPress, keyId, Modifier, ch, false,involvedKeys);
-  QApplication::sendEvent(m_pParent->focusWidget(), &keyEvent);
+  if (isTextKey(keyId))
+    imEngine->sendContent(ch);
+  else
+    imEngine->sendKeyEventById(keyId, Modifier);
 
   btnShiftLeft->setChecked(false);
   btnShiftRight->setChecked(false);
@@ -410,7 +404,7 @@ void QVirtualKeyboard::changeTextChinese(bool Chinesed) {
 
 bool QVirtualKeyboard::isTextKey(int keyId)
 {
-  return (keyId==Qt::Key_Shift
+  return !(keyId == Qt::Key_Shift
       || keyId == Qt::Key_Control
       || keyId == Qt::Key_Tab
       || keyId == Qt::Key_Return

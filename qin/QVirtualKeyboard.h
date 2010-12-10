@@ -23,16 +23,26 @@
 #ifndef QVIRTUALKEYBOARD_H
 #define QVIRTUALKEYBOARD_H
 
-#include <QWidget>
-#include "ui_qvirtualkeyboard.h"
-class QSignalMapper;
+#include "ui_QVirtualKeyboard.h"
+#include "QinEngine.h"
 
-class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard
-{
+#include <QWidget>
+#include <QWSInputMethod>
+
+QT_BEGIN_NAMESPACE
+class QinEngine;
+class QSignalMapper;
+QT_END_NAMESPACE
+
+class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
   Q_OBJECT
 
+  public:
+    QVirtualKeyboard(QinEngine* im);
+    ~QVirtualKeyboard();
+
   private:
-    QWidget *m_pParent;
+    QinEngine* imEngine;
     bool Capsed;
     bool Shifted;
     bool Ctrled;
@@ -54,9 +64,6 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard
     void changeTextCaps(bool Capsed);
     void changeTextChinese(bool Chinesed);
     bool isTextKey(int keyId);
-
-  public:
-    QVirtualKeyboard(QWidget *parent = NULL);
-    ~QVirtualKeyboard();
 };
+
 #endif /* QVIRTUALKEYBOARD_H */
