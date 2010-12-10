@@ -341,7 +341,7 @@ void QVirtualKeyboard::changeTextChinese(bool Chinesed) {
     btnJ->setText(QString("ㄨ"));
     btnK->setText(QString("ㄜ"));
     btnL->setText(QString("ㄠ"));
-    btnSemiColon->setText(QString("ㄠ"));
+    btnSemiColon->setText(QString("ㄤ"));
 
     btnZ->setText(QString("ㄈ"));
     btnX->setText(QString("ㄌ"));
