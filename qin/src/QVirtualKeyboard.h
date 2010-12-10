@@ -42,7 +42,7 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
   public:
     QVirtualKeyboard(QinEngine* im);
     ~QVirtualKeyboard();
-    int insertInputMethod(const QString name, QinIMBase* imb);
+    int insertInputMethod(const QString name);
 
   private:
     QinEngine* imEngine;
@@ -51,9 +51,7 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     bool Ctrled;
     bool Alted;
     bool isStdKeyMap;
-    int currentIM;
     int opacity;
-    QVector<QinIMBase*> inputMethods;
     QSignalMapper *signalMapper;
     QList<QToolButton *> allButtons;
 

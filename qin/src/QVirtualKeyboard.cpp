@@ -41,7 +41,6 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
       QApplication::desktop()->height() - 210);
 
   imEngine = im;
-  currentIM = 0;
   Capsed = false;
   Shifted = false;
   Ctrled = false;
@@ -64,9 +63,8 @@ QVirtualKeyboard::~QVirtualKeyboard() {
   delete signalMapper;
 }
 
-int QVirtualKeyboard::insertInputMethod(const QString name, QinIMBase* imb) {
+int QVirtualKeyboard::insertInputMethod(const QString name) {
   IMSelect->addItem(name);
-  inputMethods.push_back(imb);
   return IMSelect->count() -1;
 }
 
@@ -109,11 +107,11 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (keyId == Qt::Key_Space)
     ch = QString(" ");
 
-  if (!isStdKeyMap && inputMethods[currentIM]->toStdKB.find(ch) !=
-      inputMethods[currentIM]->toStdKB.end())
-    ch = inputMethods[currentIM]->toStdKB[ch];
+  if (!isStdKeyMap && imEngine->currentIM->toStdKB.find(ch) !=
+      imEngine->currentIM->toStdKB.end())
+    ch = imEngine->currentIM->toStdKB[ch];
 
-  imEngine->sendContent((isTextKey(keyId)?ch:QString()),
+  imEngine->sendContent((isTextKey(keyId)? ch: QString()),
       ch.unicode()[0].unicode(), keyId, Modifier);
 
   btnShiftLeft->setChecked(false);
@@ -150,14 +148,12 @@ void QVirtualKeyboard::on_btnAltLeft_toggled(bool checked) {
 }
 
 void QVirtualKeyboard::on_IMSelect_currentIndexChanged(int index) {
-  if (index < 0  || index >= inputMethods.size()) return;
+  if (index < 0  || index >= imEngine->inputMethods.size()) return;
 
-  currentIM = index;
-  if (index == 0)
-    imEngine->setUseDefaultIM(!isStdKeyMap);
-  if (inputMethods[index]->useCustomKeyMap()) {
+  imEngine->setCurrentIM(index);
+  if (imEngine->inputMethods[index]->getUseCustomKeyMap()) {
     isStdKeyMap = false;
-    changeKeyMap(inputMethods[index]);
+    changeKeyMap(imEngine->inputMethods[index]);
   } else
     restoreStdKeyMap();
 }

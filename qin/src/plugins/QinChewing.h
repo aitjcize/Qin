@@ -27,7 +27,7 @@
 
 class QinChewing: public QinIMBase {
   public:
-    QinChewing(void): QinIMBase(true) { setupAll(); }
+    QinChewing(void): QinIMBase(true, true) { setupAll(); }
     virtual void setupKeyMap(void);
 };
 

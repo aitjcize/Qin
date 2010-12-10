@@ -35,7 +35,8 @@
 
 class QinIMBase {
   private:
-    bool CustomKeyMap;
+    bool useCustomKeyMap;
+    bool preEditable;
 
   public:
     /* Public members */
@@ -43,10 +44,13 @@ class QinIMBase {
     QHash<QString, QString> fromStdKB;
 
     /* Public methods */
-    QinIMBase(bool u = false): CustomKeyMap(u) { }
+    QinIMBase(bool ukey = false, bool pre = false):
+      useCustomKeyMap(ukey), preEditable(pre) { }
     void setupAll(void) { setupKeyMap(); };
-    void setCustomKeyMap(bool s) { CustomKeyMap = s; }
-    bool useCustomKeyMap(void) { return CustomKeyMap; }
+    void setUseCustomKeyMap(bool s) { useCustomKeyMap = s; }
+    bool getUseCustomKeyMap(void) { return useCustomKeyMap; }
+    void setPreEditable(bool s) { preEditable = s; }
+    bool getPreEditable(void) { return preEditable; }
     virtual void setupKeyMap(void) {}
 };
 

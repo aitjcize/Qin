@@ -26,6 +26,7 @@
 
 #include <QWSInputMethod>
 #include "QVirtualKeyboard.h"
+#include "QinIMBase.h"
 
 QT_BEGIN_NAMESPACE
 class QVirtualKeyboard;
@@ -34,18 +35,22 @@ QT_END_NAMESPACE
 class QinEngine: public QWSInputMethod {
   Q_OBJECT
 
+  friend class QVirtualKeyboard;
+
   public:
     QinEngine();
     ~QinEngine();
     void updateHandler(int type);
-    void setUseDefaultIM(bool select) { usingDefaultIM = select; };
     void sendContent(QString ch, int uni = 0, int keyId = 0,
         Qt::KeyboardModifiers mod = Qt::NoModifier);
+    void regInputMethod(QString name, QinIMBase* imb);
+    void setCurrentIM(int index) { currentIM = inputMethods[index]; }
 
   private:
-    bool usingDefaultIM;
     QVirtualKeyboard* vkeyboard;
     QString inputBuffer;
+    QVector<QinIMBase*> inputMethods;
+    QinIMBase* currentIM;
 
   private slots:
     void confirmContent();

@@ -25,7 +25,7 @@
 
 class QinEnglish: public QinIMBase {
   public:
-    QinEnglish(void): QinIMBase(false) {}
+    QinEnglish(void): QinIMBase(false, false) {}
     virtual void setupKeyMap(void) {}
 };
 

@@ -28,17 +28,30 @@
 
 QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
-  vkeyboard->insertInputMethod("English", new QinEnglish());
-  vkeyboard->insertInputMethod("Chewing", new QinChewing());
+  regInputMethod("English", new QinEnglish());
+  regInputMethod("Chewing", new QinChewing());
 }
 
 QinEngine::~QinEngine() {
   delete vkeyboard;
+  for (QVector<QinIMBase*>::iterator it = inputMethods.begin();
+      it != inputMethods.end(); ++it)
+    delete *it;
+}
+
+void QinEngine::regInputMethod(QString name, QinIMBase* imb) {
+  if (!imb) {
+    qDebug("error: no input method specified\n");
+    return;
+  }
+
+  inputMethods.push_back(imb);
+  vkeyboard->insertInputMethod(name);
 }
 
 void QinEngine::sendContent(QString ch, int uni, int keyId,
         Qt::KeyboardModifiers mod) {
-  if (usingDefaultIM)
+  if (!currentIM->getPreEditable())
     QWSServer::sendKeyEvent(uni, keyId, mod, true, false);
   else {
     if (ch.length()) {
