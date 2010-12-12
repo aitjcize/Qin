@@ -41,6 +41,7 @@ class QinEngine: public QWSInputMethod {
     QinEngine();
     ~QinEngine();
     void updateHandler(int type);
+    void mouseHandler(int offset, int state);
     void sendContent(QString ch, int uni = 0, int keyId = 0,
         Qt::KeyboardModifiers mod = Qt::NoModifier);
     void regInputMethod(QString name, QinIMBase* imb);

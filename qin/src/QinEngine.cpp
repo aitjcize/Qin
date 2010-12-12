@@ -20,6 +20,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <cstdlib>
+
 #include "QinEngine.h"
 #include "QVirtualKeyboard.h"
 
@@ -51,18 +53,42 @@ void QinEngine::regInputMethod(QString name, QinIMBase* imb) {
 
 void QinEngine::sendContent(QString ch, int uni, int keyId,
         Qt::KeyboardModifiers mod) {
+  bool isSpecialKey = true;
+
   if (!currentIM->getPreEditable())
     QWSServer::sendKeyEvent(uni, keyId, mod, true, false);
   else {
-    if (ch.length()) {
-      inputBuffer += ch;
-      sendPreeditString(inputBuffer, 0);
-    } else {
-      if (inputBuffer.length() && keyId == Qt::Key_Return)
+    switch (keyId) {
+      case Qt::Key_Space: currentIM->handle_Space(); break;
+      case Qt::Key_Escape: currentIM->handle_Esc(); break;
+      case Qt::Key_Enter:
+      case Qt::Key_Return:
+        currentIM->handle_Enter();
         confirmContent();
-      else
-        QWSServer::sendKeyEvent(0, keyId, mod, true, false);
+        break;
+      case Qt::Key_Delete: currentIM->handle_Del(); break;
+      case Qt::Key_Backspace: currentIM->handle_Backspace(); break;
+      case Qt::Key_Tab: currentIM->handle_Tab(); break;
+      case Qt::Key_Shift: currentIM->handle_ShiftLeft(); break;
+      case Qt::Key_Left: currentIM->handle_Left(); break;
+      case Qt::Key_Right: currentIM->handle_Right(); break;
+      case Qt::Key_Up: currentIM->handle_Up(); break;
+      case Qt::Key_Home: currentIM->handle_Home(); break;
+      case Qt::Key_End: currentIM->handle_End(); break;
+      case Qt::Key_PageUp: currentIM->handle_PageUp(); break;
+      case Qt::Key_PageDown: currentIM->handle_PageDown(); break;
+      case Qt::Key_Down: currentIM->handle_Down(); break;
+      case Qt::Key_CapsLock: currentIM->handle_Capslock(); break;
+      default:
+        isSpecialKey = false;
+        currentIM->handle_Default(keyId);
+        char* preedit = currentIM->getPreEditString();
+        inputBuffer = QString(preedit);
+        sendPreeditString(inputBuffer, 0);
+        free(preedit);
     }
+    if (isSpecialKey)
+      QWSServer::sendKeyEvent(0, keyId, mod, true, false);
   }
 }
 
@@ -85,5 +111,11 @@ void QinEngine::updateHandler(int type) {
     default:
       inputBuffer.clear();
       break;
+  }
+}
+
+void QinEngine::mouseHandler(int offset, int state) {
+  if (state == QWSServer::MousePress) {
+    sendPreeditString(inputBuffer, offset, 1);
   }
 }

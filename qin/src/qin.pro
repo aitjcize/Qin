@@ -5,7 +5,8 @@
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += . plugins
-INCLUDEPATH += . plugins
+INCLUDEPATH += . plugins /usr/include/chewing
+LIBS += -lchewing
 
 # Input
 HEADERS += QinEngine.h \

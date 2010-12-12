@@ -20,8 +20,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __QIN_SRC_QIN_ENGLISH_H__
-#define __QIN_SRC_QIN_ENGLISH_H__
+#ifndef __QIN_SRC_PLUGIN_QIN_ENGLISH_H__
+#define __QIN_SRC_PLUGIN_QIN_ENGLISH_H__
 
 class QinEnglish: public QinIMBase {
   public:
@@ -29,4 +29,4 @@ class QinEnglish: public QinIMBase {
     virtual void setupKeyMap(void) {}
 };
 
-#endif /* __QIN_SRC_QIN_ENGLISH_H__ */
+#endif /* __QIN_SRC_PLUGIN_QIN_ENGLISH_H__ */

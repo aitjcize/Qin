@@ -80,13 +80,6 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (strKeyId.isEmpty() || !isOk)
     return;
 
-  if (keyId == Qt::Key_Shift
-      || keyId == Qt::Key_Control
-      || keyId == Qt::Key_Alt
-      || keyId == Qt::Key_CapsLock
-     )
-    return;
-
   int involvedKeys = 1;
   Qt::KeyboardModifiers Modifier = Qt::NoModifier;
 

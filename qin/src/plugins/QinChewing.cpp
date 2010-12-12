@@ -24,6 +24,34 @@
 #include "QinChewing.h"
 #include "QinIMBase.h"
 
+#include <cstring>
+#include <cstdio>
+
+#include <chewing.h>
+
+QinChewing::QinChewing(void): QinIMBase(true, true) {
+  chewContext = chewing_new();
+  chewing_Init(QIN_CHEWING_DATA_PATH, QIN_CHEWING_HASH_PATH);
+  //chewing_set_KBType(chewContext, chewing_KBStr2Num("KB_DEFAULT"));
+  chewing_set_ChiEngMode(chewContext, CHINESE_MODE);
+  chewing_set_ShapeMode(chewContext, HALFSHAPE_MODE);
+  chewing_set_candPerPage(chewContext, QIN_CHEWING_CAND_PER_PAGE);
+  chewing_set_maxChiSymbolLen(chewContext, QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN);
+  chewing_set_spaceAsSelection(chewContext, true);
+  chewing_set_escCleanAllBuf(chewContext, true);
+  chewing_set_autoShiftCur(chewContext, false);
+  chewing_set_phraseChoiceRearward(chewContext, true);
+  int len = 1;
+  int keys[] = { Qt::Key_Down };
+  chewing_set_selKey(chewContext, keys, len);
+  setupAll();
+}
+
+QinChewing::~QinChewing(void) {
+  chewing_Terminate();
+  chewing_delete(chewContext);
+}
+
 void QinChewing::setupKeyMap(void) {
   QIN_KEYMAP_REG("ㄅ", "1");
   QIN_KEYMAP_REG("ㄉ", "2");
@@ -70,4 +98,109 @@ void QinChewing::setupKeyMap(void) {
   QIN_KEYMAP_REG("ㄝ", ",");
   QIN_KEYMAP_REG("ㄡ", ".");
   QIN_KEYMAP_REG("ㄥ", "/");
+}
+
+char* QinChewing::getPreEditString(void) {
+  int preedit_len = 5;
+  char* commit_str = chewing_commit_String(chewContext);
+  char* zuin_str = chewing_zuin_String(chewContext, &preedit_len);
+  char* preedit_str = chewing_buffer_String(chewContext);
+  qDebug("Commit String: %s", commit_str);
+  qDebug("Zuin String: %s", zuin_str);
+  qDebug("Preedit String: %s", preedit_str);
+  qDebug("Cand String: %s", chewing_cand_String(chewContext));
+
+  if (strlen(commit_str) == 0)
+    return zuin_str;
+  else {
+  qDebug("Buffer: %s", chewing_buffer_String(chewContext));
+  qDebug("Buffer len: %d", chewing_buffer_Len(chewContext));
+  qDebug("Commit: %d", chewing_commit_Check(chewContext));
+  #if 0
+    handle_Space();
+    int len = chewing_get_phoneSeqLen(chewContext);
+    uint16* seq = chewing_get_phoneSeq(chewContext);
+    for (int i = 0; i < len; ++i)
+      printf("%d", seq[i]);
+    printf("\n");
+
+    qDebug("Cand String: %s", chewing_cand_String(chewContext));
+    qDebug("Cand cpp: %d", chewing_cand_ChoicePerPage(chewContext));
+    qDebug("Cursor Current: %d", chewing_cursor_Current(chewContext));
+  #endif
+    return commit_str;
+  }
+}
+
+void QinChewing::handle_Default(int keyId) {
+  if (keyId >= 'A' && keyId <= 'Z') keyId += 32;
+  chewing_handle_Default(chewContext, keyId);
+}
+
+void QinChewing::handle_Space(void) {
+  chewing_handle_Space(chewContext);
+}
+
+void QinChewing::handle_Esc(void) {
+  chewing_handle_Esc(chewContext);
+}
+
+void QinChewing::handle_Enter(void) {
+  chewing_handle_Enter(chewContext);
+}
+
+void QinChewing::handle_Del(void) {
+  chewing_handle_Del(chewContext);
+}
+
+void QinChewing::handle_Backspace(void) {
+  chewing_handle_Backspace(chewContext);
+}
+
+void QinChewing::handle_Tab(void) {
+  chewing_handle_Tab(chewContext);
+}
+
+void QinChewing::handle_ShiftLeft(void) {
+  chewing_handle_ShiftLeft(chewContext);
+}
+
+void QinChewing::handle_Left(void) {
+  chewing_handle_Left(chewContext);
+}
+
+void QinChewing::handle_ShiftRight(void) {
+  chewing_handle_ShiftRight(chewContext);
+}
+
+void QinChewing::handle_Right(void) {
+  chewing_handle_Right(chewContext);
+}
+
+void QinChewing::handle_Up(void) {
+  chewing_handle_Up(chewContext);
+}
+
+void QinChewing::handle_Home(void) {
+  chewing_handle_Home(chewContext);
+}
+
+void QinChewing::handle_End(void) {
+  chewing_handle_End(chewContext);
+}
+
+void QinChewing::handle_PageUp(void) {
+  chewing_handle_PageUp(chewContext);
+}
+
+void QinChewing::handle_PageDown(void) {
+  chewing_handle_PageDown(chewContext);
+}
+
+void QinChewing::handle_Down(void) {
+  chewing_handle_Down(chewContext);
+}
+
+void QinChewing::handle_Capslock(void) {
+  chewing_handle_Capslock(chewContext);
 }
