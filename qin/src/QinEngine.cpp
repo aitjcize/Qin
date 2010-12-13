@@ -64,10 +64,16 @@ void QinEngine::sendContent(QString ch, int uni, int keyId,
       case Qt::Key_Enter:
       case Qt::Key_Return:
         currentIM->handle_Enter();
-        confirmContent();
-        break;
+        if (inputBuffer.length()) {
+          confirmContent();
+          return;
+        } else
+          break;
       case Qt::Key_Delete: currentIM->handle_Del(); break;
-      case Qt::Key_Backspace: currentIM->handle_Backspace(); break;
+      case Qt::Key_Backspace:
+        currentIM->handle_Backspace();
+        updatePreEditBuffer();
+        return;
       case Qt::Key_Tab: currentIM->handle_Tab(); break;
       case Qt::Key_Shift: currentIM->handle_ShiftLeft(); break;
       case Qt::Key_Left: currentIM->handle_Left(); break;
@@ -82,10 +88,7 @@ void QinEngine::sendContent(QString ch, int uni, int keyId,
       default:
         isSpecialKey = false;
         currentIM->handle_Default(keyId);
-        char* preedit = currentIM->getPreEditString();
-        inputBuffer = QString(preedit);
-        sendPreeditString(inputBuffer, 0);
-        free(preedit);
+        updatePreEditBuffer();
     }
     if (isSpecialKey)
       QWSServer::sendKeyEvent(0, keyId, mod, true, false);
@@ -97,9 +100,17 @@ void QinEngine::confirmContent() {
   inputBuffer.clear();
 }
 
+void QinEngine::updatePreEditBuffer() {
+  char* preedit = currentIM->getPreEditString();
+  inputBuffer = QString(preedit);
+  sendPreeditString(inputBuffer, 0);
+  free(preedit);
+}
+
 void QinEngine::updateHandler(int type) {
   switch (type) {
     case QWSInputMethod::FocusIn:
+      currentIM->reset();
       vkeyboard->show();
       break;
 

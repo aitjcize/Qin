@@ -34,7 +34,7 @@
 #define QIN_CHEWING_DATA_PATH datadir"/share/libchewing3/chewing"
 #define QIN_CHEWING_HASH_PATH homedir"/.chewing"
 #define QIN_CHEWING_CAND_PER_PAGE 10
-#define QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN 5
+#define QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN 10
 /* QinChewing class definition */
 class QinChewing: public QinIMBase {
   private:
@@ -49,6 +49,7 @@ class QinChewing: public QinIMBase {
 
     /** I/O related **/
     virtual char* getPreEditString(void);
+    void reset(void);
 
     /** Key handling APIs **/
     virtual void handle_Default(int keyId);

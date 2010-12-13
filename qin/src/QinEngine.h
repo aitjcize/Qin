@@ -46,6 +46,7 @@ class QinEngine: public QWSInputMethod {
         Qt::KeyboardModifiers mod = Qt::NoModifier);
     void regInputMethod(QString name, QinIMBase* imb);
     void setCurrentIM(int index) { currentIM = inputMethods[index]; }
+    void updatePreEditBuffer(void);
 
   private:
     QVirtualKeyboard* vkeyboard;

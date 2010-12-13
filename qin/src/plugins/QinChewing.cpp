@@ -24,6 +24,7 @@
 #include "QinChewing.h"
 #include "QinIMBase.h"
 
+#include <cctype>
 #include <cstring>
 #include <cstdio>
 
@@ -39,7 +40,7 @@ QinChewing::QinChewing(void): QinIMBase(true, true) {
   chewing_set_maxChiSymbolLen(chewContext, QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN);
   chewing_set_spaceAsSelection(chewContext, true);
   chewing_set_escCleanAllBuf(chewContext, true);
-  chewing_set_autoShiftCur(chewContext, false);
+  chewing_set_autoShiftCur(chewContext, true);
   chewing_set_phraseChoiceRearward(chewContext, true);
   int len = 1;
   int keys[] = { Qt::Key_Down };
@@ -110,31 +111,15 @@ char* QinChewing::getPreEditString(void) {
   qDebug("Preedit String: %s", preedit_str);
   qDebug("Cand String: %s", chewing_cand_String(chewContext));
 
-  if (strlen(commit_str) == 0)
-    return zuin_str;
-  else {
-  qDebug("Buffer: %s", chewing_buffer_String(chewContext));
-  qDebug("Buffer len: %d", chewing_buffer_Len(chewContext));
-  qDebug("Commit: %d", chewing_commit_Check(chewContext));
-  #if 0
-    handle_Space();
-    int len = chewing_get_phoneSeqLen(chewContext);
-    uint16* seq = chewing_get_phoneSeq(chewContext);
-    for (int i = 0; i < len; ++i)
-      printf("%d", seq[i]);
-    printf("\n");
+  return preedit_str;
+}
 
-    qDebug("Cand String: %s", chewing_cand_String(chewContext));
-    qDebug("Cand cpp: %d", chewing_cand_ChoicePerPage(chewContext));
-    qDebug("Cursor Current: %d", chewing_cursor_Current(chewContext));
-  #endif
-    return commit_str;
-  }
+void QinChewing::reset(void) {
+  chewing_Reset(chewContext);
 }
 
 void QinChewing::handle_Default(int keyId) {
-  if (keyId >= 'A' && keyId <= 'Z') keyId += 32;
-  chewing_handle_Default(chewContext, keyId);
+  chewing_handle_Default(chewContext, tolower(keyId));
 }
 
 void QinChewing::handle_Space(void) {

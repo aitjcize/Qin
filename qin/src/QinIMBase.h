@@ -58,6 +58,7 @@ class QinIMBase {
     /** I/O related **/
     /* Caller must free it */
     virtual char* getPreEditString(void) { return NULL; }
+    void reset(void) {}
 
     /** Key handling APIs **/
     virtual void handle_Default(int) {}
