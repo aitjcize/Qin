@@ -20,6 +20,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <cstdio>
 #include <cstdlib>
 
 #include "QinEngine.h"
@@ -59,7 +60,10 @@ void QinEngine::sendContent(QString ch, int uni, int keyId,
     QWSServer::sendKeyEvent(uni, keyId, mod, true, false);
   else {
     switch (keyId) {
-      case Qt::Key_Space: currentIM->handle_Space(); break;
+      case Qt::Key_Space:
+        currentIM->handle_Space();
+        updatePreEditBuffer();
+        break;
       case Qt::Key_Escape: currentIM->handle_Esc(); break;
       case Qt::Key_Enter:
       case Qt::Key_Return:
@@ -92,12 +96,24 @@ void QinEngine::sendContent(QString ch, int uni, int keyId,
     }
     if (isSpecialKey)
       QWSServer::sendKeyEvent(0, keyId, mod, true, false);
+
+    /* Update committed string */
+    updateCommitString();
   }
 }
 
-void QinEngine::confirmContent() {
+void QinEngine::confirmContent(void) {
   sendCommitString(inputBuffer);
   inputBuffer.clear();
+}
+
+void QinEngine::updateCommitString() {
+  char* commit_str = currentIM->getCommitString();
+  if (commit_str) {
+    sendCommitString(commit_str);
+    free(commit_str);
+  }
+  updatePreEditBuffer();
 }
 
 void QinEngine::updatePreEditBuffer() {
@@ -116,6 +132,7 @@ void QinEngine::updateHandler(int type) {
 
     case QWSInputMethod::FocusOut:
       inputBuffer.clear();
+      currentIM->reset();
       vkeyboard->hide();
       break;
 

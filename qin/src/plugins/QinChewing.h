@@ -49,7 +49,8 @@ class QinChewing: public QinIMBase {
 
     /** I/O related **/
     virtual char* getPreEditString(void);
-    void reset(void);
+    virtual char* getCommitString(void);
+    virtual void reset(void);
 
     /** Key handling APIs **/
     virtual void handle_Default(int keyId);
