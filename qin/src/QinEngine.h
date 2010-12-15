@@ -48,14 +48,14 @@ class QinEngine: public QWSInputMethod {
     QString inputBuffer;
     QVector<QinIMBase*> inputMethods;
     QinIMBase* currentIM;
+    int selected;
 
+    bool isPreEditing(void) { return inputBuffer.length(); }
+    bool filter(int uni, int keyId, int mod, bool isPress, bool autoRepeat);
     void updateHandler(int type);
     void mouseHandler(int offset, int state);
-    void confirmContent();
     void updateCommitString();
     void updatePreEditBuffer(void);
-    void sendContent(QString ch, int uni = 0, int keyId = 0,
-        Qt::KeyboardModifiers mod = Qt::NoModifier);
 };
 
 #endif /* __QIN_SRC_QIN_ENGINE_H__ */

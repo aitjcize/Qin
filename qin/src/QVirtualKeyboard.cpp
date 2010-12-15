@@ -104,8 +104,7 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
       imEngine->currentIM->toStdKB.end())
     ch = imEngine->currentIM->toStdKB[ch];
 
-  imEngine->sendContent((isTextKey(keyId)? ch: QString()),
-      ch.unicode()[0].unicode(), keyId, Modifier);
+  QWSServer::sendKeyEvent(ch.unicode()[0].unicode(), keyId, Modifier, true, false);
 
   btnShiftLeft->setChecked(false);
   btnShiftRight->setChecked(false);
@@ -230,6 +229,7 @@ void QVirtualKeyboard::changeKeyMap(QinIMBase* imb) {
   btn8->setText(imb->fromStdKB["8"]);
   btn9->setText(imb->fromStdKB["9"]);
   btn0->setText(imb->fromStdKB["0"]);
+  btnHiphen->setText(imb->fromStdKB["-"]);
 
   btnQ->setText(imb->fromStdKB["q"]);
   btnW->setText(imb->fromStdKB["w"]);

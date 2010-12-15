@@ -64,6 +64,7 @@ void QinChewing::setupKeyMap(void) {
   QIN_KEYMAP_REG("ㄚ", "8");
   QIN_KEYMAP_REG("ㄞ", "9");
   QIN_KEYMAP_REG("ㄢ", "0");
+  QIN_KEYMAP_REG("ㄦ", "-");
 
   QIN_KEYMAP_REG("ㄆ", "q");
   QIN_KEYMAP_REG("ㄊ", "w");
@@ -109,10 +110,13 @@ char* QinChewing::getPreEditString(void) {
   int max_len = strlen(zuin_str) + strlen(buf_str);
   char* preedit_str = new char[max_len + 1];
 
+//#if 0
   printf("Buf: %s\n", buf_str);
   printf("Zuin: %s\n", zuin_str);
   printf("Commit: %d\n", chewing_commit_Check(chewContext));
   printf("Cand: %s\n", cand_str);
+//#endif
+
   strncpy(preedit_str, buf_str, max_len);
   strncat(preedit_str, zuin_str, max_len - strlen(preedit_str));
 
