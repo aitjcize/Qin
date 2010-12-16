@@ -24,11 +24,17 @@
 #define __QIN_SRC_QIN_IM_BASE_H__
 
 #include <QHash>
+#include <QStringList>
 
 #define QIN_KEYMAP_REG(a, b) \
   toStdKB_hash[a] = b; \
   fromStdKB_hash[b] = a;
 
+/**
+ * @name  QinIMBase
+ * @brief Base class for all input method for Qin. New input methods should
+ * derive from QinIMBase. 
+ */
 class QinIMBase {
   private:
     bool useCustomKeyMap;
@@ -43,13 +49,15 @@ class QinIMBase {
     QinIMBase(bool ukey = false, bool pre = false):
       useCustomKeyMap(ukey), preEditable(pre) {}
     virtual ~QinIMBase() {}
+
     void setUseCustomKeyMap(bool s) { useCustomKeyMap = s; }
     bool getUseCustomKeyMap(void) { return useCustomKeyMap; }
     void setPreEditable(bool s) { preEditable = s; }
     bool getPreEditable(void) { return preEditable; }
-
-    virtual void setupAll(void) { setupKeyMap(); };
+    virtual void setupAll(void) { setupKeyMap(); }
     virtual void setupKeyMap(void) {}
+    virtual bool getDoPopUp(void) { return false; }
+    virtual QStringList getPopUpStrings(void) { return QStringList(); }
 
     /** I/O related **/
     /* Caller must free it */
@@ -57,14 +65,12 @@ class QinIMBase {
     virtual char* getCommitString(void) { return NULL; }
     QString toStdKB(QString str) {
       return (toStdKB_hash.find(str) != toStdKB_hash.end())?
-        toStdKB_hash[str]:str;
+        toStdKB_hash[str]: str;
     }
-
     QString fromStdKB(QString str) {
       return (fromStdKB_hash.find(str) != fromStdKB_hash.end())?
-        fromStdKB_hash[str]:str;
+        fromStdKB_hash[str]: str;
     }
-
     virtual void reset(void) {}
 
     /** Key handling APIs **/
@@ -86,6 +92,31 @@ class QinIMBase {
     virtual void handle_PageDown(void) {}
     virtual void handle_Down(void) {}
     virtual void handle_Capslock(void) {}
+};
+
+/**
+ * @name  QinTableIMBase
+ * @brief Base class for table input methods.
+ */
+class QinTableIMBase: public QinIMBase {
+  private:
+    QString preEditBuffer;
+
+  public:
+    /** Public methods **/
+    QinTableIMBase(bool ukey = false, bool pre = false):
+      QinIMBase(ukey, pre) {}
+    virtual ~QinTableIMBase() {}
+
+    virtual bool getDoPopUp(void) { return false; }
+    virtual QStringList getPopUpStrings(void) { return QStringList(); }
+    virtual QString getSQLiteQueryTemplate(void);
+
+    /** I/O related **/
+    /* Caller must free it */
+    virtual char* getPreEditString(void);
+    virtual char* getCommitString(void);
+    virtual void reset(void);
 };
 
 #endif /* __QIN_SRC_QIN_IM_BASE_H__ */

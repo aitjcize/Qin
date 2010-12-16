@@ -35,6 +35,7 @@
 #define QIN_CHEWING_HASH_PATH homedir"/.chewing"
 #define QIN_CHEWING_CAND_PER_PAGE 10
 #define QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN 10
+
 /* QinChewing class definition */
 class QinChewing: public QinIMBase {
   private:

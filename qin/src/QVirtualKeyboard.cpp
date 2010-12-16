@@ -73,11 +73,12 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   QString strKeyId = allButtons.at(btn)->accessibleName();
   bool isOk;
   int keyId = strKeyId.toInt(&isOk, 16);
+  int involvedKeys = 1;
+  bool istextkey = isTextKey(keyId);
 
   if (strKeyId.isEmpty() || !isOk)
     return;
 
-  int involvedKeys = 1;
   Qt::KeyboardModifiers Modifier = Qt::NoModifier;
 
   if (Ctrled) {
@@ -94,16 +95,22 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   }    
 
   QString ch = allButtons.at(btn)->text().trimmed();
+
+  if (!istextkey)
+    ch = QString();
   if (keyId == Qt::Key_Space)
     ch = QString(" ");
+
 
   QWSServer::sendKeyEvent(ch.unicode()[0].unicode(), keyId, Modifier, true,
       false);
 
-  btnShiftLeft->setChecked(false);
-  btnShiftRight->setChecked(false);
-  btnCtrlLeft->setChecked(false);
-  btnAltLeft->setChecked(false);
+  if (istextkey) {
+    btnShiftLeft->setChecked(false);
+    btnShiftRight->setChecked(false);
+    btnCtrlLeft->setChecked(false);
+    btnAltLeft->setChecked(false);
+  }
 }
 
 void QVirtualKeyboard::on_btnCaps_toggled(bool checked) {

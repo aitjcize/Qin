@@ -145,7 +145,6 @@ void QinChewing::handle_Default(int keyId) {
 }
 
 void QinChewing::handle_Space(void) {
-  printf("space\n");
   chewing_handle_Space(chewContext);
 }
 

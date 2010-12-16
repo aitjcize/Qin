@@ -26,12 +26,12 @@
 #include "QinEngine.h"
 #include "QVirtualKeyboard.h"
 
-#include "plugins/QinEnglish.h"
+#include "QinIMBases.h"
 #include "plugins/QinChewing.h"
 
 QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
-  regInputMethod("English", new QinEnglish());
+  regInputMethod("English", new QinIMBase());
   regInputMethod("Chewing", new QinChewing());
 }
 
@@ -87,13 +87,18 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
     case Qt::Key_Down: currentIM->handle_Down(); break;
     case Qt::Key_CapsLock: currentIM->handle_Capslock(); break;
     default:
-      doSendEvent = false;
       currentIM->handle_Default(keyId);
-      updatePreEditBuffer();
+      doSendEvent = false;
   }
 
   updateCommitString();
-  updatePreEditBuffer();
+
+  if (currentIM->getPreEditable())
+    updatePreEditBuffer();
+
+  /* Popup */
+  //if (currentIM->getDoPopUp())
+  //  do popup
 
   return !doSendEvent;
 }

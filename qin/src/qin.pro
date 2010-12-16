@@ -12,7 +12,6 @@ LIBS += -lchewing
 HEADERS += QinEngine.h \
            QinIMBases.h \
            QVirtualKeyboard.h \
-           plugins/QinChewing.h \
-           plugins/QinEnglish.h
+           plugins/QinChewing.h
 FORMS += QVirtualKeyboard.ui
 SOURCES += Qin.cpp QinEngine.cpp QVirtualKeyboard.cpp plugins/QinChewing.cpp
