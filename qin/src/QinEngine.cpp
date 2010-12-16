@@ -31,7 +31,7 @@
 
 QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
-  //regInputMethod("English", new QinEnglish());
+  regInputMethod("English", new QinEnglish());
   regInputMethod("Chewing", new QinChewing());
 }
 
@@ -62,26 +62,18 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
   switch (keyId) {
     case Qt::Key_Space:
       currentIM->handle_Space();
-      updatePreEditBuffer();
-      if (isPreEditing())
-        doSendEvent = false;
+      if (isPreEditing()) doSendEvent = false;
       break;
     case Qt::Key_Escape: currentIM->handle_Esc(); break;
     case Qt::Key_Enter:
     case Qt::Key_Return:
       currentIM->handle_Enter();
-      if (isPreEditing()) {
-        updatePreEditBuffer();
-        doSendEvent = false;
-      }
+      if (isPreEditing()) doSendEvent = false;
       break;
     case Qt::Key_Delete: currentIM->handle_Del(); break;
     case Qt::Key_Backspace:
       currentIM->handle_Backspace();
-      if (isPreEditing()) {
-        updatePreEditBuffer();
-        doSendEvent = false;
-      }
+      if (isPreEditing()) doSendEvent = false;
       break;
     case Qt::Key_Tab: currentIM->handle_Tab(); break;
     case Qt::Key_Shift: currentIM->handle_ShiftLeft(); break;
@@ -100,8 +92,8 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
       updatePreEditBuffer();
   }
 
-  /* Update committed string */
   updateCommitString();
+  updatePreEditBuffer();
 
   return !doSendEvent;
 }

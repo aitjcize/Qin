@@ -27,15 +27,12 @@
 #include <QKeyEvent>
 #include <QSignalMapper>
 #include <QDesktopWidget>
-#include <QTextCodec>
 #include <QDebug>
 #include <cstdio>
 
 QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   :QWidget(0, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 {
-  QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-
   setupUi(this);
   this->move((QApplication::desktop()->width() - 600)/2,
       QApplication::desktop()->height() - 210);

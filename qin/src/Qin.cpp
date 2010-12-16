@@ -22,12 +22,16 @@
  */
 
 #include <QApplication>
+#include <QTextCodec>
 #include <QWSInputMethod>
+
 #include "QinEngine.h"
 
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
+  QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+
   QWSInputMethod* im = new QinEngine;
   QWSServer::setCurrentInputMethod(im);
   return app.exec();
