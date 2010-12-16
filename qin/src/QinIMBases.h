@@ -26,12 +26,8 @@
 #include <QHash>
 
 #define QIN_KEYMAP_REG(a, b) \
-  toStdKB[a] = b; \
-  fromStdKB[b] = a;
-
-#define QIN_SHIFT_KEYMAP_REG(a, b) \
-  ShiftToStdKB[a] = b; \
-  ShiftFromStdKB[b] = a;
+  toStdKB_hash[a] = b; \
+  fromStdKB_hash[b] = a;
 
 class QinIMBase {
   private:
@@ -40,8 +36,8 @@ class QinIMBase {
 
   public:
     /** Public members **/
-    QHash<QString, QString> toStdKB;
-    QHash<QString, QString> fromStdKB;
+    QHash<QString, QString> toStdKB_hash;
+    QHash<QString, QString> fromStdKB_hash;
 
     /** Public methods **/
     QinIMBase(bool ukey = false, bool pre = false):
@@ -59,6 +55,16 @@ class QinIMBase {
     /* Caller must free it */
     virtual char* getPreEditString(void) { return NULL; }
     virtual char* getCommitString(void) { return NULL; }
+    QString toStdKB(QString str) {
+      return (toStdKB_hash.find(str) != toStdKB_hash.end())?
+        toStdKB_hash[str]:str;
+    }
+
+    QString fromStdKB(QString str) {
+      return (fromStdKB_hash.find(str) != fromStdKB_hash.end())?
+        fromStdKB_hash[str]:str;
+    }
+
     virtual void reset(void) {}
 
     /** Key handling APIs **/

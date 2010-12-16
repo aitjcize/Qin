@@ -22,7 +22,7 @@
 
 #include "QVirtualKeyboard.h"
 #include "QinEngine.h"
-#include "QinIMBase.h"
+#include "QinIMBases.h"
 
 #include <QKeyEvent>
 #include <QSignalMapper>
@@ -97,11 +97,8 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (keyId == Qt::Key_Space)
     ch = QString(" ");
 
-  if (!isStdKeyMap && imEngine->currentIM->toStdKB.find(ch) !=
-      imEngine->currentIM->toStdKB.end())
-    ch = imEngine->currentIM->toStdKB[ch];
-
-  QWSServer::sendKeyEvent(ch.unicode()[0].unicode(), keyId, Modifier, true, false);
+  QWSServer::sendKeyEvent(ch.unicode()[0].unicode(), keyId, Modifier, true,
+      false);
 
   btnShiftLeft->setChecked(false);
   btnShiftRight->setChecked(false);
@@ -216,52 +213,52 @@ void QVirtualKeyboard::changeTextCaps(bool select) {
 }
 
 void QVirtualKeyboard::changeKeyMap(QinIMBase* imb) {
-  btn1->setText(imb->fromStdKB["1"]);
-  btn2->setText(imb->fromStdKB["2"]);
-  btn3->setText(imb->fromStdKB["3"]);
-  btn4->setText(imb->fromStdKB["4"]);
-  btn5->setText(imb->fromStdKB["5"]);
-  btn6->setText(imb->fromStdKB["6"]);
-  btn7->setText(imb->fromStdKB["7"]);
-  btn8->setText(imb->fromStdKB["8"]);
-  btn9->setText(imb->fromStdKB["9"]);
-  btn0->setText(imb->fromStdKB["0"]);
-  btnHiphen->setText(imb->fromStdKB["-"]);
+  btn1->setText(imb->fromStdKB("1"));
+  btn2->setText(imb->fromStdKB("2"));
+  btn3->setText(imb->fromStdKB("3"));
+  btn4->setText(imb->fromStdKB("4"));
+  btn5->setText(imb->fromStdKB("5"));
+  btn6->setText(imb->fromStdKB("6"));
+  btn7->setText(imb->fromStdKB("7"));
+  btn8->setText(imb->fromStdKB("8"));
+  btn9->setText(imb->fromStdKB("9"));
+  btn0->setText(imb->fromStdKB("0"));
+  btnHiphen->setText(imb->fromStdKB("-"));
 
-  btnQ->setText(imb->fromStdKB["q"]);
-  btnW->setText(imb->fromStdKB["w"]);
-  btnE->setText(imb->fromStdKB["e"]);
-  btnR->setText(imb->fromStdKB["r"]);
-  btnT->setText(imb->fromStdKB["t"]);
-  btnY->setText(imb->fromStdKB["y"]);
-  btnU->setText(imb->fromStdKB["u"]);
-  btnI->setText(imb->fromStdKB["i"]);
-  btnO->setText(imb->fromStdKB["o"]);
-  btnP->setText(imb->fromStdKB["p"]);
-  btnStartSquare->setText(imb->fromStdKB["["]);
-  btnCloseSquare->setText(imb->fromStdKB["]"]);
+  btnQ->setText(imb->fromStdKB("q"));
+  btnW->setText(imb->fromStdKB("w"));
+  btnE->setText(imb->fromStdKB("e"));
+  btnR->setText(imb->fromStdKB("r"));
+  btnT->setText(imb->fromStdKB("t"));
+  btnY->setText(imb->fromStdKB("y"));
+  btnU->setText(imb->fromStdKB("u"));
+  btnI->setText(imb->fromStdKB("i"));
+  btnO->setText(imb->fromStdKB("o"));
+  btnP->setText(imb->fromStdKB("p"));
+  btnStartSquare->setText(imb->fromStdKB("("));
+  btnCloseSquare->setText(imb->fromStdKB(")"));
 
-  btnA->setText(imb->fromStdKB["a"]);
-  btnS->setText(imb->fromStdKB["s"]);
-  btnD->setText(imb->fromStdKB["d"]);
-  btnF->setText(imb->fromStdKB["f"]);
-  btnG->setText(imb->fromStdKB["g"]);
-  btnH->setText(imb->fromStdKB["h"]);
-  btnJ->setText(imb->fromStdKB["j"]);
-  btnK->setText(imb->fromStdKB["k"]);
-  btnL->setText(imb->fromStdKB["l"]);
-  btnSemiColon->setText(imb->fromStdKB[";"]);
+  btnA->setText(imb->fromStdKB("a"));
+  btnS->setText(imb->fromStdKB("s"));
+  btnD->setText(imb->fromStdKB("d"));
+  btnF->setText(imb->fromStdKB("f"));
+  btnG->setText(imb->fromStdKB("g"));
+  btnH->setText(imb->fromStdKB("h"));
+  btnJ->setText(imb->fromStdKB("j"));
+  btnK->setText(imb->fromStdKB("k"));
+  btnL->setText(imb->fromStdKB("l"));
+  btnSemiColon->setText(imb->fromStdKB(";"));
 
-  btnZ->setText(imb->fromStdKB["z"]);
-  btnX->setText(imb->fromStdKB["x"]);
-  btnC->setText(imb->fromStdKB["c"]);
-  btnV->setText(imb->fromStdKB["v"]);
-  btnB->setText(imb->fromStdKB["b"]);
-  btnN->setText(imb->fromStdKB["n"]);
-  btnM->setText(imb->fromStdKB["m"]);        
-  btnComma->setText(imb->fromStdKB[","]);
-  btnPeriod->setText(imb->fromStdKB["."]);
-  btnSlash->setText(imb->fromStdKB["/"]);
+  btnZ->setText(imb->fromStdKB("z"));
+  btnX->setText(imb->fromStdKB("x"));
+  btnC->setText(imb->fromStdKB("c"));
+  btnV->setText(imb->fromStdKB("v"));
+  btnB->setText(imb->fromStdKB("b"));
+  btnN->setText(imb->fromStdKB("n"));
+  btnM->setText(imb->fromStdKB("m"));        
+  btnComma->setText(imb->fromStdKB(","));
+  btnPeriod->setText(imb->fromStdKB("."));
+  btnSlash->setText(imb->fromStdKB("/"));
 }
 
 void QVirtualKeyboard::restoreStdKeyMap(void) {

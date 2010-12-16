@@ -10,7 +10,7 @@ LIBS += -lchewing
 
 # Input
 HEADERS += QinEngine.h \
-           QinIMBase.h \
+           QinIMBases.h \
            QVirtualKeyboard.h \
            plugins/QinChewing.h \
            plugins/QinEnglish.h

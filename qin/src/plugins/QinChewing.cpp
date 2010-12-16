@@ -22,7 +22,7 @@
  */
 
 #include "QinChewing.h"
-#include "QinIMBase.h"
+#include "QinIMBases.h"
 
 #include <cctype>
 #include <cstdlib>

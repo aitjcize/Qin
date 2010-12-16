@@ -23,6 +23,8 @@
 #ifndef __QIN_SRC_PLUGIN_QIN_ENGLISH_H__
 #define __QIN_SRC_PLUGIN_QIN_ENGLISH_H__
 
+#include "QinIMBases.h"
+
 class QinEnglish: public QinIMBase {
   public:
     QinEnglish(void): QinIMBase(false, false) {}

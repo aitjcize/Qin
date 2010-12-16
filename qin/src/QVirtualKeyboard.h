@@ -25,7 +25,7 @@
 
 #include "ui_QVirtualKeyboard.h"
 #include "QinEngine.h"
-#include "QinIMBase.h"
+#include "QinIMBases.h"
 
 #include <QWidget>
 #include <QVector>

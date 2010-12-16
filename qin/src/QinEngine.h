@@ -20,13 +20,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-
 #ifndef __QIN_SRC_QIN_ENGINE_H__
 #define __QIN_SRC_QIN_ENGINE_H__
 
 #include <QWSInputMethod>
 #include "QVirtualKeyboard.h"
-#include "QinIMBase.h"
+#include "QinIMBases.h"
 
 QT_BEGIN_NAMESPACE
 class QVirtualKeyboard;
