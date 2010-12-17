@@ -30,7 +30,7 @@ QinBoshiamy::QinBoshiamy(void):
 
 QString QinBoshiamy::getQueryTemplate(void) {
   return "SELECT phrase FROM phrases WHERE m0%1 AND m1%2 AND m2%3 AND "
-    "m3%4 AND m4%5 ORDER BY -freq LIMIT 1;";
+    "m3%4 AND m4%5 ORDER BY -freq;";
 }
 
 int QinBoshiamy::doKeyTransform(int key) {
