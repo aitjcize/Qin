@@ -101,7 +101,6 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (keyId == Qt::Key_Space)
     ch = QString(" ");
 
-
   QWSServer::sendKeyEvent(ch.unicode()[0].unicode(), keyId, Modifier, true,
       false);
 

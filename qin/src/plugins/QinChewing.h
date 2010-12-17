@@ -44,7 +44,7 @@ class QinChewing: public QinIMBase {
 
   public:
     QinChewing(void);
-    ~QinChewing(void);
+    virtual ~QinChewing(void);
 
     virtual void setupKeyMap(void);
 

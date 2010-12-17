@@ -28,11 +28,13 @@
 
 #include "QinIMBases.h"
 #include "plugins/QinChewing.h"
+#include "plugins/QinBoshiamy.h"
 
 QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
-  regInputMethod("English", new QinIMBase());
-  regInputMethod("Chewing", new QinChewing());
+  //regInputMethod("English", new QinIMBase());
+  //regInputMethod("Chewing", new QinChewing());
+  regInputMethod("Boshiamy", new QinBoshiamy());
 }
 
 QinEngine::~QinEngine() {
@@ -56,7 +58,7 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
     bool autoRepeat) {
   bool doSendEvent = true;
 
-  if (!currentIM->getPreEditable())
+  if (!isPress || !currentIM->getPreEditable())
     return false;
 
   switch (keyId) {

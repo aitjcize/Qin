@@ -3,6 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
+QT += sql
 TARGET = 
 DEPENDPATH += . plugins
 INCLUDEPATH += . plugins /usr/include/chewing
@@ -12,6 +13,7 @@ LIBS += -lchewing
 HEADERS += QinEngine.h \
            QinIMBases.h \
            QVirtualKeyboard.h \
-           plugins/QinChewing.h
+           plugins/QinChewing.h \
+           plugins/QinBoshiamy.h
 FORMS += QVirtualKeyboard.ui
-SOURCES += Qin.cpp QinEngine.cpp QVirtualKeyboard.cpp plugins/QinChewing.cpp
+SOURCES += Qin.cpp QinEngine.cpp QinIMBases.cpp QVirtualKeyboard.cpp plugins/QinChewing.cpp plugins/QinBoshiamy.cpp

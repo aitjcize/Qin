@@ -23,8 +23,11 @@
 #ifndef __QIN_SRC_QIN_IM_BASE_H__
 #define __QIN_SRC_QIN_IM_BASE_H__
 
+#include <cstring>
+
 #include <QHash>
 #include <QStringList>
+#include <QSqlDatabase>
 
 #define QIN_KEYMAP_REG(a, b) \
   toStdKB_hash[a] = b; \
@@ -46,52 +49,45 @@ class QinIMBase {
     QHash<QString, QString> fromStdKB_hash;
 
     /** Public methods **/
-    QinIMBase(bool ukey = false, bool pre = false):
-      useCustomKeyMap(ukey), preEditable(pre) {}
-    virtual ~QinIMBase() {}
+    QinIMBase(bool ukey = false, bool pre = false);
+    virtual ~QinIMBase();
 
-    void setUseCustomKeyMap(bool s) { useCustomKeyMap = s; }
-    bool getUseCustomKeyMap(void) { return useCustomKeyMap; }
-    void setPreEditable(bool s) { preEditable = s; }
-    bool getPreEditable(void) { return preEditable; }
-    virtual void setupAll(void) { setupKeyMap(); }
-    virtual void setupKeyMap(void) {}
-    virtual bool getDoPopUp(void) { return false; }
-    virtual QStringList getPopUpStrings(void) { return QStringList(); }
+    void setUseCustomKeyMap(bool s);
+    bool getUseCustomKeyMap(void);
+    void setPreEditable(bool s);
+    bool getPreEditable(void);
+    virtual void setupAll(void);
+    virtual void setupKeyMap(void);
+    virtual bool getDoPopUp(void);
+    virtual QStringList getPopUpStrings(void);
 
     /** I/O related **/
     /* Caller must free it */
-    virtual char* getPreEditString(void) { return NULL; }
-    virtual char* getCommitString(void) { return NULL; }
-    QString toStdKB(QString str) {
-      return (toStdKB_hash.find(str) != toStdKB_hash.end())?
-        toStdKB_hash[str]: str;
-    }
-    QString fromStdKB(QString str) {
-      return (fromStdKB_hash.find(str) != fromStdKB_hash.end())?
-        fromStdKB_hash[str]: str;
-    }
-    virtual void reset(void) {}
+    virtual char* getPreEditString(void);
+    virtual char* getCommitString(void);
+    QString toStdKB(QString str);
+    QString fromStdKB(QString str);
+    virtual void reset(void);
 
     /** Key handling APIs **/
-    virtual void handle_Default(int) {}
-    virtual void handle_Space(void) {}
-    virtual void handle_Esc(void) {}
-    virtual void handle_Enter(void) {}
-    virtual void handle_Del(void) {}
-    virtual void handle_Backspace(void) {}
-    virtual void handle_Tab(void) {}
-    virtual void handle_ShiftLeft(void) {}
-    virtual void handle_Left(void) {}
-    virtual void handle_ShiftRight(void) {}
-    virtual void handle_Right(void) {}
-    virtual void handle_Up(void) {}
-    virtual void handle_Home(void) {}
-    virtual void handle_End(void) {}
-    virtual void handle_PageUp(void) {}
-    virtual void handle_PageDown(void) {}
-    virtual void handle_Down(void) {}
-    virtual void handle_Capslock(void) {}
+    virtual void handle_Default(int);
+    virtual void handle_Space(void);
+    virtual void handle_Esc(void);
+    virtual void handle_Enter(void);
+    virtual void handle_Del(void);
+    virtual void handle_Backspace(void);
+    virtual void handle_Tab(void);
+    virtual void handle_ShiftLeft(void);
+    virtual void handle_Left(void);
+    virtual void handle_ShiftRight(void);
+    virtual void handle_Right(void);
+    virtual void handle_Up(void);
+    virtual void handle_Home(void);
+    virtual void handle_End(void);
+    virtual void handle_PageUp(void);
+    virtual void handle_PageDown(void);
+    virtual void handle_Down(void);
+    virtual void handle_Capslock(void);
 };
 
 /**
@@ -100,23 +96,33 @@ class QinIMBase {
  */
 class QinTableIMBase: public QinIMBase {
   private:
-    QString preEditBuffer;
+    QStringList results;
+    QString dbName;
+    QSqlDatabase database;
+    QString commitString;
+    int* keyStrokes;
+    int maxKeyStrokes;
+    int keyIndex;
 
   public:
     /** Public methods **/
-    QinTableIMBase(bool ukey = false, bool pre = false):
-      QinIMBase(ukey, pre) {}
-    virtual ~QinTableIMBase() {}
+    QinTableIMBase(bool ukey = false, QString dbname = QString(),
+        int maxKeys = 0);
+    virtual ~QinTableIMBase();
 
-    virtual bool getDoPopUp(void) { return false; }
-    virtual QStringList getPopUpStrings(void) { return QStringList(); }
-    virtual QString getSQLiteQueryTemplate(void);
+    virtual void doQuery(void);
+    virtual QString getQueryTemplate(void);
+    virtual int doKeyTransform(int key);
 
     /** I/O related **/
     /* Caller must free it */
     virtual char* getPreEditString(void);
     virtual char* getCommitString(void);
-    virtual void reset(void);
+
+    /** Key handling APIs **/
+    virtual void handle_Default(int keyId);
+    virtual void handle_Space(void);
+    virtual void handle_Backspace(void);
 };
 
 #endif /* __QIN_SRC_QIN_IM_BASE_H__ */
