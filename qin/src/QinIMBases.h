@@ -87,8 +87,6 @@ class QinIMBase {
     virtual void handle_PageDown(void);
     virtual void handle_PageUp(void);
     virtual void handle_Right(void);
-    virtual void handle_ShiftLeft(void);
-    virtual void handle_ShiftRight(void);
     virtual void handle_Space(void);
     virtual void handle_Tab(void);
     virtual void handle_Up(void);

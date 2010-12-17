@@ -43,7 +43,6 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   Ctrled = false;
   Alted = false;
   isStdKeyMap = true;
-  changeTextCaps(false);
   opacitySlide->setRange(20, 100);
 
   allButtons = findChildren<QToolButton*>();
@@ -88,11 +87,35 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (Shifted) {
     Modifier = Modifier | Qt::ShiftModifier;
     involvedKeys++;
+
+    switch (keyId) {
+      case 0x2c:
+      case 0x2e:
+      case 0x2f: keyId += 0x10; break;
+      case 0x3b: keyId = 0x3a; break;
+      case 0x27: keyId = 0x22; break;
+      case 0x5b:
+      case 0x5c:
+      case 0x5d: keyId += 0x20; break;
+      case 0x31: keyId = 0x21; break;
+      case 0x32: keyId = 0x40; break;
+      case 0x33: keyId = 0x23; break;
+      case 0x34: keyId = 0x24; break;
+      case 0x35: keyId = 0x25; break;
+      case 0x36: keyId = 0x5e; break;
+      case 0x37: keyId = 0x26; break;
+      case 0x38: keyId = 0x2a; break;
+      case 0x39: keyId = 0x28; break;
+      case 0x30: keyId = 0x29; break;
+      case 0x2d: keyId = 0x5f; break;
+      default: keyId = tolower(keyId);
+    }
   }
+
   if (Alted) {
     Modifier = Modifier | Qt::AltModifier;
     involvedKeys++;
-  }    
+  }
 
   QString ch = allButtons.at(btn)->text().trimmed();
 

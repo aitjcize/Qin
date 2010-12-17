@@ -60,6 +60,10 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
   if (!isPress || !currentIM->getPreEditable())
     return false;
 
+#ifdef DEBUG
+  qDebug("KeyPressed: %x", keyId);
+#endif
+
   switch (keyId) {
     case Qt::Key_Space:
       if (currentIM->isPreEditing()) doSendEvent = false;
@@ -77,7 +81,6 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
       currentIM->handle_Backspace();
       break;
     case Qt::Key_Tab: currentIM->handle_Tab(); break;
-    case Qt::Key_Shift: currentIM->handle_ShiftLeft(); break;
     case Qt::Key_Left: currentIM->handle_Left(); break;
     case Qt::Key_Right: currentIM->handle_Right(); break;
     case Qt::Key_Up: currentIM->handle_Up(); break;

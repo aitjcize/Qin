@@ -62,9 +62,7 @@ class QinChewing: public QinIMBase {
     virtual void handle_Del(void);
     virtual void handle_Backspace(void);
     virtual void handle_Tab(void);
-    virtual void handle_ShiftLeft(void);
     virtual void handle_Left(void);
-    virtual void handle_ShiftRight(void);
     virtual void handle_Right(void);
     virtual void handle_Up(void);
     virtual void handle_Home(void);

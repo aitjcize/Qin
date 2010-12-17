@@ -106,8 +106,6 @@ void QinIMBase::handle_Left(void) {}
 void QinIMBase::handle_PageDown(void) {}
 void QinIMBase::handle_PageUp(void) {}
 void QinIMBase::handle_Right(void) {}
-void QinIMBase::handle_ShiftLeft(void) {}
-void QinIMBase::handle_ShiftRight(void) {}
 void QinIMBase::handle_Space(void) {}
 void QinIMBase::handle_Tab(void) {}
 void QinIMBase::handle_Up(void) {}

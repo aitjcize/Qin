@@ -178,16 +178,8 @@ void QinChewing::handle_Tab(void) {
   chewing_handle_Tab(chewContext);
 }
 
-void QinChewing::handle_ShiftLeft(void) {
-  chewing_handle_ShiftLeft(chewContext);
-}
-
 void QinChewing::handle_Left(void) {
   chewing_handle_Left(chewContext);
-}
-
-void QinChewing::handle_ShiftRight(void) {
-  chewing_handle_ShiftRight(chewContext);
 }
 
 void QinChewing::handle_Right(void) {

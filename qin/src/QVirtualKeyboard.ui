@@ -426,10 +426,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x51</string>
+          <string>0x71</string>
          </property>
          <property name="text">
-          <string>Q</string>
+          <string>q</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -450,10 +450,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x57</string>
+          <string>0x77</string>
          </property>
          <property name="text">
-          <string>W</string>
+          <string>w</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -474,10 +474,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x45</string>
+          <string>0x65</string>
          </property>
          <property name="text">
-          <string>E</string>
+          <string>e</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -498,10 +498,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x52</string>
+          <string>0x72</string>
          </property>
          <property name="text">
-          <string>R</string>
+          <string>r</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -522,10 +522,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x54</string>
+          <string>0x74</string>
          </property>
          <property name="text">
-          <string>T</string>
+          <string>t</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -546,10 +546,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x59</string>
+          <string>0x79</string>
          </property>
          <property name="text">
-          <string>Y</string>
+          <string>y</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -570,10 +570,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x55</string>
+          <string>0x75</string>
          </property>
          <property name="text">
-          <string>U</string>
+          <string>u</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -594,10 +594,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x49</string>
+          <string>0x69</string>
          </property>
          <property name="text">
-          <string>I</string>
+          <string>i</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -618,10 +618,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x4f</string>
+          <string>0x6f</string>
          </property>
          <property name="text">
-          <string>O</string>
+          <string>o</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -642,10 +642,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x50</string>
+          <string>0x70</string>
          </property>
          <property name="text">
-          <string>P</string>
+          <string>p</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -772,10 +772,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x41</string>
+          <string>0x61</string>
          </property>
          <property name="text">
-          <string>A</string>
+          <string>a</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -796,10 +796,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x53</string>
+          <string>0x63</string>
          </property>
          <property name="text">
-          <string>S</string>
+          <string>s</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -820,10 +820,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x44</string>
+          <string>0x64</string>
          </property>
          <property name="text">
-          <string>D</string>
+          <string>d</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -844,10 +844,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x46</string>
+          <string>0x66</string>
          </property>
          <property name="text">
-          <string>F</string>
+          <string>f</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -868,10 +868,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x47</string>
+          <string>0x67</string>
          </property>
          <property name="text">
-          <string>G</string>
+          <string>g</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -892,10 +892,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x48</string>
+          <string>0x68</string>
          </property>
          <property name="text">
-          <string>H</string>
+          <string>h</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -916,10 +916,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x4a</string>
+          <string>0x6a</string>
          </property>
          <property name="text">
-          <string>J</string>
+          <string>j</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -940,10 +940,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x4b</string>
+          <string>0x6b</string>
          </property>
          <property name="text">
-          <string>K</string>
+          <string>k</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -964,10 +964,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x4c</string>
+          <string>0x6c</string>
          </property>
          <property name="text">
-          <string>L</string>
+          <string>l</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -1094,10 +1094,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x5a</string>
+          <string>0x7a</string>
          </property>
          <property name="text">
-          <string>Z</string>
+          <string>z</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -1118,10 +1118,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x58</string>
+          <string>0x78</string>
          </property>
          <property name="text">
-          <string>X</string>
+          <string>x</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -1142,10 +1142,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x43</string>
+          <string>0x63</string>
          </property>
          <property name="text">
-          <string>C</string>
+          <string>c</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -1166,10 +1166,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x56</string>
+          <string>0x76</string>
          </property>
          <property name="text">
-          <string>V</string>
+          <string>v</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -1190,10 +1190,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x42</string>
+          <string>0x62</string>
          </property>
          <property name="text">
-          <string>B</string>
+          <string>b</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -1214,10 +1214,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x4e</string>
+          <string>0x6e</string>
          </property>
          <property name="text">
-          <string>N</string>
+          <string>n</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
@@ -1238,10 +1238,10 @@
           </font>
          </property>
          <property name="accessibleName">
-          <string>0x4d</string>
+          <string>0x6d</string>
          </property>
          <property name="text">
-          <string>M</string>
+          <string>m</string>
          </property>
          <property name="autoRepeat">
           <bool>true</bool>
