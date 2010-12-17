@@ -87,6 +87,8 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
     case Qt::Key_PageDown: currentIM->handle_PageDown(); break;
     case Qt::Key_Down: currentIM->handle_Down(); break;
     case Qt::Key_CapsLock: currentIM->handle_Capslock(); break;
+    case Qt::Key_Control: currentIM->handle_Ctrl(); break;
+    case Qt::Key_Alt: currentIM->handle_Alt(); break;
     default:
       currentIM->handle_Default(keyId);
       doSendEvent = false;

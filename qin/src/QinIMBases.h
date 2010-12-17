@@ -72,24 +72,26 @@ class QinIMBase {
     virtual void reset(void);
 
     /** Key handling APIs **/
-    virtual void handle_Default(int);
-    virtual void handle_Space(void);
-    virtual void handle_Esc(void);
-    virtual void handle_Enter(void);
-    virtual void handle_Del(void);
+    virtual void handle_Alt(void);
     virtual void handle_Backspace(void);
-    virtual void handle_Tab(void);
-    virtual void handle_ShiftLeft(void);
-    virtual void handle_Left(void);
-    virtual void handle_ShiftRight(void);
-    virtual void handle_Right(void);
-    virtual void handle_Up(void);
-    virtual void handle_Home(void);
-    virtual void handle_End(void);
-    virtual void handle_PageUp(void);
-    virtual void handle_PageDown(void);
-    virtual void handle_Down(void);
     virtual void handle_Capslock(void);
+    virtual void handle_Ctrl(void);
+    virtual void handle_Default(int);
+    virtual void handle_Del(void);
+    virtual void handle_Down(void);
+    virtual void handle_End(void);
+    virtual void handle_Enter(void);
+    virtual void handle_Esc(void);
+    virtual void handle_Home(void);
+    virtual void handle_Left(void);
+    virtual void handle_PageDown(void);
+    virtual void handle_PageUp(void);
+    virtual void handle_Right(void);
+    virtual void handle_ShiftLeft(void);
+    virtual void handle_ShiftRight(void);
+    virtual void handle_Space(void);
+    virtual void handle_Tab(void);
+    virtual void handle_Up(void);
 };
 
 /**

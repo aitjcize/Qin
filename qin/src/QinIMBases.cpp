@@ -91,24 +91,26 @@ QString QinIMBase::fromStdKB(QString str) {
 }
 
 void QinIMBase::reset(void) {}
-void QinIMBase::handle_Default(int) {}
-void QinIMBase::handle_Space(void) {}
-void QinIMBase::handle_Esc(void) {}
-void QinIMBase::handle_Enter(void) {}
-void QinIMBase::handle_Del(void) {}
+void QinIMBase::handle_Alt(void) {}
 void QinIMBase::handle_Backspace(void) {}
-void QinIMBase::handle_Tab(void) {}
-void QinIMBase::handle_ShiftLeft(void) {}
-void QinIMBase::handle_Left(void) {}
-void QinIMBase::handle_ShiftRight(void) {}
-void QinIMBase::handle_Right(void) {}
-void QinIMBase::handle_Up(void) {}
-void QinIMBase::handle_Home(void) {}
-void QinIMBase::handle_End(void) {}
-void QinIMBase::handle_PageUp(void) {}
-void QinIMBase::handle_PageDown(void) {}
-void QinIMBase::handle_Down(void) {}
 void QinIMBase::handle_Capslock(void) {}
+void QinIMBase::handle_Ctrl(void) {}
+void QinIMBase::handle_Default(int) {}
+void QinIMBase::handle_Del(void) {}
+void QinIMBase::handle_Down(void) {}
+void QinIMBase::handle_End(void) {}
+void QinIMBase::handle_Enter(void) {}
+void QinIMBase::handle_Esc(void) {}
+void QinIMBase::handle_Home(void) {}
+void QinIMBase::handle_Left(void) {}
+void QinIMBase::handle_PageDown(void) {}
+void QinIMBase::handle_PageUp(void) {}
+void QinIMBase::handle_Right(void) {}
+void QinIMBase::handle_ShiftLeft(void) {}
+void QinIMBase::handle_ShiftRight(void) {}
+void QinIMBase::handle_Space(void) {}
+void QinIMBase::handle_Tab(void) {}
+void QinIMBase::handle_Up(void) {}
 
 
 /* QinTableIMBase methods implementation */
