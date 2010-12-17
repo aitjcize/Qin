@@ -93,7 +93,8 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
     case Qt::Key_Control: currentIM->handle_Ctrl(); break;
     case Qt::Key_Alt: currentIM->handle_Alt(); break;
     default:
-      currentIM->handle_Default(keyId);
+      if (!(keyId & Qt::Key_Escape))
+        currentIM->handle_Default(keyId);
       doSendEvent = false;
   }
 

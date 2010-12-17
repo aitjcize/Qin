@@ -150,8 +150,7 @@ void QinChewing::reset(void) {
 }
 
 void QinChewing::handle_Default(int keyId) {
-  if (!(keyId & Qt::Key_Escape))
-    chewing_handle_Default(chewContext, tolower(keyId));
+  chewing_handle_Default(chewContext, tolower(keyId));
 }
 
 void QinChewing::handle_Space(void) {
