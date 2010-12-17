@@ -21,7 +21,6 @@
  */
 
 #include <cstdio>
-#include <cstdlib>
 
 #include "QinEngine.h"
 #include "QVirtualKeyboard.h"
@@ -33,7 +32,7 @@
 QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
   //regInputMethod("English", new QinIMBase());
-  //regInputMethod("Chewing", new QinChewing());
+  regInputMethod("Chewing", new QinChewing());
   regInputMethod("Boshiamy", new QinBoshiamy());
 }
 
@@ -63,19 +62,19 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
 
   switch (keyId) {
     case Qt::Key_Space:
+      if (currentIM->isPreEditing()) doSendEvent = false;
       currentIM->handle_Space();
-      if (isPreEditing()) doSendEvent = false;
       break;
     case Qt::Key_Escape: currentIM->handle_Esc(); break;
     case Qt::Key_Enter:
     case Qt::Key_Return:
+      if (currentIM->isPreEditing()) doSendEvent = false;
       currentIM->handle_Enter();
-      if (isPreEditing()) doSendEvent = false;
       break;
     case Qt::Key_Delete: currentIM->handle_Del(); break;
     case Qt::Key_Backspace:
+      if (currentIM->isPreEditing()) doSendEvent = false;
       currentIM->handle_Backspace();
-      if (isPreEditing()) doSendEvent = false;
       break;
     case Qt::Key_Tab: currentIM->handle_Tab(); break;
     case Qt::Key_Shift: currentIM->handle_ShiftLeft(); break;
@@ -109,7 +108,7 @@ void QinEngine::updateCommitString() {
   char* commit_str = currentIM->getCommitString();
   if (commit_str) {
     sendCommitString(commit_str);
-    free(commit_str);
+    delete commit_str;
   }
 }
 
@@ -117,7 +116,7 @@ void QinEngine::updatePreEditBuffer() {
   char* preedit = currentIM->getPreEditString();
   inputBuffer = QString(preedit);
   sendPreeditString(inputBuffer, 0);
-  free(preedit);
+  delete preedit;
 }
 
 void QinEngine::updateHandler(int type) {

@@ -102,6 +102,13 @@ void QinChewing::setupKeyMap(void) {
   QIN_KEYMAP_REG("ㄥ", "/");
 }
 
+bool QinChewing::isPreEditing(void) {
+  char* preedit = getPreEditString();
+  bool ret = strlen(preedit);
+  delete preedit;
+  return ret;
+}
+
 char* QinChewing::getPreEditString(void) {
   int preedit_len;
   char* buf_str = chewing_buffer_String(chewContext);
@@ -109,13 +116,14 @@ char* QinChewing::getPreEditString(void) {
   char* cand_str = chewing_cand_String(chewContext);
   int max_len = strlen(zuin_str) + strlen(buf_str);
   char* preedit_str = new char[max_len + 1];
+  memset(preedit_str, 0, max_len + 1);
 
-//#if 0
+#ifdef DEBUG
   printf("Buf: %s\n", buf_str);
   printf("Zuin: %s\n", zuin_str);
   printf("Commit: %d\n", chewing_commit_Check(chewContext));
   printf("Cand: %s\n", cand_str);
-//#endif
+#endif
 
   strncpy(preedit_str, buf_str, max_len);
   strncat(preedit_str, zuin_str, max_len - strlen(preedit_str));
@@ -124,6 +132,7 @@ char* QinChewing::getPreEditString(void) {
 
   free(buf_str);
   free(zuin_str);
+  free(cand_str);
 
   return preedit_str;
 }

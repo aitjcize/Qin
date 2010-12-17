@@ -68,6 +68,10 @@ QStringList QinIMBase::getPopUpStrings(void) {
   return QStringList();
 }
 
+bool QinIMBase::isPreEditing(void) {
+  return false;
+}
+
 char* QinIMBase::getPreEditString(void) {
   return NULL;
 }
@@ -132,6 +136,10 @@ QString QinTableIMBase::getQueryTemplate(void) {
   return QString();
 }
 
+bool QinTableIMBase::isPreEditing(void) {
+  return keyIndex != 0;
+}
+
 void QinTableIMBase::doQuery(void) {
   QString queryTemplate = getQueryTemplate();
   QString query = queryTemplate;
@@ -165,7 +173,7 @@ char* QinTableIMBase::getPreEditString(void) {
     preEditStr[strlen(cstr)] = 0;
   }
 
-#if 0
+#ifdef DEBUG
   if (preEditStr) {
     qDebug() << "results[0]: " << results[0];
     qDebug("preEditStr: %s", preEditStr);
@@ -190,7 +198,7 @@ char* QinTableIMBase::getCommitString(void) {
 }
 
 void QinTableIMBase::handle_Default(int keyId) {
-  if (keyIndex == maxKeyStrokes -1)
+  if (keyIndex == maxKeyStrokes)
     return;
   keyStrokes[keyIndex++] = keyId;
   doQuery();

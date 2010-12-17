@@ -56,10 +56,12 @@ class QinIMBase {
     bool getUseCustomKeyMap(void);
     void setPreEditable(bool s);
     bool getPreEditable(void);
+
     virtual void setupAll(void);
     virtual void setupKeyMap(void);
     virtual bool getDoPopUp(void);
     virtual QStringList getPopUpStrings(void);
+    virtual bool isPreEditing(void);
 
     /** I/O related **/
     /* Caller must free it */
@@ -110,6 +112,7 @@ class QinTableIMBase: public QinIMBase {
         int maxKeys = 0);
     virtual ~QinTableIMBase();
 
+    virtual bool isPreEditing(void);
     virtual void doQuery(void);
     virtual QString getQueryTemplate(void);
     virtual int doKeyTransform(int key);

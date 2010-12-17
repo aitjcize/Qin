@@ -49,7 +49,6 @@ class QinEngine: public QWSInputMethod {
     QinIMBase* currentIM;
     int selected;
 
-    bool isPreEditing(void) { return inputBuffer.length(); }
     bool filter(int uni, int keyId, int mod, bool isPress, bool autoRepeat);
     void updateHandler(int type);
     void mouseHandler(int offset, int state);
