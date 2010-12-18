@@ -20,14 +20,16 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "QinEngine.h"
+
 #include <cstdio>
 
-#include "QinEngine.h"
-#include "QVirtualKeyboard.h"
+#include <QDebug>
 
-#include "QinIMBases.h"
-#include "plugins/QinChewing.h"
 #include "plugins/QinBoshiamy.h"
+#include "plugins/QinChewing.h"
+#include "QinIMBases.h"
+#include "QVirtualKeyboard.h"
 
 QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
@@ -93,8 +95,9 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
     case Qt::Key_Control: currentIM->handle_Ctrl(); break;
     case Qt::Key_Alt: currentIM->handle_Alt(); break;
     default:
-      if (!(keyId & Qt::Key_Escape))
-        currentIM->handle_Default(keyId);
+      if (keyId & Qt::Key_Escape)
+        return true;
+      currentIM->handle_Default(keyId);
       doSendEvent = false;
   }
 
