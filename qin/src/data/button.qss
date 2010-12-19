@@ -34,3 +34,9 @@ QToolButton:pressed {
                                       stop: 0 #74c200, stop: 1 #3ca700);
     /*border-color: #349200;*/
 }
+QToolButton:on {
+    /* We'll just invert the gradient by changing the colors around. */
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #74c200, stop: 1 #3ca700);
+    /*border-color: #349200;*/
+}

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<QinIM>
+  <name>嘸蝦米</name>
+  <tableim>true</tableim>
+  <preeditable>true</preeditable>
+  <customkeymap>false</customkeymap>
+  <database>/usr/share/ovff/database/boshiamy.db</database>
+  <maxkeystrokes>5</maxkeystrokes>
+  <querytemplate>SELECT phrase FROM phrases WHERE m0%1 AND m1%2 AND m2%3 AND m3%4 AND m4%5 ORDER BY -freq;</querytemplate>
+  <keytransform>
+    <key value="a">1</key>
+    <key value="b">2</key>
+    <key value="c">3</key>
+    <key value="d">4</key>
+    <key value="e">5</key>
+    <key value="f">6</key>
+    <key value="g">7</key>
+    <key value="h">8</key>
+    <key value="i">9</key>
+    <key value="j">10</key>
+    <key value="k">11</key>
+    <key value="l">12</key>
+    <key value="m">13</key>
+    <key value="n">14</key>
+    <key value="o">15</key>
+    <key value="p">16</key>
+    <key value="q">17</key>
+    <key value="r">18</key>
+    <key value="s">19</key>
+    <key value="t">20</key>
+    <key value="u">21</key>
+    <key value="v">22</key>
+    <key value="w">23</key>
+    <key value="x">24</key>
+    <key value="y">25</key>
+    <key value="z">26</key>
+    <key value="'">27</key>
+    <key value="[">45</key>
+    <key value="]">46</key>
+    <key value=",">55</key>
+    <key value=".">56</key>
+  </keytransform>
+</QinIM>

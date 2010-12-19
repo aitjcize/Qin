@@ -1379,17 +1379,8 @@
            <pointsize>10</pointsize>
           </font>
          </property>
-         <property name="accessibleName">
-          <string>0x10000001</string>
-         </property>
          <property name="text">
           <string>Current IM</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="autoRepeat">
-          <bool>true</bool>
          </property>
         </widget>
        </item>

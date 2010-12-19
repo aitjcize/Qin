@@ -33,9 +33,10 @@
 
 QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
-  regInputMethod(new QinIMBase("English"));
+  regInputMethod(new QinIMBase(":/data/English.xml"));
   regInputMethod(new QinChewing());
-  regInputMethod(new QinBoshiamy());
+  regInputMethod(new QinTableIMBase(":/data/Boshiamy.xml"));
+  defaultIM = inputMethods[0];
 }
 
 QinEngine::~QinEngine() {
@@ -57,6 +58,7 @@ void QinEngine::regInputMethod(QinIMBase* imb) {
 
 void QinEngine::setCurrentIM(int index) {
   currentIM = inputMethods[index];
+  currentIM->reset();
 }
 
 bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,

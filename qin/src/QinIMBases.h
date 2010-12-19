@@ -25,13 +25,10 @@
 
 #include <cstring>
 
+#include <QDomElement>
 #include <QHash>
-#include <QStringList>
 #include <QSqlDatabase>
-
-#define QIN_KEYMAP_REG(a, b) \
-  toStdKB_hash[a] = b; \
-  fromStdKB_hash[b] = a;
+#include <QStringList>
 
 /**
  * @name  QinIMBase
@@ -39,18 +36,19 @@
  * derive from QinIMBase. 
  */
 class QinIMBase {
-  private:
-    QString IMName;
+  protected:
+    QString xmlPath;
+    QString imName;
     bool useCustomKeyMap;
     bool preEditable;
 
   public:
     /** Public members **/
-    QHash<QString, QString> toStdKB_hash;
     QHash<QString, QString> fromStdKB_hash;
+    QHash<QString, QString> fromShiftStdKB_hash;
 
     /** Public methods **/
-    QinIMBase(QString name, bool ukey = false, bool pre = false);
+    QinIMBase(QString xmlpath);
     virtual ~QinIMBase();
 
     QString name(void) const;
@@ -59,8 +57,7 @@ class QinIMBase {
     void setPreEditable(bool s);
     bool getPreEditable(void);
 
-    virtual void setupAll(void);
-    virtual void setupKeyMap(void);
+    void setupKeyMap(const QDomElement& keymap);
     virtual bool getDoPopUp(void);
     virtual QStringList getPopUpStrings(void);
     virtual bool isPreEditing(void);
@@ -69,8 +66,8 @@ class QinIMBase {
     /* Caller must free it */
     virtual char* getPreEditString(void);
     virtual char* getCommitString(void);
-    QString toStdKB(QString str);
     QString fromStdKB(QString str);
+    QString fromShiftStdKB(QString str);
     virtual void reset(void);
 
     /** Key handling APIs **/
@@ -99,25 +96,25 @@ class QinIMBase {
  * @brief Base class for table input methods.
  */
 class QinTableIMBase: public QinIMBase {
-  private:
-    QStringList results;
-    QString dbName;
+  protected:
+    QString dbPath;
     QSqlDatabase database;
     QString commitString;
+    QStringList results;
+    QString queryTemplate;
+    QHash<int, int> keyTransform;
     int* keyStrokes;
     int maxKeyStrokes;
     int keyIndex;
 
   public:
     /** Public methods **/
-    QinTableIMBase(QString name, bool ukey = false, QString dbname = QString(),
-        int maxKeys = 0);
+    QinTableIMBase(QString xmlpath);
     virtual ~QinTableIMBase();
 
     virtual bool isPreEditing(void);
     virtual void doQuery(void);
     virtual QString getQueryTemplate(void);
-    virtual int doKeyTransform(int key);
 
     /** I/O related **/
     /* Caller must free it */

@@ -46,6 +46,7 @@ class QinEngine: public QWSInputMethod {
     QVirtualKeyboard* vkeyboard;
     QString inputBuffer;
     QVector<QinIMBase*> inputMethods;
+    QinIMBase* defaultIM;
     QinIMBase* currentIM;
     int selected;
 

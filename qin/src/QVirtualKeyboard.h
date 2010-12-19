@@ -48,7 +48,6 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     QinEngine* imEngine;
     bool Capsed;
     bool Shifted;
-    bool isStdKeyMap;
     int IMIndex;
     int opacity;
     QVector<QString> regedIMs;
@@ -62,11 +61,9 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     void on_btnShiftRight_toggled(bool checked);
     void on_btnIMToggle_clicked(void);
     void on_opacitySlide_valueChanged(int value);
-    void changeTextShift(bool select);
-    void changeTextCaps(bool select);
-    void changeKeyMap(QinIMBase* imb);
-    void restoreStdKeyMap(void);
     bool isTextKey(int keyId);
+    void changeNormalKeyMap(QinIMBase* imb);
+    void changeShiftKeyMap(QinIMBase* imb);
 };
 
 #endif /* QVIRTUALKEYBOARD_H */

@@ -23,23 +23,66 @@
 
 #include "QinIMBases.h"
 
+#include <cstring>
+
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QFile>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QTextStream>
 #include <QVariant>
-
-#include <cstring>
 
 /* QinIMBase methods implementation */
 
-QinIMBase::QinIMBase(QString name, bool ukey, bool pre):
-  IMName(name), useCustomKeyMap(ukey), preEditable(pre) {}
+QinIMBase::QinIMBase(QString xmlpath): xmlPath(xmlpath) {
+  QFile file(xmlPath);
+  QString xmlData, err;
+  int line, column;
+
+  if (file.open(QFile::ReadOnly)) {
+    QTextStream styleIn(&file);
+    xmlData = styleIn.readAll();
+    file.close();
+  } else {
+    qDebug() << "Fatal error: can't open `" << xmlPath << "' ..."
+      << "abort.";
+    QCoreApplication::exit(1);
+  }
+
+  QDomDocument xml;
+  if (!xml.setContent(xmlData, &err, &line, &column)) {
+    qDebug() << "Fatal error: error while parsing `" << xmlPath << "', "
+      << line << ", " << column << ": " << err;
+    QCoreApplication::exit(1);
+  }
+
+  QDomElement root = xml.documentElement();
+  imName = root.firstChildElement("name").text();
+#ifdef DEBUG
+  qDebug() << "imName: " << imName;
+#endif
+
+  preEditable = (root.firstChildElement("preeditable").text() == "true")?
+    true: false;
+#ifdef DEBUG
+  qDebug() << "preEditable: " << preEditable;
+#endif
+
+  useCustomKeyMap = (root.firstChildElement("customkeymap").text() == "true")?
+    true: false;
+#ifdef DEBUG
+  qDebug() << "useCustomKeyMap: " << useCustomKeyMap;
+#endif
+  setupKeyMap(root.firstChildElement("keymap"));
+}
 
 QinIMBase::~QinIMBase() {}
 
 QString QinIMBase::name(void) const {
-  return IMName;
+  return imName;
 }
 
 void QinIMBase::setUseCustomKeyMap(bool s) {
@@ -58,11 +101,39 @@ bool QinIMBase::getPreEditable(void) {
   return preEditable;
 }
 
-void QinIMBase::setupAll(void) {
-  setupKeyMap();
-}
+void QinIMBase::setupKeyMap(const QDomElement& keymap) {
+  if (keymap.isNull()) return;
 
-void QinIMBase::setupKeyMap(void) {}
+  /* Mapping normal mode keymap */
+  QDomElement normal = keymap.firstChildElement("normal");
+  if (normal.isNull()) {
+    qDebug() << "Fatal error: normal keymap not set!";
+    QCoreApplication::exit(1);
+  }
+
+  QDomNode node = normal.firstChild();
+  QDomElement nodeElement;
+  QString attr;
+  while (!node.isNull()) {
+    nodeElement = node.toElement();
+    attr = nodeElement.attribute("value");
+    fromStdKB_hash[attr] = nodeElement.text();
+    node = node.nextSibling();
+  }
+
+  /* Mapping shift mode keymap */
+  QDomElement shift = keymap.firstChildElement("shift");
+  if (shift.isNull()) {
+    qDebug() << "Fatal error: normal keymap not set!";
+    QCoreApplication::exit(1);
+  }
+  while (!node.isNull()) {
+    nodeElement = node.toElement();
+    attr = nodeElement.attribute("value");
+    fromShiftStdKB_hash[attr] = nodeElement.text();
+    node = node.nextSibling();
+  }
+}
 
 bool QinIMBase::getDoPopUp(void) {
   return false;
@@ -84,14 +155,14 @@ char* QinIMBase::getCommitString(void) {
   return NULL;
 }
 
-QString QinIMBase::toStdKB(QString str) {
-  return (toStdKB_hash.find(str) != toStdKB_hash.end())?
-    toStdKB_hash[str]: str;
-}
-
 QString QinIMBase::fromStdKB(QString str) {
   return (fromStdKB_hash.find(str) != fromStdKB_hash.end())?
     fromStdKB_hash[str]: str;
+}
+
+QString QinIMBase::fromShiftStdKB(QString str) {
+  return (fromShiftStdKB_hash.find(str) != fromShiftStdKB_hash.end())?
+    fromShiftStdKB_hash[str]: str;
 }
 
 void QinIMBase::reset(void) {}
@@ -117,15 +188,64 @@ void QinIMBase::handle_Up(void) {}
 
 /* QinTableIMBase methods implementation */
 
-QinTableIMBase::QinTableIMBase(QString name, bool ukey, QString dbname,
-    int maxKeys): QinIMBase(name, ukey, true), dbName(dbname),
-  maxKeyStrokes(maxKeys), keyIndex(0) {
+QinTableIMBase::QinTableIMBase(QString xmlpath): QinIMBase(xmlpath) {
+  QFile file(xmlPath);
+  QString xmlData, err;
+  int line, column;
+
+  if (file.open(QFile::ReadOnly)) {
+    QTextStream styleIn(&file);
+    xmlData = styleIn.readAll();
+    file.close();
+  } else {
+    qDebug() << "Fatal error: can't open `" << xmlPath << "' ..."
+      << "abort.";
+    QCoreApplication::exit(1);
+  }
+
+  QDomDocument xml;
+  if (!xml.setContent(xmlData, &err, &line, &column)) {
+    qDebug() << "Fatal error: error while parsing `" << xmlPath << "', "
+      << line << ", " << column << ": " << err;
+    QCoreApplication::exit(1);
+  }
+
+  QDomElement root = xml.documentElement();
+
+  maxKeyStrokes = root.firstChildElement("maxkeystrokes").text().toInt();
+#ifdef DEBUG
+  qDebug() << "maxKeyStrokes: " << maxKeyStrokes;
+#endif
+
+  dbPath = root.firstChildElement("database").text();
+#ifdef DEBUG
+  qDebug() << "dbPath: " << dbPath;
+#endif
+
+  queryTemplate = root.firstChildElement("querytemplate").text();
+#ifdef DEBUG
+  qDebug() << "queryTemplate: " << queryTemplate;
+#endif
+
+  QDomElement keytransform = root.firstChildElement("keytransform");
+  QDomNode node = keytransform.firstChild();
+  QDomElement nodeElement;
+  QChar attr;
+  while (!node.isNull()) {
+    nodeElement = node.toElement();
+    attr = nodeElement.attribute("value")[0];
+    keyTransform[attr.toAscii()] = nodeElement.text().toInt();
+    node = node.nextSibling();
+  }
+
+  /* Initialize members */
+  keyIndex = 0;
   keyStrokes = new int[maxKeyStrokes + 1];
 
   database = QSqlDatabase::addDatabase("QSQLITE");
-  database.setDatabaseName(dbName);
+  database.setDatabaseName(dbPath);
   if (!database.open()) {
-    qDebug() << "Fatal error: can't find database `" << dbName << "' ..."
+    qDebug() << "Fatal error: can't find database `" << dbPath << "' ..."
       << "abort.";
     QCoreApplication::exit(1);
   }
@@ -138,7 +258,7 @@ QinTableIMBase::~QinTableIMBase() {
 }
 
 QString QinTableIMBase::getQueryTemplate(void) {
-  return QString();
+  return queryTemplate;
 }
 
 bool QinTableIMBase::isPreEditing(void) {
@@ -151,20 +271,20 @@ void QinTableIMBase::doQuery(void) {
   
   for (int i = 0; i < maxKeyStrokes; ++i) {
     if (i < keyIndex)
-      query = query.arg("=%1").arg(doKeyTransform(keyStrokes[i]));
+      query = query.arg("=%1").arg(keyTransform[tolower(keyStrokes[i])]);
     else
       query = query.arg(" IS NULL");
   }
+
+#ifdef DEBUG
+  qDebug() << "query: " << query;
+#endif
 
   results.clear();
   QSqlQuery queryResults = database.exec(query);
   
   while (queryResults.next())
     results += queryResults.value(0).toString();
-}
-
-int QinTableIMBase::doKeyTransform(int key) {
-  return key;
 }
 
 char* QinTableIMBase::getPreEditString(void) {

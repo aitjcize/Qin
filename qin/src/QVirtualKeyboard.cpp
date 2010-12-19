@@ -43,20 +43,19 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   imEngine = im;
   Capsed = false;
   Shifted = false;
-  isStdKeyMap = true;
   IMIndex = 0;
   opacitySlide->setRange(20, 100);
 
   allButtons = findChildren<QToolButton*>();
   signalMapper = new QSignalMapper(this);
-
+  
   /* set style sheet */
-  QFile data(":/data/button.qss");
+  QFile file(":/data/button.qss");
   QString style;
-  if (data.open(QFile::ReadOnly)) {
-    QTextStream styleIn(&data);
+  if (file.open(QFile::ReadOnly)) {
+    QTextStream styleIn(&file);
     style = styleIn.readAll();
-    data.close();
+    file.close();
   } else
     qDebug() << "Failed to set style sheet!";
 
@@ -138,18 +137,16 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
 }
 
 void QVirtualKeyboard::on_btnCaps_toggled(bool checked) {
-  changeTextCaps(checked);
   Capsed = checked;
+  changeShiftKeyMap(imEngine->currentIM);
 }
 
 void QVirtualKeyboard::on_btnShiftLeft_toggled(bool checked) {
   Shifted = checked;
-  if (Capsed) {
-    changeTextShift(checked);
-  } else {
-    changeTextShift(checked);
-    changeTextCaps(checked);
-  }
+  if (Capsed)
+    changeNormalKeyMap(imEngine->currentIM);
+  else
+    changeShiftKeyMap(imEngine->currentIM);
 }
 
 void QVirtualKeyboard::on_btnShiftRight_toggled(bool checked) {
@@ -159,84 +156,23 @@ void QVirtualKeyboard::on_btnShiftRight_toggled(bool checked) {
 void QVirtualKeyboard::on_btnIMToggle_clicked(void) {
   IMIndex = (IMIndex + 1) % regedIMs.size();
   imEngine->setCurrentIM(IMIndex);
-  btnIMToggle->setText(regedIMs[IMIndex]);
+  btnIMToggle->setText(imEngine->currentIM->name());
 
-  if (imEngine->inputMethods[IMIndex]->getUseCustomKeyMap()) {
-    isStdKeyMap = false;
-    changeKeyMap(imEngine->inputMethods[IMIndex]);
-  } else
-    restoreStdKeyMap();
+  if (imEngine->currentIM->getUseCustomKeyMap()) {
+    if (Capsed || Shifted)
+      changeShiftKeyMap(imEngine->currentIM);
+    else
+      changeNormalKeyMap(imEngine->currentIM);
+  } else {
+    if (Capsed || Shifted)
+      changeShiftKeyMap(imEngine->defaultIM);
+    else
+      changeNormalKeyMap(imEngine->defaultIM);
+  }
 }
 
-void QVirtualKeyboard::changeTextShift(bool select) {    
-  if (!isStdKeyMap) return;
-
-  changeTextCaps(!select);
-  if (select) {
-    btnTilt->setText(QChar('~'));
-    btn1->setText(QChar('!'));
-    btn2->setText(QChar('@'));
-    btn3->setText(QChar('#'));
-    btn4->setText(QChar('$'));
-    btn5->setText(QChar('%'));
-    btn6->setText(QChar('^'));        
-    btn7->setText("&&");
-    btn8->setText(QChar('*'));
-    btn9->setText(QChar('('));
-    btn0->setText(QChar(')'));
-    btnHiphen->setText(QChar('_'));
-    btnAssign->setText(QChar('+'));
-
-    btnStartSquare->setText(QChar('{'));
-    btnCloseSquare->setText(QChar('}'));
-    btnBckSlash->setText(QChar('|'));
-
-    btnSemiColon->setText(QChar(':'));
-    btnSp->setText(QChar('"'));
-
-    btnComma->setText(QChar('<'));
-    btnPeriod->setText(QChar('>'));
-    btnSlash->setText(QChar('?'));
-  } else
-    restoreStdKeyMap();
-}
-
-void QVirtualKeyboard::changeTextCaps(bool select) {
-  if (!isStdKeyMap) return;
-  if (select) {
-    btnQ->setText(QChar('Q'));
-    btnW->setText(QChar('W'));
-    btnE->setText(QChar('E'));
-    btnR->setText(QChar('R'));
-    btnT->setText(QChar('T'));
-    btnY->setText(QChar('Y'));
-    btnU->setText(QChar('U'));
-    btnI->setText(QChar('I'));
-    btnO->setText(QChar('O'));
-    btnP->setText(QChar('P'));
-
-    btnA->setText(QChar('A'));
-    btnS->setText(QChar('S'));
-    btnD->setText(QChar('D'));
-    btnF->setText(QChar('F'));
-    btnG->setText(QChar('G'));
-    btnH->setText(QChar('H'));
-    btnJ->setText(QChar('J'));
-    btnK->setText(QChar('K'));
-    btnL->setText(QChar('L'));
-
-    btnZ->setText(QChar('Z'));
-    btnX->setText(QChar('X'));
-    btnC->setText(QChar('C'));
-    btnV->setText(QChar('V'));
-    btnB->setText(QChar('B'));
-    btnN->setText(QChar('N'));
-    btnM->setText(QChar('M'));        
-  } else
-    restoreStdKeyMap();
-}
-
-void QVirtualKeyboard::changeKeyMap(QinIMBase* imb) {
+void QVirtualKeyboard::changeNormalKeyMap(QinIMBase* imb) {
+  btnTilt->setText(imb->fromStdKB("`"));
   btn1->setText(imb->fromStdKB("1"));
   btn2->setText(imb->fromStdKB("2"));
   btn3->setText(imb->fromStdKB("3"));
@@ -259,8 +195,9 @@ void QVirtualKeyboard::changeKeyMap(QinIMBase* imb) {
   btnI->setText(imb->fromStdKB("i"));
   btnO->setText(imb->fromStdKB("o"));
   btnP->setText(imb->fromStdKB("p"));
-  btnStartSquare->setText(imb->fromStdKB("("));
-  btnCloseSquare->setText(imb->fromStdKB(")"));
+  btnStartSquare->setText(imb->fromStdKB("["));
+  btnCloseSquare->setText(imb->fromStdKB("]"));
+  btnBckSlash->setText(imb->fromStdKB("\\"));
 
   btnA->setText(imb->fromStdKB("a"));
   btnS->setText(imb->fromStdKB("s"));
@@ -272,6 +209,7 @@ void QVirtualKeyboard::changeKeyMap(QinIMBase* imb) {
   btnK->setText(imb->fromStdKB("k"));
   btnL->setText(imb->fromStdKB("l"));
   btnSemiColon->setText(imb->fromStdKB(";"));
+  btnSp->setText(imb->fromStdKB("'"));
 
   btnZ->setText(imb->fromStdKB("z"));
   btnX->setText(imb->fromStdKB("x"));
@@ -285,59 +223,56 @@ void QVirtualKeyboard::changeKeyMap(QinIMBase* imb) {
   btnSlash->setText(imb->fromStdKB("/"));
 }
 
-void QVirtualKeyboard::restoreStdKeyMap(void) {
-  isStdKeyMap = true;
+void QVirtualKeyboard::changeShiftKeyMap(QinIMBase* imb) {
+  btnTilt->setText(imb->fromShiftStdKB("`"));
+  btn1->setText(imb->fromShiftStdKB("1"));
+  btn2->setText(imb->fromShiftStdKB("2"));
+  btn3->setText(imb->fromShiftStdKB("3"));
+  btn4->setText(imb->fromShiftStdKB("4"));
+  btn5->setText(imb->fromShiftStdKB("5"));
+  btn6->setText(imb->fromShiftStdKB("6"));
+  btn7->setText(imb->fromShiftStdKB("7"));
+  btn8->setText(imb->fromShiftStdKB("8"));
+  btn9->setText(imb->fromShiftStdKB("9"));
+  btn0->setText(imb->fromShiftStdKB("0"));
+  btnHiphen->setText(imb->fromShiftStdKB("-"));
 
-  btnTilt->setText(QChar('`'));
-  btn1->setText(QChar('1'));
-  btn2->setText(QChar('2'));
-  btn3->setText(QChar('3'));
-  btn4->setText(QChar('4'));
-  btn5->setText(QChar('5'));
-  btn6->setText(QChar('6'));
-  btn7->setText(QChar('7'));
-  btn8->setText(QChar('8'));
-  btn9->setText(QChar('9'));
-  btn0->setText(QChar('0'));
-  btnHiphen->setText(QChar('-'));
-  btnAssign->setText(QChar('='));
+  btnQ->setText(imb->fromShiftStdKB("q"));
+  btnW->setText(imb->fromShiftStdKB("w"));
+  btnE->setText(imb->fromShiftStdKB("e"));
+  btnR->setText(imb->fromShiftStdKB("r"));
+  btnT->setText(imb->fromShiftStdKB("t"));
+  btnY->setText(imb->fromShiftStdKB("y"));
+  btnU->setText(imb->fromShiftStdKB("u"));
+  btnI->setText(imb->fromShiftStdKB("i"));
+  btnO->setText(imb->fromShiftStdKB("o"));
+  btnP->setText(imb->fromShiftStdKB("p"));
+  btnStartSquare->setText(imb->fromShiftStdKB("["));
+  btnCloseSquare->setText(imb->fromShiftStdKB("]"));
+  btnBckSlash->setText(imb->fromShiftStdKB("\\"));
 
-  btnQ->setText(QChar('q'));
-  btnW->setText(QChar('w'));
-  btnE->setText(QChar('e'));
-  btnR->setText(QChar('r'));
-  btnT->setText(QChar('t'));
-  btnY->setText(QChar('y'));
-  btnU->setText(QChar('u'));
-  btnI->setText(QChar('i'));
-  btnO->setText(QChar('o'));
-  btnP->setText(QChar('p'));
-  btnStartSquare->setText(QChar('['));
-  btnCloseSquare->setText(QChar(']'));
-  btnBckSlash->setText(QChar('\\'));
+  btnA->setText(imb->fromShiftStdKB("a"));
+  btnS->setText(imb->fromShiftStdKB("s"));
+  btnD->setText(imb->fromShiftStdKB("d"));
+  btnF->setText(imb->fromShiftStdKB("f"));
+  btnG->setText(imb->fromShiftStdKB("g"));
+  btnH->setText(imb->fromShiftStdKB("h"));
+  btnJ->setText(imb->fromShiftStdKB("j"));
+  btnK->setText(imb->fromShiftStdKB("k"));
+  btnL->setText(imb->fromShiftStdKB("l"));
+  btnSemiColon->setText(imb->fromShiftStdKB(";"));
+  btnSp->setText(imb->fromShiftStdKB("'"));
 
-  btnA->setText(QChar('a'));
-  btnS->setText(QChar('s'));
-  btnD->setText(QChar('d'));
-  btnF->setText(QChar('f'));
-  btnG->setText(QChar('g'));
-  btnH->setText(QChar('h'));
-  btnJ->setText(QChar('j'));
-  btnK->setText(QChar('k'));
-  btnL->setText(QChar('l'));
-  btnSemiColon->setText(QString(";"));
-  btnSp->setText(QChar('\''));
-
-  btnZ->setText(QChar('z'));
-  btnX->setText(QChar('x'));
-  btnC->setText(QChar('c'));
-  btnV->setText(QChar('v'));
-  btnB->setText(QChar('b'));
-  btnN->setText(QChar('n'));
-  btnM->setText(QChar('m'));
-  btnComma->setText(QString(","));
-  btnPeriod->setText(QString("."));
-  btnSlash->setText(QString("/"));
+  btnZ->setText(imb->fromShiftStdKB("z"));
+  btnX->setText(imb->fromShiftStdKB("x"));
+  btnC->setText(imb->fromShiftStdKB("c"));
+  btnV->setText(imb->fromShiftStdKB("v"));
+  btnB->setText(imb->fromShiftStdKB("b"));
+  btnN->setText(imb->fromShiftStdKB("n"));
+  btnM->setText(imb->fromShiftStdKB("m"));        
+  btnComma->setText(imb->fromShiftStdKB(","));
+  btnPeriod->setText(imb->fromShiftStdKB("."));
+  btnSlash->setText(imb->fromShiftStdKB("/"));
 }
 
 bool QVirtualKeyboard::isTextKey(int keyId)
