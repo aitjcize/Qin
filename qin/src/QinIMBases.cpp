@@ -33,10 +33,14 @@
 
 /* QinIMBase methods implementation */
 
-QinIMBase::QinIMBase(bool ukey, bool pre):
-  useCustomKeyMap(ukey), preEditable(pre) {}
+QinIMBase::QinIMBase(QString name, bool ukey, bool pre):
+  IMName(name), useCustomKeyMap(ukey), preEditable(pre) {}
 
 QinIMBase::~QinIMBase() {}
+
+QString QinIMBase::name(void) const {
+  return IMName;
+}
 
 void QinIMBase::setUseCustomKeyMap(bool s) {
   useCustomKeyMap = s;
@@ -113,8 +117,9 @@ void QinIMBase::handle_Up(void) {}
 
 /* QinTableIMBase methods implementation */
 
-QinTableIMBase::QinTableIMBase(bool ukey, QString dbname, int maxKeys):
-  QinIMBase(ukey, true), dbName(dbname), maxKeyStrokes(maxKeys), keyIndex(0) {
+QinTableIMBase::QinTableIMBase(QString name, bool ukey, QString dbname,
+    int maxKeys): QinIMBase(name, ukey, true), dbName(dbname),
+  maxKeyStrokes(maxKeys), keyIndex(0) {
   keyStrokes = new int[maxKeyStrokes + 1];
 
   database = QSqlDatabase::addDatabase("QSQLITE");
@@ -215,6 +220,10 @@ void QinTableIMBase::handle_Space(void) {
 
   /* reset keyStrokes */
   keyIndex = 0;
+}
+
+void QinTableIMBase::handle_Enter(void) {
+  handle_Space();
 }
 
 void QinTableIMBase::handle_Backspace(void) {

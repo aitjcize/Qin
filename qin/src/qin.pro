@@ -10,6 +10,7 @@ INCLUDEPATH += . plugins /usr/include/chewing
 LIBS += -lchewing
 
 # Input
+RESOURCES += qin.qrc
 HEADERS += QinEngine.h \
            QinIMBases.h \
            QVirtualKeyboard.h \

@@ -33,9 +33,9 @@
 
 QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
-  //regInputMethod("English", new QinIMBase());
-  regInputMethod("Chewing", new QinChewing());
-  regInputMethod("Boshiamy", new QinBoshiamy());
+  regInputMethod(new QinIMBase("English"));
+  regInputMethod(new QinChewing());
+  regInputMethod(new QinBoshiamy());
 }
 
 QinEngine::~QinEngine() {
@@ -45,14 +45,18 @@ QinEngine::~QinEngine() {
     delete *it;
 }
 
-void QinEngine::regInputMethod(QString name, QinIMBase* imb) {
+void QinEngine::regInputMethod(QinIMBase* imb) {
   if (!imb) {
     qDebug("error: no input method specified\n");
     return;
   }
 
   inputMethods.push_back(imb);
-  vkeyboard->insertInputMethod(name);
+  vkeyboard->insertInputMethod(imb);
+}
+
+void QinEngine::setCurrentIM(int index) {
+  currentIM = inputMethods[index];
 }
 
 bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,

@@ -21,34 +21,47 @@
  */
 
 #include "QVirtualKeyboard.h"
-#include "QinEngine.h"
-#include "QinIMBases.h"
 
-#include <QKeyEvent>
+#include <cstdio>
+
 #include <QSignalMapper>
 #include <QDesktopWidget>
 #include <QDebug>
-#include <cstdio>
+#include <QFile>
+#include <QTextStream>
+
+#include "QinEngine.h"
+#include "QinIMBases.h"
 
 QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   :QWidget(0, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 {
   setupUi(this);
-  this->move((QApplication::desktop()->width() - 600)/2,
-      QApplication::desktop()->height() - 210);
+  this->move((QApplication::desktop()->width() - 520)/2,
+      QApplication::desktop()->height() - 170);
 
   imEngine = im;
   Capsed = false;
   Shifted = false;
-  Ctrled = false;
-  Alted = false;
   isStdKeyMap = true;
+  IMIndex = 0;
   opacitySlide->setRange(20, 100);
 
   allButtons = findChildren<QToolButton*>();
   signalMapper = new QSignalMapper(this);
 
+  /* set style sheet */
+  QFile data(":/data/button.qss");
+  QString style;
+  if (data.open(QFile::ReadOnly)) {
+    QTextStream styleIn(&data);
+    style = styleIn.readAll();
+    data.close();
+  } else
+    qDebug() << "Failed to set style sheet!";
+
   for (int i = 0; i < allButtons.count(); i++) {
+    allButtons.at(i)->setStyleSheet(style);
     connect(allButtons.at(i), SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(allButtons.at(i), i);
   }
@@ -59,9 +72,10 @@ QVirtualKeyboard::~QVirtualKeyboard() {
   delete signalMapper;
 }
 
-int QVirtualKeyboard::insertInputMethod(const QString name) {
-  IMSelect->addItem(name);
-  return IMSelect->count() -1;
+void QVirtualKeyboard::insertInputMethod(const QinIMBase* im) {
+  regedIMs.push_back(im->name());
+  btnIMToggle->setText(regedIMs[0]);
+  imEngine->setCurrentIM(0);
 }
 
 void QVirtualKeyboard::on_opacitySlide_valueChanged(int value) {
@@ -75,15 +89,11 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   int involvedKeys = 1;
   bool istextkey = isTextKey(keyId);
 
-  if (strKeyId.isEmpty() || !isOk)
+  if (strKeyId.isEmpty() || !isOk || keyId == 0x10000001)
     return;
 
   Qt::KeyboardModifiers Modifier = Qt::NoModifier;
 
-  if (Ctrled) {
-    Modifier = Modifier | Qt::ControlModifier;
-    involvedKeys++;
-  }
   if (Shifted) {
     Modifier = Modifier | Qt::ShiftModifier;
     involvedKeys++;
@@ -112,11 +122,6 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
     }
   }
 
-  if (Alted) {
-    Modifier = Modifier | Qt::AltModifier;
-    involvedKeys++;
-  }
-
   QString ch = allButtons.at(btn)->text().trimmed();
 
   if (!istextkey)
@@ -124,14 +129,11 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   if (keyId == Qt::Key_Space)
     ch = QString(" ");
 
-  QWSServer::sendKeyEvent(ch.unicode()[0].unicode(), keyId, Modifier, true,
-      false);
+  QWSServer::sendKeyEvent(ch.unicode()[0].unicode(),keyId,Modifier,true,false);
 
   if (istextkey) {
     btnShiftLeft->setChecked(false);
     btnShiftRight->setChecked(false);
-    btnCtrlLeft->setChecked(false);
-    btnAltLeft->setChecked(false);
   }
 }
 
@@ -154,21 +156,14 @@ void QVirtualKeyboard::on_btnShiftRight_toggled(bool checked) {
   on_btnShiftLeft_toggled(checked);
 }
 
-void QVirtualKeyboard::on_btnCtrlLeft_toggled(bool checked) {
-  Ctrled = checked;
-}
+void QVirtualKeyboard::on_btnIMToggle_clicked(void) {
+  IMIndex = (IMIndex + 1) % regedIMs.size();
+  imEngine->setCurrentIM(IMIndex);
+  btnIMToggle->setText(regedIMs[IMIndex]);
 
-void QVirtualKeyboard::on_btnAltLeft_toggled(bool checked) {
-  Alted = checked;
-}
-
-void QVirtualKeyboard::on_IMSelect_currentIndexChanged(int index) {
-  if (index < 0  || index >= imEngine->inputMethods.size()) return;
-
-  imEngine->setCurrentIM(index);
-  if (imEngine->inputMethods[index]->getUseCustomKeyMap()) {
+  if (imEngine->inputMethods[IMIndex]->getUseCustomKeyMap()) {
     isStdKeyMap = false;
-    changeKeyMap(imEngine->inputMethods[index]);
+    changeKeyMap(imEngine->inputMethods[IMIndex]);
   } else
     restoreStdKeyMap();
 }

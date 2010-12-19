@@ -31,7 +31,7 @@
 
 #include <chewing.h>
 
-QinChewing::QinChewing(void): QinIMBase(true, true) {
+QinChewing::QinChewing(void): QinIMBase("新酷音", true, true) {
   chewContext = chewing_new();
   chewing_Init(QIN_CHEWING_DATA_PATH, QIN_CHEWING_HASH_PATH);
   chewing_set_ChiEngMode(chewContext, CHINESE_MODE);
@@ -113,7 +113,6 @@ char* QinChewing::getPreEditString(void) {
   int preedit_len;
   char* buf_str = chewing_buffer_String(chewContext);
   char* zuin_str = chewing_zuin_String(chewContext, &preedit_len);
-  char* cand_str = chewing_cand_String(chewContext);
   int max_len = strlen(zuin_str) + strlen(buf_str);
   char* preedit_str = new char[max_len + 1];
   memset(preedit_str, 0, max_len + 1);
@@ -122,7 +121,6 @@ char* QinChewing::getPreEditString(void) {
   printf("Buf: %s\n", buf_str);
   printf("Zuin: %s\n", zuin_str);
   printf("Commit: %d\n", chewing_commit_Check(chewContext));
-  printf("Cand: %s\n", cand_str);
 #endif
 
   strncpy(preedit_str, buf_str, max_len);
@@ -132,7 +130,6 @@ char* QinChewing::getPreEditString(void) {
 
   free(buf_str);
   free(zuin_str);
-  free(cand_str);
 
   return preedit_str;
 }

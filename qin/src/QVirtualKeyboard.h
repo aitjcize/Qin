@@ -42,16 +42,16 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
   public:
     QVirtualKeyboard(QinEngine* im);
     ~QVirtualKeyboard();
-    int insertInputMethod(const QString name);
+    void insertInputMethod(const QinIMBase* im);
 
   private:
     QinEngine* imEngine;
     bool Capsed;
     bool Shifted;
-    bool Ctrled;
-    bool Alted;
     bool isStdKeyMap;
+    int IMIndex;
     int opacity;
+    QVector<QString> regedIMs;
     QSignalMapper *signalMapper;
     QList<QToolButton *> allButtons;
 
@@ -60,9 +60,7 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     void on_btnCaps_toggled(bool checked);
     void on_btnShiftLeft_toggled(bool checked);
     void on_btnShiftRight_toggled(bool checked);
-    void on_btnCtrlLeft_toggled(bool checked);
-    void on_btnAltLeft_toggled(bool checked);
-    void on_IMSelect_currentIndexChanged(int index);
+    void on_btnIMToggle_clicked(void);
     void on_opacitySlide_valueChanged(int value);
     void changeTextShift(bool select);
     void changeTextCaps(bool select);

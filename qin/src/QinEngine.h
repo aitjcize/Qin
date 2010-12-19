@@ -39,8 +39,8 @@ class QinEngine: public QWSInputMethod {
   public:
     QinEngine();
     ~QinEngine();
-    void regInputMethod(QString name, QinIMBase* imb);
-    void setCurrentIM(int index) { currentIM = inputMethods[index]; }
+    void regInputMethod(QinIMBase* imb);
+    void setCurrentIM(int index);
 
   private:
     QVirtualKeyboard* vkeyboard;

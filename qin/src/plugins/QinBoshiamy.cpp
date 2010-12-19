@@ -24,8 +24,7 @@
 #include "QinBoshiamy.h"
 
 QinBoshiamy::QinBoshiamy(void):
-  QinTableIMBase(false, "/usr/share/ovff/database/boshiamy.db", 5) {
-  
+  QinTableIMBase("嘸蝦米", false, "/usr/share/ovff/database/boshiamy.db", 5) {
 }
 
 QString QinBoshiamy::getQueryTemplate(void) {

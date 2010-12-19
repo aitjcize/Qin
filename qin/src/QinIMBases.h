@@ -40,6 +40,7 @@
  */
 class QinIMBase {
   private:
+    QString IMName;
     bool useCustomKeyMap;
     bool preEditable;
 
@@ -49,9 +50,10 @@ class QinIMBase {
     QHash<QString, QString> fromStdKB_hash;
 
     /** Public methods **/
-    QinIMBase(bool ukey = false, bool pre = false);
+    QinIMBase(QString name, bool ukey = false, bool pre = false);
     virtual ~QinIMBase();
 
+    QString name(void) const;
     void setUseCustomKeyMap(bool s);
     bool getUseCustomKeyMap(void);
     void setPreEditable(bool s);
@@ -108,7 +110,7 @@ class QinTableIMBase: public QinIMBase {
 
   public:
     /** Public methods **/
-    QinTableIMBase(bool ukey = false, QString dbname = QString(),
+    QinTableIMBase(QString name, bool ukey = false, QString dbname = QString(),
         int maxKeys = 0);
     virtual ~QinTableIMBase();
 
@@ -124,6 +126,7 @@ class QinTableIMBase: public QinIMBase {
 
     /** Key handling APIs **/
     virtual void handle_Default(int keyId);
+    virtual void handle_Enter(void);
     virtual void handle_Space(void);
     virtual void handle_Backspace(void);
 };
