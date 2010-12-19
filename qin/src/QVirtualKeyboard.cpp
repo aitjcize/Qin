@@ -124,12 +124,16 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   QString ch = allButtons.at(btn)->text().trimmed();
   int uni = ch.unicode()[0].unicode();
 
-  if (!istextkey)
+  if (!istextkey) {
     ch = QString();
+    if (keyId == Qt::Key_Tab)
+      uni = 9;
+    else
+      uni = 65535;
+  }
+
   if (keyId == Qt::Key_Space)
     ch = QString(" ");
-  else if (keyId == Qt::Key_Tab)
-    uni = 9;
 
   QWSServer::sendKeyEvent(uni, keyId, Modifier, true, false);
 
