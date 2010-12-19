@@ -65,12 +65,12 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
     bool autoRepeat) {
   bool doSendEvent = true;
 
+#ifdef DEBUG
+  qDebug("KeyPressed: %d, %x", uni, keyId);
+#endif
+
   if (!isPress || !currentIM->getPreEditable())
     return false;
-
-#ifdef DEBUG
-  qDebug("KeyPressed: %x", keyId);
-#endif
 
   switch (keyId) {
     case Qt::Key_Space:

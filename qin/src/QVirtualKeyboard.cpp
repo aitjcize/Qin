@@ -122,13 +122,16 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   }
 
   QString ch = allButtons.at(btn)->text().trimmed();
+  int uni = ch.unicode()[0].unicode();
 
   if (!istextkey)
     ch = QString();
   if (keyId == Qt::Key_Space)
     ch = QString(" ");
+  else if (keyId == Qt::Key_Tab)
+    uni = 9;
 
-  QWSServer::sendKeyEvent(ch.unicode()[0].unicode(),keyId,Modifier,true,false);
+  QWSServer::sendKeyEvent(uni, keyId, Modifier, true, false);
 
   if (istextkey) {
     btnShiftLeft->setChecked(false);
@@ -138,15 +141,32 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
 
 void QVirtualKeyboard::on_btnCaps_toggled(bool checked) {
   Capsed = checked;
-  changeShiftKeyMap(imEngine->currentIM);
+  if (Capsed) {
+    if (Shifted)
+      changeNormalKeyMap(imEngine->currentIM);
+    else
+      changeShiftKeyMap(imEngine->currentIM);
+  } else {
+    if (Shifted)
+      changeShiftKeyMap(imEngine->currentIM);
+    else
+      changeNormalKeyMap(imEngine->currentIM);
+  }
 }
 
 void QVirtualKeyboard::on_btnShiftLeft_toggled(bool checked) {
   Shifted = checked;
-  if (Capsed)
-    changeNormalKeyMap(imEngine->currentIM);
-  else
-    changeShiftKeyMap(imEngine->currentIM);
+  if (Shifted) {
+    if (Capsed)
+      changeNormalKeyMap(imEngine->currentIM);
+    else
+      changeShiftKeyMap(imEngine->currentIM);
+  } else {
+    if (Capsed)
+      changeShiftKeyMap(imEngine->currentIM);
+    else
+      changeNormalKeyMap(imEngine->currentIM);
+  }
 }
 
 void QVirtualKeyboard::on_btnShiftRight_toggled(bool checked) {

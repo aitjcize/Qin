@@ -124,9 +124,10 @@ void QinIMBase::setupKeyMap(const QDomElement& keymap) {
   /* Mapping shift mode keymap */
   QDomElement shift = keymap.firstChildElement("shift");
   if (shift.isNull()) {
-    qDebug() << "Fatal error: normal keymap not set!";
+    qDebug() << "Fatal error: shift keymap not set!";
     QCoreApplication::exit(1);
   }
+  node = shift.firstChild();
   while (!node.isNull()) {
     nodeElement = node.toElement();
     attr = nodeElement.attribute("value");
