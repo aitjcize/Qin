@@ -26,7 +26,6 @@
 
 #include <QDebug>
 
-#include "plugins/QinBoshiamy.h"
 #include "plugins/QinChewing.h"
 #include "QinIMBases.h"
 #include "QVirtualKeyboard.h"

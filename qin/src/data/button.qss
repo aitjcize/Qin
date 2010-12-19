@@ -16,7 +16,7 @@ QToolButton {
     /* Here's the background gradient with start point, end point, 
        stop "percentage" and color, stop percentage and color. */
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #696666, stop: 1 #353434);
+                                      stop: 0 #707070, stop: 1 #353434);
     /* We'll round the borders. */
     border-style: outset;
     /* Round radius will be 3px */
