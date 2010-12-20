@@ -24,11 +24,9 @@
 
 #include <cstdio>
 
-#include <QSignalMapper>
-#include <QDesktopWidget>
 #include <QDebug>
-#include <QFile>
-#include <QTextStream>
+#include <QDesktopWidget>
+#include <QSignalMapper>
 
 #include "QinEngine.h"
 #include "QinIMBases.h"
@@ -49,18 +47,7 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   allButtons = findChildren<QToolButton*>();
   signalMapper = new QSignalMapper(this);
   
-  /* set style sheet */
-  QFile file(":/data/button.qss");
-  QString style;
-  if (file.open(QFile::ReadOnly)) {
-    QTextStream styleIn(&file);
-    style = styleIn.readAll();
-    file.close();
-  } else
-    qDebug() << "Failed to set style sheet!";
-
   for (int i = 0; i < allButtons.count(); i++) {
-    allButtons.at(i)->setStyleSheet(style);
     connect(allButtons.at(i), SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(allButtons.at(i), i);
   }

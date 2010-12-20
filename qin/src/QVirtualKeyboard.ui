@@ -25,6 +25,37 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    background: #C4C4C4;
+}
+
+QToolButton {
+    min-height: 1.5em;
+    font: 1em;
+    font-weight: bold;
+    margin: 0 1px 0 1px;
+    color: white;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #707070, stop: 1 #353434);
+    border-style: outset;
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: #4b4a4a;
+}
+ 
+/* This is style when button is pressed */
+QToolButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #74c200, stop: 1 #3ca700);
+}
+
+QToolButton:on {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #74c200, stop: 1 #3ca700);
+}
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>0</number>
@@ -61,7 +92,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -85,7 +118,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -109,7 +144,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -133,7 +170,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -157,7 +196,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -181,7 +222,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -205,7 +248,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -229,7 +274,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -253,7 +300,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -277,7 +326,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -301,7 +352,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -325,7 +378,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -349,7 +404,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -373,7 +430,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -404,7 +463,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -428,7 +489,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -452,7 +515,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -476,7 +541,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -500,7 +567,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -524,7 +593,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -548,7 +619,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -572,7 +645,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -596,7 +671,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -620,7 +697,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -644,7 +723,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -668,7 +749,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -692,7 +775,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -716,7 +801,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -747,7 +834,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -774,7 +863,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -798,7 +889,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -822,7 +915,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -846,7 +941,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -870,7 +967,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -894,7 +993,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -918,7 +1019,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -942,7 +1045,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -966,7 +1071,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -990,7 +1097,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1014,7 +1123,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1038,7 +1149,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1069,7 +1182,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1096,7 +1211,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1120,7 +1237,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1144,7 +1263,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1168,7 +1289,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1192,7 +1315,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1216,7 +1341,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1240,7 +1367,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1264,7 +1393,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1288,7 +1419,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1312,7 +1445,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1336,7 +1471,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1371,12 +1508,14 @@
          <property name="minimumSize">
           <size>
            <width>60</width>
-           <height>0</height>
+           <height>25</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="text">
@@ -1394,7 +1533,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
@@ -1434,7 +1575,9 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="accessibleName">
