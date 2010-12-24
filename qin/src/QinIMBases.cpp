@@ -156,6 +156,12 @@ char* QinIMBase::getCommitString(void) {
   return NULL;
 }
 
+int QinIMBase::cursorCurrent(void) {
+  return -1;
+}
+
+void QinIMBase::setCursor(int) {}
+
 QString QinIMBase::fromStdKB(QString str) {
   return (fromStdKB_hash.find(str) != fromStdKB_hash.end())?
     fromStdKB_hash[str]: str;
@@ -266,15 +272,28 @@ bool QinTableIMBase::isPreEditing(void) {
   return keyIndex != 0;
 }
 
+bool QinTableIMBase::getDoPopUp(void) {
+  return true;
+}
+
+QStringList QinTableIMBase::getPopUpStrings(void) {
+  return results;
+}
+
 void QinTableIMBase::doQuery(void) {
+  int count = 0;
   QString queryTemplate = getQueryTemplate();
   QString query = queryTemplate;
   
   for (int i = 0; i < maxKeyStrokes; ++i) {
-    if (i < keyIndex)
-      query = query.arg("=%1").arg(keyTransform[tolower(keyStrokes[i])]);
-    else
-      query = query.arg(" IS NULL");
+    if (i < keyIndex) {
+      query = query.arg("m%1=%2%3").arg(i).arg(
+          keyTransform[tolower(keyStrokes[i])]);
+      if (i != keyIndex -1)
+        query = query.arg(" AND %1");
+      else
+        query = query.arg("");
+    }
   }
 
 #ifdef DEBUG
@@ -284,7 +303,7 @@ void QinTableIMBase::doQuery(void) {
   results.clear();
   QSqlQuery queryResults = database.exec(query);
   
-  while (queryResults.next())
+  while (queryResults.next() && count++ < 10)
     results += queryResults.value(0).toString();
 }
 
@@ -324,8 +343,24 @@ char* QinTableIMBase::getCommitString(void) {
 }
 
 void QinTableIMBase::handle_Default(int keyId) {
+  int keys[] = { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 };
+
   if (keyIndex == maxKeyStrokes)
     return;
+
+  if (results.size()) {
+    for (size_t i = 0; i < sizeof(keys) / sizeof(keys[0]); ++i)
+      if (keyId == keys[i]) {
+        commitString = results[i];
+        results.clear();
+        keyIndex = 0;
+        return;
+      }
+  }
+
+  if (keyTransform.find(tolower(keyId)) == keyTransform.end())
+    return;
+
   keyStrokes[keyIndex++] = keyId;
   doQuery();
 }

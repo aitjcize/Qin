@@ -27,8 +27,10 @@
 #include "QinEngine.h"
 #include "QinIMBases.h"
 
-#include <QWidget>
+#include <QPushButton>
+#include <QStringList>
 #include <QVector>
+#include <QWidget>
 #include <QWSInputMethod>
 
 QT_BEGIN_NAMESPACE
@@ -43,6 +45,8 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     QVirtualKeyboard(QinEngine* im);
     ~QVirtualKeyboard();
     void insertInputMethod(const QinIMBase* im);
+    void clearCandStrBar(void);
+    void showCandStrBar(QStringList strlist);
 
   private:
     QinEngine* imEngine;
@@ -52,10 +56,13 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
     int opacity;
     QVector<QString> regedIMs;
     QSignalMapper *signalMapper;
-    QList<QToolButton *> allButtons;
+    QSignalMapper *candSignalMapper;
+    QList<QToolButton*> allButtons;
+    QVector<QPushButton*> candButtons;
 
   private slots:
     void s_on_btn_clicked(int btn);
+    void s_on_btnCands_clicked(int btn);
     void on_btnCaps_toggled(bool checked);
     void on_btnShiftLeft_toggled(bool checked);
     void on_btnShiftRight_toggled(bool checked);

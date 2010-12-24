@@ -46,12 +46,15 @@ class QinChewing: public QinIMBase {
     QinChewing(void);
     virtual ~QinChewing(void);
 
-    virtual void setupKeyMap(void);
     virtual bool isPreEditing(void);
+    virtual bool getDoPopUp(void);
+    virtual QStringList getPopUpStrings(void);
 
     /** I/O related **/
     virtual char* getPreEditString(void);
     virtual char* getCommitString(void);
+    virtual int cursorCurrent(void);
+    virtual void setCursor(int index);
     virtual void reset(void);
 
     /** Key handling APIs **/

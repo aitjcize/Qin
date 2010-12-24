@@ -27,7 +27,7 @@
   <customkeymap>false</customkeymap>
   <database>/usr/share/ovff/database/boshiamy.db</database>
   <maxkeystrokes>5</maxkeystrokes>
-  <querytemplate>SELECT phrase FROM phrases WHERE m0%1 AND m1%2 AND m2%3 AND m3%4 AND m4%5 ORDER BY -freq;</querytemplate>
+  <querytemplate>SELECT phrase FROM phrases WHERE %1 ORDER BY -freq;</querytemplate>
   <keytransform>
     <key value="a">1</key>
     <key value="b">2</key>

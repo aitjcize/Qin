@@ -55,6 +55,7 @@ class QinEngine: public QWSInputMethod {
     void mouseHandler(int offset, int state);
     void updateCommitString();
     void updatePreEditBuffer(void);
+    void selectPreEditWord(int index);
 };
 
 #endif /* __QIN_SRC_QIN_ENGINE_H__ */

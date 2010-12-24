@@ -58,14 +58,16 @@ class QinIMBase {
     bool getPreEditable(void);
 
     void setupKeyMap(const QDomElement& keymap);
+    virtual bool isPreEditing(void);
     virtual bool getDoPopUp(void);
     virtual QStringList getPopUpStrings(void);
-    virtual bool isPreEditing(void);
 
     /** I/O related **/
     /* Caller must free it */
     virtual char* getPreEditString(void);
     virtual char* getCommitString(void);
+    virtual int cursorCurrent(void);
+    virtual void setCursor(int index);
     QString fromStdKB(QString str);
     QString fromShiftStdKB(QString str);
     virtual void reset(void);
@@ -113,6 +115,8 @@ class QinTableIMBase: public QinIMBase {
     virtual ~QinTableIMBase();
 
     virtual bool isPreEditing(void);
+    virtual bool getDoPopUp(void);
+    virtual QStringList getPopUpStrings(void);
     virtual void doQuery(void);
     virtual QString getQueryTemplate(void);
 

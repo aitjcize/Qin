@@ -26,6 +26,7 @@
 
 #include <QDebug>
 #include <QDesktopWidget>
+#include <QPushButton>
 #include <QSignalMapper>
 
 #include "QinEngine.h"
@@ -35,13 +36,14 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   :QWidget(0, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 {
   setupUi(this);
-  this->move((QApplication::desktop()->width() - 520)/2,
-      QApplication::desktop()->height() - 170);
+  this->move((QApplication::desktop()->width() - width())/2,
+      QApplication::desktop()->height() - height());
 
   imEngine = im;
   Capsed = false;
   Shifted = false;
   IMIndex = 0;
+  candSignalMapper = NULL;
   opacitySlide->setRange(20, 100);
 
   allButtons = findChildren<QToolButton*>();
@@ -296,4 +298,60 @@ bool QVirtualKeyboard::isTextKey(int keyId)
       || keyId == Qt::Key_CapsLock
       || keyId == Qt::Key_Backspace
       || keyId == Qt::Key_Alt);
+}
+
+void QVirtualKeyboard::s_on_btnCands_clicked(int btn) {
+  QString strKeyId = candButtons[btn]->accessibleName();
+  bool isOk;
+  int keyId = strKeyId.toInt(&isOk, 16);
+
+#ifdef DEBUG
+  qDebug() << "DEBUG: selected = " << btn;
+#endif
+
+  QWSServer::sendKeyEvent(0, keyId, Qt::NoModifier, true, false);
+  clearCandStrBar();
+}
+
+void QVirtualKeyboard::clearCandStrBar(void) {
+  if (candSignalMapper) {
+    delete candSignalMapper;
+    candSignalMapper = NULL;
+  }
+
+  for (int i = 0; i < candButtons.size(); ++i) {
+    candButtons[i]->hide();
+    delete candButtons[i];
+  }
+  candButtons.clear();
+}
+
+void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
+  QPushButton* button = NULL;
+  int keys[] = { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 };
+
+#ifdef DEBUG
+  qDebug() << "DEBUG: cands: " << strlist;
+#endif
+
+  /* Make surce previous is cleared */
+  clearCandStrBar();
+
+  for (int i = 0; i < strlist.size(); ++i) {
+    button = new QPushButton(strlist[i]);
+    button->setFont(QFont("WenQuanYiMicroHeiLight", 13));
+    candButtons.push_back(button);
+    candStrLayout->addWidget(button);
+    button->show();
+  }
+
+  candSignalMapper = new QSignalMapper(this);
+
+  for (int i = 0; i < candButtons.size(); i++) {
+    candButtons[i]->setAccessibleName(QString("%1").arg(keys[i], 2, 16));
+    connect(candButtons[i], SIGNAL(clicked()), candSignalMapper, SLOT(map()));
+    candSignalMapper->setMapping(candButtons[i], i);
+  }
+  connect(candSignalMapper, SIGNAL(mapped(int)), this,
+      SLOT(s_on_btnCands_clicked(int)));
 }

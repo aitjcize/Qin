@@ -28,10 +28,13 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
+#include <cmath>
 
+#include <QStringList>
 #include <chewing.h>
 
 QinChewing::QinChewing(void): QinIMBase(":/data/Chewing.xml") {
+  int keys[] = { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 };
   chewContext = chewing_new();
   chewing_Init(QIN_CHEWING_DATA_PATH, QIN_CHEWING_HASH_PATH);
   chewing_set_ChiEngMode(chewContext, CHINESE_MODE);
@@ -42,9 +45,7 @@ QinChewing::QinChewing(void): QinIMBase(":/data/Chewing.xml") {
   chewing_set_escCleanAllBuf(chewContext, true);
   chewing_set_autoShiftCur(chewContext, true);
   chewing_set_phraseChoiceRearward(chewContext, true);
-  int len = 1;
-  int keys[] = { Qt::Key_Down };
-  chewing_set_selKey(chewContext, keys, len);
+  chewing_set_selKey(chewContext, keys, sizeof(keys) / sizeof(keys[0]));
 }
 
 QinChewing::~QinChewing(void) {
@@ -52,14 +53,31 @@ QinChewing::~QinChewing(void) {
   chewing_delete(chewContext);
 }
 
-void QinChewing::setupKeyMap(void) {
-}
-
 bool QinChewing::isPreEditing(void) {
   char* preedit = getPreEditString();
   bool ret = strlen(preedit);
   delete preedit;
   return ret;
+}
+
+bool QinChewing::getDoPopUp(void) {
+  return chewing_cand_hasNext(chewContext);
+}
+
+QStringList QinChewing::getPopUpStrings(void) {
+  QStringList cands;
+  char* word = NULL;
+  int choices = chewing_cand_ChoicePerPage(chewContext);
+
+  if (chewing_cand_TotalChoice(chewContext)) {
+    chewing_cand_Enumerate(chewContext);
+    while (choices-- && chewing_cand_hasNext(chewContext)) {
+      word = chewing_cand_String(chewContext);
+      cands += word;
+      free(word);
+    }
+  }
+  return cands;
 }
 
 char* QinChewing::getPreEditString(void) {
@@ -71,9 +89,12 @@ char* QinChewing::getPreEditString(void) {
   memset(preedit_str, 0, max_len + 1);
 
 #ifdef DEBUG
-  printf("Buf: %s\n", buf_str);
-  printf("Zuin: %s\n", zuin_str);
-  printf("Commit: %d\n", chewing_commit_Check(chewContext));
+  qDebug("-------------------------------------------------");
+  qDebug("DEBUG: Buf: %s", buf_str);
+  qDebug("DEBUG: Zuin: %s", zuin_str);
+  qDebug("DEBUG: Commit: %d", chewing_commit_Check(chewContext));
+  qDebug("DEBUG: Cand CheckDone: %d", chewing_cand_CheckDone(chewContext));
+  qDebug("DEBUG: Cand hasNext: %d", chewing_cand_hasNext(chewContext));
 #endif
 
   strncpy(preedit_str, buf_str, max_len);
@@ -93,6 +114,20 @@ char* QinChewing::getCommitString(void) {
   if (committed)
     commit_str = chewing_commit_String(chewContext);
   return commit_str;
+}
+
+int QinChewing::cursorCurrent(void) {
+  return chewing_cursor_Current(chewContext);
+}
+
+void QinChewing::setCursor(int index) {
+  int diff = cursorCurrent() - index;
+  for (int i = 0; i < abs(diff); ++i) {
+    if (diff > 0)
+      handle_Left();
+    else
+      handle_Right();
+  }
 }
 
 void QinChewing::reset(void) {

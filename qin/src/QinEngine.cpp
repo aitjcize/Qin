@@ -64,11 +64,14 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
     bool autoRepeat) {
   bool doSendEvent = true;
 
+  if (!isPress)
+    return false;
+
 #ifdef DEBUG
-  qDebug("KeyPressed: %d, %x", uni, keyId);
+  qDebug("DEBUG: KeyPressed: %d, %x", uni, keyId);
 #endif
 
-  if (!isPress || !currentIM->getPreEditable())
+  if (!currentIM->getPreEditable())
     return false;
 
   switch (keyId) {
@@ -88,8 +91,14 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
       currentIM->handle_Backspace();
       break;
     case Qt::Key_Tab: currentIM->handle_Tab(); break;
-    case Qt::Key_Left: currentIM->handle_Left(); break;
-    case Qt::Key_Right: currentIM->handle_Right(); break;
+    case Qt::Key_Left:
+      if (currentIM->isPreEditing()) doSendEvent = false;
+      currentIM->handle_Left();
+      break;
+    case Qt::Key_Right:
+      if (currentIM->isPreEditing()) doSendEvent = false;
+      currentIM->handle_Right();
+      break;
     case Qt::Key_Up: currentIM->handle_Up(); break;
     case Qt::Key_Home: currentIM->handle_Home(); break;
     case Qt::Key_End: currentIM->handle_End(); break;
@@ -111,9 +120,10 @@ bool QinEngine::filter(int uni, int keyId, int mod, bool isPress,
   if (currentIM->getPreEditable())
     updatePreEditBuffer();
 
-  /* Popup */
-  //if (currentIM->getDoPopUp())
-  //  do popup
+  if (currentIM->getDoPopUp())
+    vkeyboard->showCandStrBar(currentIM->getPopUpStrings());
+
+  selectPreEditWord(currentIM->cursorCurrent());
 
   return !doSendEvent;
 }
@@ -150,7 +160,13 @@ void QinEngine::updateHandler(int type) {
 
 void QinEngine::mouseHandler(int offset, int state) {
   if (state == QWSServer::MousePress && offset >= 0) {
+    currentIM->setCursor(offset);
     sendPreeditString(inputBuffer, offset, 1);
     selected = offset;
   }
+}
+
+void QinEngine::selectPreEditWord(int index) {
+  if (index != -1)
+    sendPreeditString(inputBuffer, index, 1);
 }
