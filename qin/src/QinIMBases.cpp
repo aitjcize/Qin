@@ -62,19 +62,19 @@ QinIMBase::QinIMBase(QString xmlpath): xmlPath(xmlpath) {
   QDomElement root = xml.documentElement();
   imName = root.firstChildElement("name").text();
 #ifdef DEBUG
-  qDebug() << "imName: " << imName;
+  qDebug() << "DEBUG: imName: " << imName;
 #endif
 
   preEditable = (root.firstChildElement("preeditable").text() == "true")?
     true: false;
 #ifdef DEBUG
-  qDebug() << "preEditable: " << preEditable;
+  qDebug() << "DEBUG: preEditable: " << preEditable;
 #endif
 
   useCustomKeyMap = (root.firstChildElement("customkeymap").text() == "true")?
     true: false;
 #ifdef DEBUG
-  qDebug() << "useCustomKeyMap: " << useCustomKeyMap;
+  qDebug() << "DEBUG: useCustomKeyMap: " << useCustomKeyMap;
 #endif
   setupKeyMap(root.firstChildElement("keymap"));
 }
@@ -221,17 +221,17 @@ QinTableIMBase::QinTableIMBase(QString xmlpath): QinIMBase(xmlpath) {
 
   maxKeyStrokes = root.firstChildElement("maxkeystrokes").text().toInt();
 #ifdef DEBUG
-  qDebug() << "maxKeyStrokes: " << maxKeyStrokes;
+  qDebug() << "DEBUG: maxKeyStrokes: " << maxKeyStrokes;
 #endif
 
   dbPath = root.firstChildElement("database").text();
 #ifdef DEBUG
-  qDebug() << "dbPath: " << dbPath;
+  qDebug() << "DEBUG: dbPath: " << dbPath;
 #endif
 
   queryTemplate = root.firstChildElement("querytemplate").text();
 #ifdef DEBUG
-  qDebug() << "queryTemplate: " << queryTemplate;
+  qDebug() << "DEBUG: queryTemplate: " << queryTemplate;
 #endif
 
   QDomElement keytransform = root.firstChildElement("keytransform");
@@ -297,7 +297,7 @@ void QinTableIMBase::doQuery(void) {
   }
 
 #ifdef DEBUG
-  qDebug() << "query: " << query;
+  qDebug() << "DEBUG: query: " << query;
 #endif
 
   results.clear();
@@ -320,8 +320,8 @@ char* QinTableIMBase::getPreEditString(void) {
 
 #ifdef DEBUG
   if (preEditStr) {
-    qDebug() << "results[0]: " << results[0];
-    qDebug("preEditStr: %s", preEditStr);
+    qDebug() << "DEBUG: results[0]: " << results[0];
+    qDebug("DEBUG: preEditStr: %s", preEditStr);
   }
 #endif
 

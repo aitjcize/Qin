@@ -43,7 +43,7 @@ QPushButton {
     margin: 0 0 0 0;
     color: black;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #F1F1F1, stop: 1 #B3B3B3);
+                                      stop: 0 #FFFFFF, stop: 1 #B3B3B3);
     border-style: groove;
     /*border-radius: 1px;*/
     border-width: 1px;
@@ -105,7 +105,7 @@ QToolButton:on {
      <item>
       <layout class="QHBoxLayout" name="candStrLayout">
        <property name="spacing">
-        <number>0</number>
+        <number>2</number>
        </property>
       </layout>
      </item>

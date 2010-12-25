@@ -47,7 +47,7 @@ QinEngine::~QinEngine() {
 
 void QinEngine::regInputMethod(QinIMBase* imb) {
   if (!imb) {
-    qDebug("error: no input method specified\n");
+    qDebug("Error: no input method specified\n");
     return;
   }
 
