@@ -344,6 +344,13 @@ void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
     candStrLayout->addWidget(button);
     button->show();
   }
+  
+  /* Fix border for the rightmost color, the sequence of the CSS must be
+   * border-right then border-style else it won't work */
+  if (candButtons.size()) {
+    candButtons.last()->setStyleSheet("QPushButton { border-right: 1px "
+        "#8A8A8A; border-style: groove; }");
+  }
 
   candSignalMapper = new QSignalMapper(this);
 
