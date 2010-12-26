@@ -42,9 +42,12 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   imEngine = im;
   Capsed = false;
   Shifted = false;
+  location = 0;
   IMIndex = 0;
   candSignalMapper = NULL;
   opacitySlide->setRange(20, 100);
+
+  btnLoc->setText("↥");
 
   allButtons = findChildren<QToolButton*>();
   signalMapper = new QSignalMapper(this);
@@ -70,6 +73,18 @@ void QVirtualKeyboard::on_opacitySlide_valueChanged(int value) {
   setWindowOpacity((120.0 - value) / 100.0);
 }
 
+void QVirtualKeyboard::on_btnLoc_clicked(void) {
+  location = !location;
+  if (location) {
+    btnLoc->setText("↯");
+    this->move((QApplication::desktop()->width() - width())/2, 0);
+  } else {
+    btnLoc->setText("↥");
+    this->move((QApplication::desktop()->width() - width())/2,
+        QApplication::desktop()->height() - height());
+  }
+}
+
 void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   QString strKeyId = allButtons.at(btn)->accessibleName();
   bool isOk;
@@ -77,7 +92,7 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
   int involvedKeys = 1;
   bool istextkey = isTextKey(keyId);
 
-  if (strKeyId.isEmpty() || !isOk || keyId == 0x10000001)
+  if (strKeyId.isEmpty() || !isOk)
     return;
 
   Qt::KeyboardModifiers Modifier = Qt::NoModifier;

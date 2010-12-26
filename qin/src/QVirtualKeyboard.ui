@@ -22,17 +22,12 @@
     <height>170</height>
    </size>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>520</width>
-    <height>178</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
+	/* Normal */
     background: #C4C4C4;
 }
 
@@ -58,28 +53,36 @@ QPushButton:pressed {
 }
 
 QToolButton {
-    min-height: 1.5em;
     font: 1em;
     font-weight: bold;
     margin: 0 1px 0 1px;
-    color: white;
+
+	/* Normal */
+	color: white;
+    border-color: #4b4a4a;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                       stop: 0 #707070, stop: 1 #353434);
+	/* Glossy */
+    /*color: white;
+    border-color: #4b4a4a;
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #838085, stop: 0.49 #5D5B5E,
+									  stop: 0.5 #49474A, stop: 1 #323133);*/
     border-style: outset;
     border-radius: 3px;
     border-width: 1px;
-    border-color: #4b4a4a;
 }
- 
-/* This is style when button is pressed */
+
 QToolButton:pressed {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #74c200, stop: 1 #3ca700);
+	color: white;
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #2D7D00, stop: 1 #7ED403);
 }
 
 QToolButton:on {
+	color: white;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #74c200, stop: 1 #3ca700);
+                                      stop: 0 #2D7D00, stop: 1 #7ED403);
 }
 </string>
   </property>
@@ -87,16 +90,19 @@ QToolButton:on {
    <property name="spacing">
     <number>0</number>
    </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
+   </property>
    <property name="margin">
     <number>2</number>
    </property>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="mainLayout">
      <property name="spacing">
       <number>2</number>
      </property>
      <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
+      <enum>QLayout::SetFixedSize</enum>
      </property>
      <property name="topMargin">
       <number>0</number>
@@ -1554,54 +1560,24 @@ QToolButton:on {
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">QWidget {
-    background: #C4C4C4;
-}
-
-QPushButton {
-    min-height: 1.5em;
-    font: 1em;
-    /*font-weight: bold;*/
-    margin: 0 0 0 0;
-    color: black;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 1 #B3B3B3);
-    border-style: groove;
-    border-width: 1px;
-	/* We don't want only one border line between buttons */
-	border-right: 0px;
-    /*border-radius: 1px;*/
-	border-color: #8A8A8A;
-}
-
-QPushButton:pressed {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #878787, stop: 1 #AFAFAF);
-}
-
-QToolButton {
+          <string notr="true">QToolButton {
     min-height: 1.5em;
     font: 1em;
     font-weight: bold;
     margin: 0 1px 0 1px;
-    color: black;
+    color: #292929;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 1 #B3B3B3);
+                                      stop: 0 #FFFFFF, stop: 0.7 #B3B3B3);
     border-style: outset;
     border-radius: 3px;
     border-width: 1px;
-	border-color: #8A8A8A;
-}
- 
-/* This is style when button is pressed */
-QToolButton:pressed {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #74c200, stop: 1 #3ca700);
+	border-color: #4F4F4F;
 }
 
-QToolButton:on {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #74c200, stop: 1 #3ca700);
+QToolButton:pressed {
+	color: white;
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #2D7D00, stop: 1 #7ED403);
 }
 </string>
          </property>
@@ -1644,6 +1620,12 @@ QToolButton:on {
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -1653,12 +1635,18 @@ QToolButton:on {
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="btnUp">
+        <widget class="QToolButton" name="btnLoc">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>30</width>
+           <height>25</height>
+          </size>
          </property>
          <property name="font">
           <font>
@@ -1667,11 +1655,30 @@ QToolButton:on {
            <bold>true</bold>
           </font>
          </property>
-         <property name="accessibleName">
-          <string/>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+    min-height: 1.5em;
+    font: 1em;
+    font-weight: bold;
+    margin: 0 1px 0 1px;
+    color: #292929;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FFFFFF, stop: 0.7 #B3B3B3);
+    border-style: outset;
+    border-radius: 3px;
+    border-width: 1px;
+	border-color: #4F4F4F;
+}
+
+QToolButton:pressed {
+	color: white;
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #2D7D00, stop: 1 #7ED403);
+}
+</string>
          </property>
          <property name="text">
-          <string>  |  </string>
+          <string>|</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
