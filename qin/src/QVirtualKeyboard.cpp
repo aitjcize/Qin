@@ -32,8 +32,8 @@
 #include "QinEngine.h"
 #include "QinIMBases.h"
 
-QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
-  :QWidget(0, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
+  QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
+:QWidget(0, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 {
   setupUi(this);
   this->move((QApplication::desktop()->width() - width())/2,
@@ -51,7 +51,7 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
 
   allButtons = findChildren<QToolButton*>();
   signalMapper = new QSignalMapper(this);
-  
+
   for (int i = 0; i < allButtons.count(); i++) {
     connect(allButtons.at(i), SIGNAL(clicked()), signalMapper, SLOT(map()));
     signalMapper->setMapping(allButtons.at(i), i);
@@ -352,6 +352,8 @@ void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
   /* Make surce previous is cleared */
   clearCandStrBar();
 
+  if (!strlist.size()) return;
+
   for (int i = 0; i < strlist.size(); ++i) {
     button = new QPushButton(strlist[i]);
     button->setFont(QFont("WenQuanYiMicroHeiLight", 13));
@@ -359,13 +361,11 @@ void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
     candStrLayout->addWidget(button);
     button->show();
   }
-  
+
   /* Fix border for the rightmost color, the sequence of the CSS must be
    * border-right then border-style else it won't work */
-  if (candButtons.size()) {
-    candButtons.last()->setStyleSheet("QPushButton { border-right: 1px "
-        "#8A8A8A; border-style: groove; }");
-  }
+  candButtons.last()->setStyleSheet("QPushButton { border-right: 1px "
+      "#8A8A8A; border-style: groove; }");
 
   candSignalMapper = new QSignalMapper(this);
 
