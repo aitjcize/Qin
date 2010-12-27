@@ -27,11 +27,20 @@
 
 #include <chewing.h>
 
-#define datadir "/usr"
-#define homedir "/home/aitjcize"
+#ifdef ARM
+# define datadir "/usr"
+# define homedir "/root"
+#else
+# define datadir "/usr"
+# define homedir "/home/aitjcize"
+#endif
 
 /* libchewing related definitions */
-#define QIN_CHEWING_DATA_PATH datadir"/share/libchewing3/chewing"
+#ifdef ARM
+# define QIN_CHEWING_DATA_PATH datadir"/share/chewing"
+#else
+# define QIN_CHEWING_DATA_PATH datadir"/share/libchewing3/chewing"
+#endif
 #define QIN_CHEWING_HASH_PATH homedir"/.chewing"
 #define QIN_CHEWING_CAND_PER_PAGE 10
 #define QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN 10
