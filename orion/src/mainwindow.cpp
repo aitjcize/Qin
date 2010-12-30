@@ -41,20 +41,21 @@
 
 #include <QtGui>
 #include <QtWebKit>
+#include <QString>
 #include "mainwindow.h"
-
-
+#include <iostream>
+using namespace std;
 MainWindow::MainWindow()
 {
   progress = 0;
   QNetworkProxyFactory::setUseSystemConfiguration(true);
 
-  view = new QWebView(this);
-  view->load(QUrl("http://www.google.com/ncr"));
-  connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
-  connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
-  connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
-  connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
+    view = new QWebView(this);
+    view->load(QUrl("http://www.google.com/"));
+    connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
+    connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
+    connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
+    connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
 
   locationEdit = new QLineEdit(this);
   locationEdit->setSizePolicy(QSizePolicy::Expanding, locationEdit->sizePolicy().verticalPolicy());
@@ -68,6 +69,28 @@ MainWindow::MainWindow()
   toolBar->addWidget(locationEdit);
 
   setCentralWidget(view);
+    //gesture
+    grabGesture(Qt::SwipeGesture);    
+}
+bool MainWindow::touchEvent(QTouchEvent *event)
+{
+//    if (event->type() == QEvent::Gesture)
+   cout << "here";
+ //     return gestureEvent(static_cast<QGestureEvent*>(event));}
+    return QWidget::event(event);
+}
+bool MainWindow::gestureEvent(QGestureEvent *event)
+{
+  if (QGesture *swipe = event->gesture(Qt::SwipeGesture))
+   swipeTriggered(static_cast<QSwipeGesture *>(swipe));
+  return true;
+}
+
+void MainWindow::swipeTriggered(QSwipeGesture *gesture)
+{
+//  if (gesture->state() == Qt::GestureFinished)
+//   if (gesture->horizontalDirection() == QSwipeGesture::Left
+//             || gesture->verticalDirection() == QSwipeGesture::Up)
 }
 
 void MainWindow::adjustLocation()

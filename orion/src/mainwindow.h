@@ -40,21 +40,26 @@
 ****************************************************************************/
 
 #include <QtGui>
-
+#include <QEvent>
+#include <QTouchEvent>
+#include <QGesture>
+#include <QSwipeGesture>
 QT_BEGIN_NAMESPACE
 class QWebView;
 class QLineEdit;
 QT_END_NAMESPACE
+class QTouchEvent;
+class QGestureEvent;
+class QSwipeGesture;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     MainWindow();
 
 protected slots:
-
+    bool touchEvent(QTouchEvent *event);//unused
     void adjustLocation();
     void changeLocation();
     void adjustTitle();
@@ -62,6 +67,10 @@ protected slots:
     void finishLoading(bool);
 
 private:
+    
+    bool gestureEvent(QGestureEvent *event);
+    void swipeTriggered(QSwipeGesture*);
+
     QWebView *view;
     QLineEdit *locationEdit;
     QAction *rotateAction;
