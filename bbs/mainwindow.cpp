@@ -2,10 +2,16 @@
 #include "ui_mainwindow.h"
 #include <stdio.h>
 #include <string>
-#include <unistd.h>//for fork
-#include <stdlib.h>//for fork
-#include <errno.h>//for fork
+#include <stdio.h>
+#include <stdlib.h>
+#include <pty.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <QTextCodec>
+
+void close_XD(int & fd){
+  close(fd);
+}
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -31,34 +37,30 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 void MainWindow::on_pushButton_clicked(){
-   FILE *fpipe;
-   char line[256];
-   QTextCodec* codec;
-   QString display[24];
-   /*multi process*/
-   pid_t pid;
    
-   codec = QTextCodec::codecForName("Big5");
-   std::string addr_str= "telnet "+ ui->lineEdit->text().toStdString();
-   const char *command = addr_str.c_str(); 
-   pid = fork();
-   if (pid == 0)
-   {
-    if ( !(fpipe = (FILE*)popen(command,"r")) )
-    {  // If fpipe is NULL
-       perror("Problems with pipe");
-       return;
-    }
-    // int i = 0;
-    while ( fgets( line, sizeof line, fpipe))
-    {
-     printf("%s", line);
-      // display[i] = codec->toUnicode(const_cast<const char*>(line),
-       // (int)sizeof line,0);
-       //i++;
-    }
-    // ui->textEdit->setText(display[5]);
-    pclose(fpipe);
-    _exit(0);
+   int fd;
+   pid_t pid = forkpty(&fd, NULL, NULL, NULL);
+   
+   std::string addr_str=ui->lineEdit->text().toStdString();
+   const char *addr = addr_str.c_str(); 
+
+   if (pid == 0) { // child process
+     close_XD(fd);
+     printf("Execl\n");
+     execlp("telnet", "telnet", "-8", addr, NULL, NULL);
+     printf("Shit\n");
+     exit(-1);
+   } else {
+     // Parent process
+     sleep(2);
+     int flags = fcntl(fd, F_GETFD);
+     fcntl(fd, F_SETFD, flags | FD_CLOEXEC);
    }
-  }
+   printf("Start\n");
+   char buf[BUFSIZ];
+   int len = 0;
+   while (1) {
+     len = read(fd, buf, BUFSIZ);
+     write(1, buf, len);
+   }
+}
