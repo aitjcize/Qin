@@ -50,6 +50,7 @@ class QVirtualKeyboard : public QWidget, public Ui::QVirtualKeyboard {
 
   private:
     QinEngine* imEngine;
+    QWidget* selectPanel;
     bool Capsed;
     bool Shifted;
     bool location;

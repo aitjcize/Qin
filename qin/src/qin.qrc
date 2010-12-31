@@ -1,6 +1,6 @@
 <RCC>
   <qresource>
-    <file>data/button.qss</file>
+    <file>data/selectPanel.qss</file>
     <file>data/English.xml</file>
     <file>data/Chewing.xml</file>
     <file>data/Boshiamy.xml</file>

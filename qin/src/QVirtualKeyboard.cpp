@@ -26,19 +26,44 @@
 
 #include <QDebug>
 #include <QDesktopWidget>
+#include <QFile>
 #include <QPushButton>
 #include <QSignalMapper>
+#include <QTextStream>
 
 #include "QinEngine.h"
 #include "QinIMBases.h"
 
-  QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
+QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
 :QWidget(0, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 {
+  /* setup UI */
   setupUi(this);
   this->move((QApplication::desktop()->width() - width())/2,
       QApplication::desktop()->height() - height());
 
+  /* Setup selectPanel */
+  QHBoxLayout* layout = new QHBoxLayout;
+  layout->setContentsMargins(1, 1, 1, 0);
+  layout->setSpacing(0);
+  selectPanel = new QWidget(0, Qt::Tool |
+      Qt::FramelessWindowHint |
+      Qt::WindowStaysOnTopHint);
+  selectPanel->move((QApplication::desktop()->width() - width())/2,
+      QApplication::desktop()->height() - height() - 27);
+  selectPanel->setMinimumSize(width(), 27);
+  selectPanel->setMaximumSize(width(), 27);
+  selectPanel->hide();
+
+  QFile data(":/data/selectPanel.qss");
+  if (data.open(QFile::ReadOnly)) {
+    QTextStream ssin(&data);
+    selectPanel->setStyleSheet(ssin.readAll());
+    data.close();
+  } else
+    qDebug() << "Error: failed to set style sheet for selectPanel!";
+
+  /* Setup members */
   imEngine = im;
   Capsed = false;
   Shifted = false;
@@ -47,8 +72,7 @@
   candSignalMapper = NULL;
   opacitySlide->setRange(20, 100);
 
-  btnLoc->setText("↥");
-
+  /* Setup buttons */
   allButtons = findChildren<QToolButton*>();
   signalMapper = new QSignalMapper(this);
 
@@ -339,6 +363,7 @@ void QVirtualKeyboard::clearCandStrBar(void) {
     delete candButtons[i];
   }
   candButtons.clear();
+  selectPanel->hide();
 }
 
 void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
@@ -354,11 +379,13 @@ void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
 
   if (!strlist.size()) return;
 
+  selectPanel->show();
+
   for (int i = 0; i < strlist.size(); ++i) {
     button = new QPushButton(strlist[i]);
     button->setFont(QFont("WenQuanYiMicroHeiLight", 13));
     candButtons.push_back(button);
-    candStrLayout->addWidget(button);
+    selectPanel->layout()->addWidget(button);
     button->show();
   }
 

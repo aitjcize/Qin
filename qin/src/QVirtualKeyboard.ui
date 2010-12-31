@@ -34,22 +34,21 @@
 QPushButton {
     min-height: 1.5em;
     font: 1em;
-    /*font-weight: bold;*/
-    margin: 0 0 0 0;
-    color: black;
+    font-weight: bold;
+    margin: 0 1px 0 1px;
+    color: #292929;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 1 #B3B3B3);
-    border-style: groove;
+                                      stop: 0 #FFFFFF, stop: 0.7 #B3B3B3);
+    border-style: outset;
+    border-radius: 3px;
     border-width: 1px;
-	/* We don't want only one border line between buttons */
-	border-right: 0px;
-    /*border-radius: 1px;*/
-	border-color: #8A8A8A;
+	border-color: #4F4F4F;
 }
 
 QPushButton:pressed {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #878787, stop: 1 #AFAFAF);
+	color: white;
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #2D7D00, stop: 1 #7ED403);
 }
 
 QToolButton {
@@ -93,17 +92,8 @@ QToolButton:on {
    <property name="sizeConstraint">
     <enum>QLayout::SetMinAndMaxSize</enum>
    </property>
-   <property name="leftMargin">
+   <property name="margin">
     <number>1</number>
-   </property>
-   <property name="topMargin">
-    <number>1</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>2</number>
    </property>
    <item>
     <layout class="QVBoxLayout" name="mainLayout">
@@ -119,13 +109,6 @@ QToolButton:on {
      <property name="bottomMargin">
       <number>0</number>
      </property>
-     <item>
-      <layout class="QHBoxLayout" name="candStrLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-      </layout>
-     </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">
@@ -1698,7 +1681,7 @@ QToolButton:on {
         <number>1</number>
        </property>
        <item>
-        <widget class="QToolButton" name="btnIMToggle">
+        <widget class="QPushButton" name="btnIMToggle">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -1711,43 +1694,8 @@ QToolButton:on {
            <height>25</height>
           </size>
          </property>
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <italic>false</italic>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QToolButton {
-    min-height: 1.5em;
-    font: 1em;
-    font-weight: bold;
-    margin: 0 1px 0 1px;
-    color: #292929;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 0.7 #B3B3B3);
-    border-style: outset;
-    border-radius: 3px;
-    border-width: 1px;
-	border-color: #4F4F4F;
-}
-
-QToolButton:pressed {
-	color: white;
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #2D7D00, stop: 1 #7ED403);
-}
-</string>
-         </property>
          <property name="text">
           <string>Current IM</string>
-         </property>
-         <property name="checkable">
-          <bool>false</bool>
-         </property>
-         <property name="autoRepeat">
-          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -1803,7 +1751,7 @@ QToolButton:pressed {
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="btnLoc">
+        <widget class="QPushButton" name="btnLoc">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -1816,43 +1764,8 @@ QToolButton:pressed {
            <height>25</height>
           </size>
          </property>
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <italic>false</italic>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QToolButton {
-    min-height: 1.5em;
-    font: 1em;
-    font-weight: bold;
-    margin: 0 1px 0 1px;
-    color: #292929;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 0.7 #B3B3B3);
-    border-style: outset;
-    border-radius: 3px;
-    border-width: 1px;
-	border-color: #4F4F4F;
-}
-
-QToolButton:pressed {
-	color: white;
-	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #2D7D00, stop: 1 #7ED403);
-}
-</string>
-         </property>
          <property name="text">
-          <string>|</string>
-         </property>
-         <property name="checkable">
-          <bool>false</bool>
-         </property>
-         <property name="autoRepeat">
-          <bool>false</bool>
+          <string>↥</string>
          </property>
         </widget>
        </item>
