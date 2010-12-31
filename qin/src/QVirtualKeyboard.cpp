@@ -368,7 +368,7 @@ void QVirtualKeyboard::clearCandStrBar(void) {
 
 void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
   QPushButton* button = NULL;
-  int keys[] = { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 };
+  int keys[] = SELKEYS;
 
 #ifdef DEBUG
   qDebug() << "DEBUG: cands: " << strlist;

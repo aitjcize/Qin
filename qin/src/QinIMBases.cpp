@@ -343,13 +343,13 @@ char* QinTableIMBase::getCommitString(void) {
 }
 
 void QinTableIMBase::handle_Default(int keyId) {
-  int keys[] = { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 };
+  int keys[] = SELKEYS;
 
   if (keyIndex == maxKeyStrokes)
     return;
 
   if (results.size()) {
-    for (size_t i = 0; i < sizeof(keys) / sizeof(keys[0]); ++i)
+    for (size_t i = 0; i < SELKEY_COUNT; ++i)
       if (keyId == keys[i]) {
         commitString = results[i];
         results.clear();

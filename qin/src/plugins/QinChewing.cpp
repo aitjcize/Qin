@@ -34,7 +34,7 @@
 #include <chewing.h>
 
 QinChewing::QinChewing(void): QinIMBase(":/data/Chewing.xml") {
-  int keys[] = { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 };
+  int keys[] = SELKEYS;
   chewContext = chewing_new();
   chewing_Init(QIN_CHEWING_DATA_PATH, QIN_CHEWING_HASH_PATH);
   chewing_set_ChiEngMode(chewContext, CHINESE_MODE);
@@ -45,7 +45,7 @@ QinChewing::QinChewing(void): QinIMBase(":/data/Chewing.xml") {
   chewing_set_escCleanAllBuf(chewContext, true);
   chewing_set_autoShiftCur(chewContext, true);
   chewing_set_phraseChoiceRearward(chewContext, true);
-  chewing_set_selKey(chewContext, keys, sizeof(keys) / sizeof(keys[0]));
+  chewing_set_selKey(chewContext, keys, SELKEY_COUNT);
 }
 
 QinChewing::~QinChewing(void) {

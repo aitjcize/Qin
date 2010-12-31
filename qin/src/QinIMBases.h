@@ -30,6 +30,10 @@
 #include <QSqlDatabase>
 #include <QStringList>
 
+/* Number of selection keys */
+#define SELKEY_COUNT 10
+#define SELKEYS { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 }
+
 /**
  * @name  QinIMBase
  * @brief Base class for all input method for Qin. New input methods should
