@@ -46,9 +46,9 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
   QHBoxLayout* layout = new QHBoxLayout;
   layout->setContentsMargins(1, 1, 1, 0);
   layout->setSpacing(0);
-  selectPanel = new QWidget(0, Qt::Tool |
-      Qt::FramelessWindowHint |
-      Qt::WindowStaysOnTopHint);
+  selectPanel = new QWidget(this, Qt::Tool |
+                                  Qt::FramelessWindowHint |
+                                  Qt::WindowStaysOnTopHint);
   selectPanel->move((QApplication::desktop()->width() - width())/2,
       QApplication::desktop()->height() - height() - 27);
   selectPanel->setMinimumSize(width(), 27);
@@ -341,6 +341,7 @@ bool QVirtualKeyboard::isTextKey(int keyId)
 }
 
 void QVirtualKeyboard::s_on_btnCands_clicked(int btn) {
+  printf("s_on_btnCands_clicked\n");
   QString strKeyId = candButtons[btn]->accessibleName();
   bool isOk;
   int keyId = strKeyId.toInt(&isOk, 16);
@@ -354,13 +355,14 @@ void QVirtualKeyboard::s_on_btnCands_clicked(int btn) {
 }
 
 void QVirtualKeyboard::clearCandStrBar(void) {
+  printf("clearCandStrBar\n");
   if (candSignalMapper) {
     delete candSignalMapper;
     candSignalMapper = NULL;
   }
 
   for (int i = 0; i < candButtons.size(); ++i) {
-    candButtons[i]->hide();
+    selectPanel->layout()->removeWidget(candButtons[i]);
     delete candButtons[i];
   }
   candButtons.clear();
@@ -395,7 +397,7 @@ void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
   candButtons.last()->setStyleSheet("QPushButton { border-right: 1px "
       "#8A8A8A; border-style: groove; }");
 
-  candSignalMapper = new QSignalMapper(this);
+  candSignalMapper = new QSignalMapper(selectPanel);
 
   for (int i = 0; i < candButtons.size(); i++) {
     candButtons[i]->setAccessibleName(QString("%1").arg(keys[i], 2, 16));

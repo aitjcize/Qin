@@ -95,6 +95,8 @@ char* QinChewing::getPreEditString(void) {
   qDebug("DEBUG: Commit: %d", chewing_commit_Check(chewContext));
   qDebug("DEBUG: Cand CheckDone: %d", chewing_cand_CheckDone(chewContext));
   qDebug("DEBUG: Cand hasNext: %d", chewing_cand_hasNext(chewContext));
+  qDebug("DEBUG: Aux: %s", chewing_aux_String(chewContext));
+  qDebug("DEBUG: Aux Check: %d", chewing_aux_Check(chewContext));
 #endif
 
   strncpy(preedit_str, buf_str, max_len);

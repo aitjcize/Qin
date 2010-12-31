@@ -1,25 +1,25 @@
 QWidget {
   /* Normal */
-    background: #C4C4C4;
+  background: #C4C4C4;
 }
 
 QPushButton {
-    min-height: 1.5em;
-    font: 1em;
-    /*font-weight: bold;*/
-    margin: 0 0 0 0;
-    color: black;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #FFFFFF, stop: 1 #B3B3B3);
-    border-style: groove;
-    border-width: 1px;
+  min-height: 1.5em;
+  font: 1em;
+  /*font-weight: bold;*/
+  margin: 0 0 0 0;
+  color: black;
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                    stop: 0 #FFFFFF, stop: 1 #B3B3B3);
+  border-style: groove;
+  border-width: 1px;
   /* We don't want only one border line between buttons */
   border-right: 0px;
-    /*border-radius: 1px;*/
+  border-radius: 0px;
   border-color: #8A8A8A;
 }
 
 QPushButton:pressed {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #878787, stop: 1 #AFAFAF);
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                    stop: 0 #878787, stop: 1 #AFAFAF);
 }
