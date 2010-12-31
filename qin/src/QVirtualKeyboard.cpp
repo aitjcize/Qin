@@ -53,6 +53,7 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
       QApplication::desktop()->height() - height() - 27);
   selectPanel->setMinimumSize(width(), 27);
   selectPanel->setMaximumSize(width(), 27);
+  selectPanel->setLayout(layout);
   selectPanel->hide();
 
   QFile data(":/data/selectPanel.qss");
