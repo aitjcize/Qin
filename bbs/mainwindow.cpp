@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <QTextCodec>
-
+#include <QString>
 void close_XD(int & fd){
   close(fd);
 }
@@ -61,6 +61,7 @@ void MainWindow::on_pushButton_clicked(){
    int len = 0;
    while (1) {
      len = read(fd, buf, BUFSIZ);
-     write(1, buf, len);
+   //  write(1, buf, len);
+     
    }
 }
