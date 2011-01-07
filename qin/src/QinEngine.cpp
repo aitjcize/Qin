@@ -22,8 +22,6 @@
 
 #include "QinEngine.h"
 
-#include <cstdio>
-
 #include <QDebug>
 
 #include "plugins/QinChewing.h"

@@ -22,8 +22,6 @@
 
 #include "QVirtualKeyboard.h"
 
-#include <cstdio>
-
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QFile>

@@ -27,7 +27,6 @@
 #include <cctype>
 #include <cstdlib>
 #include <cstring>
-#include <cstdio>
 #include <cmath>
 
 #include <QStringList>
