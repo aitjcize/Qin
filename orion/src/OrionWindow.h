@@ -51,7 +51,6 @@ class OrionWindow: public QMainWindow {
 
   public:
     OrionWindow(const QString defaultUrl = "http://www.google.com.tw");
-    void addNewTab(void);
 
   protected slots:
     void changeLocation(void);

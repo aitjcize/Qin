@@ -64,15 +64,7 @@ OrionWindow::OrionWindow(const QString defaultUrl) {
   toolBar->addAction(view->pageAction(QWebPage::Stop));
   toolBar->addWidget(location);
 
-  tabbar = new QTabBar;
-  addNewTab();
-
-  setCentralWidget(tabbar);
-}
-
-void OrionWindow::addNewTab(void) {
-  QPushButton* button = new QPushButton("button");
-  tabbar->addTab("test");
+  setCentralWidget(view);
 }
 
 void OrionWindow::changeLocation(void) {
