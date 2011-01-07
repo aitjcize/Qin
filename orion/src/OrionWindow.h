@@ -39,40 +39,32 @@
 **
 ****************************************************************************/
 
+#ifndef __ORION_SRC_ORION_WINDOW_H__
+#define __ORION_SRC_ORION_WINDOW_H__
+
 #include <QtGui>
-#include <QEvent>
-#include <QTouchEvent>
-#include <QGesture>
-#include <QSwipeGesture>
-QT_BEGIN_NAMESPACE
-class QWebView;
-class QLineEdit;
-QT_END_NAMESPACE
-class QTouchEvent;
-class QGestureEvent;
-class QSwipeGesture;
+#include <QWebView>
+#include <QTabBar>
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
-public:
-    MainWindow();
+class OrionWindow: public QMainWindow {
+  Q_OBJECT
 
-protected slots:
-    bool touchEvent(QTouchEvent *event);//unused
-    void adjustLocation();
-    void changeLocation();
-    void adjustTitle();
-    void setProgress(int p);
-    void finishLoading(bool);
+  public:
+    OrionWindow(const QString defaultUrl = "http://www.google.com.tw");
+    void addNewTab(void);
 
-private:
-    
-    bool gestureEvent(QGestureEvent *event);
-    void swipeTriggered(QSwipeGesture*);
+  protected slots:
+    void changeLocation(void);
+    void syncLocation(void);
+    void updateTitle(void);
+    void onLoadFinished(bool status);
+    void updateProgress(int prog);
 
+  private:
     QWebView *view;
-    QLineEdit *locationEdit;
-    QAction *rotateAction;
+    QTabBar* tabbar;
+    QLineEdit *location;
     int progress;
 };
+
+#endif /* __ORION_SRC_ORION_WINDOW_H__ */

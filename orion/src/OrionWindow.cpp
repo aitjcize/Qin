@@ -39,95 +39,72 @@
  **
  ****************************************************************************/
 
+#include "OrionWindow.h"
+
 #include <QtGui>
-#include <QtWebKit>
-#include <QString>
-#include "mainwindow.h"
-#include <iostream>
-using namespace std;
-MainWindow::MainWindow()
-{
+
+OrionWindow::OrionWindow(const QString defaultUrl) {
   progress = 0;
-  QNetworkProxyFactory::setUseSystemConfiguration(true);
 
-    view = new QWebView(this);
-    view->load(QUrl("http://www.google.com/"));
-    connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
-    connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
-    connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
-    connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
+  location = new QLineEdit(this);
+  location->setSizePolicy(QSizePolicy::Expanding, location->sizePolicy().verticalPolicy());
+  connect(location, SIGNAL(returnPressed()), SLOT(changeLocation()));
 
-  locationEdit = new QLineEdit(this);
-  locationEdit->setSizePolicy(QSizePolicy::Expanding, locationEdit->sizePolicy().verticalPolicy());
-  connect(locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
+  view = new QWebView(this);
+  view->load(QUrl(defaultUrl));
+  connect(view, SIGNAL(loadFinished(bool)), SLOT(onLoadFinished(bool)));
+  connect(view, SIGNAL(loadFinished(bool)), SLOT(syncLocation()));
+  connect(view, SIGNAL(titleChanged(QString)), SLOT(updateTitle()));
+  connect(view, SIGNAL(loadProgress(int)), SLOT(updateProgress(int)));
 
-  QToolBar *toolBar = addToolBar(tr("Navigation"));
+  QToolBar *toolBar = addToolBar("Navigation");
   toolBar->addAction(view->pageAction(QWebPage::Back));
   toolBar->addAction(view->pageAction(QWebPage::Forward));
   toolBar->addAction(view->pageAction(QWebPage::Reload));
   toolBar->addAction(view->pageAction(QWebPage::Stop));
-  toolBar->addWidget(locationEdit);
+  toolBar->addWidget(location);
 
-  setCentralWidget(view);
-    //gesture
-    grabGesture(Qt::SwipeGesture);    
-}
-bool MainWindow::touchEvent(QTouchEvent *event)
-{
-//    if (event->type() == QEvent::Gesture)
-   cout << "here";
- //     return gestureEvent(static_cast<QGestureEvent*>(event));}
-    return QWidget::event(event);
-}
-bool MainWindow::gestureEvent(QGestureEvent *event)
-{
-  if (QGesture *swipe = event->gesture(Qt::SwipeGesture))
-   swipeTriggered(static_cast<QSwipeGesture *>(swipe));
-  return true;
+  tabbar = new QTabBar;
+  addNewTab();
+
+  setCentralWidget(tabbar);
 }
 
-void MainWindow::swipeTriggered(QSwipeGesture *gesture)
-{
-//  if (gesture->state() == Qt::GestureFinished)
-//   if (gesture->horizontalDirection() == QSwipeGesture::Left
-//             || gesture->verticalDirection() == QSwipeGesture::Up)
+void OrionWindow::addNewTab(void) {
+  QPushButton* button = new QPushButton("button");
+  tabbar->addTab("test");
 }
 
-void MainWindow::adjustLocation()
-{
-  locationEdit->setText(view->url().toString());
-}
-
-void MainWindow::changeLocation()
-{
-  QString url = locationEdit->text();
+void OrionWindow::changeLocation(void) {
+  QString url = location->text();
   if (!url.startsWith("http://")) {
     if (!url.contains("."))
       url = "http://www.google.com.tw/search?q=" + url;
     else
       url = "http://" + url;
   }
-  locationEdit->setText(url);
+  location->setText(url);
   view->load(QUrl(url));
   view->setFocus();
 }
 
-void MainWindow::adjustTitle()
-{
+void OrionWindow::syncLocation(void) {
+  location->setText(view->url().toString());
+}
+
+void OrionWindow::updateTitle(void) {
   if (progress <= 0 || progress >= 100)
     setWindowTitle(view->title());
   else
     setWindowTitle(QString("%1 (%2%)").arg(view->title()).arg(progress));
 }
 
-void MainWindow::setProgress(int p)
-{
-  progress = p;
-  adjustTitle();
+void OrionWindow::onLoadFinished(bool) {
+  progress = 100;
+  updateTitle();
 }
 
-void MainWindow::finishLoading(bool)
-{
-  progress = 100;
-  adjustTitle();
+void OrionWindow::updateProgress(int prog) {
+  progress = prog;
+  updateTitle();
 }

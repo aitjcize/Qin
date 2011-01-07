@@ -1,4 +1,4 @@
 QT      +=  webkit network
-HEADERS =   mainwindow.h
+HEADERS =   OrionWindow.h
 SOURCES =   orion.cpp \
-            mainwindow.cpp
+            OrionWindow.cpp
