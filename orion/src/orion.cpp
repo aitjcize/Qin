@@ -22,9 +22,11 @@
 
 #include <QtGui>
 #include "OrionWindow.h"
-
+#include <iostream>
+#include <QDebug>
 int main(int argc, char * argv[])
 {
+
     QApplication app(argc, argv);
     OrionWindow browser;
     browser.showFullScreen();

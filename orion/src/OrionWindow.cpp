@@ -40,8 +40,48 @@
  ****************************************************************************/
 
 #include "OrionWindow.h"
-
+#include <QMouseEvent>
 #include <QtGui>
+#include <QDebug>
+#include <QTimer>
+#include <QTimerEvent>
+void
+OrionWindow::mouseMoveEvent(QMouseEvent* event){
+
+}
+void OrionWindow::timerEvent(QTimerEvent* event){
+    if(event->type() == QEvent::Timer){
+        //qDebug()<<"Timer up"<<endl;
+        move_x = 0;
+        move_y = 0;
+    }
+
+}
+
+bool OrionWindow::eventFilter(QObject* watched, QEvent* event){
+
+    //qDebug()<<"here"<<endl;
+    //qDebug()<<"ha ha"<<endl;
+    if(event->type() == QEvent::MouseMove){
+        QMouseEvent* ev = (QMouseEvent*)event;
+
+        qDebug()<<"global X:"<<ev->globalX() <<' ' <<"global Y:"
+          <<ev->globalY()<<endl;
+        qDebug()<<"x:"<<ev->x() <<' ' <<"y:"<<ev->y()<<endl;
+        qDebug()<<"pre x:"<< move_x << "pre y:"<< move_y <<endl;
+        qDebug()<<"                     ";
+        qDebug()<<"x_diff:"<<ev->globalX()-move_x <<"y_diff:"
+          <<ev->globalY()-move_y<<endl;
+        move_x = ev->globalX();
+        move_y = ev->globalY();
+
+        //if ()
+       // qDebug()<<"here"<<endl;
+    }
+    return false;
+
+}
+
 
 OrionWindow::OrionWindow(const QString defaultUrl) {
   progress = 0;
@@ -64,8 +104,16 @@ OrionWindow::OrionWindow(const QString defaultUrl) {
   toolBar->addAction(view->pageAction(QWebPage::Stop));
   toolBar->addWidget(location);
 
+
+  view->installEventFilter(this);
+  startTimer(100);
+
+  
   setCentralWidget(view);
+
 }
+
+
 
 void OrionWindow::changeLocation(void) {
   QString url = location->text();
@@ -78,6 +126,7 @@ void OrionWindow::changeLocation(void) {
   location->setText(url);
   view->load(QUrl(url));
   view->setFocus();
+
 }
 
 void OrionWindow::syncLocation(void) {
@@ -89,6 +138,7 @@ void OrionWindow::updateTitle(void) {
     setWindowTitle(view->title());
   else
     setWindowTitle(QString("%1 (%2%)").arg(view->title()).arg(progress));
+
 }
 
 void OrionWindow::onLoadFinished(bool) {
