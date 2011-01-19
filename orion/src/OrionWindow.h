@@ -46,7 +46,7 @@
 #include <QWebView>
 #include <QTabBar>
 #include <QMouseEvent>
-
+#include <QAction>
 
 class QMouseEvent;
 
@@ -54,22 +54,22 @@ class OrionWindow: public QMainWindow {
   Q_OBJECT
 
   public:
-    void mouseMoveEvent(QMouseEvent* event);
     bool eventFilter( QObject* watched ,QEvent* event);
     void timerEvent(QTimerEvent* event);
-    OrionWindow(const QString defaultUrl = "http://www.google.com.tw");
+    OrionWindow(void);
   protected slots:
     void changeLocation(void);
     void syncLocation(void);
     void updateTitle(void);
     void onLoadFinished(bool status);
     void updateProgress(int prog);
-    //void testForMouse();
-  private:
+    void gotoHome(void);
     
+  private:
     QWebView *view;
     QTabBar* tabbar;
     QLineEdit *location;
+    QAction* homeButton;
     int progress;
     int total;
     int move_x;

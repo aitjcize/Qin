@@ -47,71 +47,9 @@
 #include <QTimerEvent>
 #include <QCoreApplication>
 #include <cmath>
-void
-OrionWindow::mouseMoveEvent(QMouseEvent* event){
+#include <QAction>
 
-}
-void OrionWindow::timerEvent(QTimerEvent* event){
-    QWheelEvent* scroll = NULL;
-    if(event->type() == QEvent::Timer){
-      if (total > 5) {
-        if (abs(move_x) > abs(move_y)) {
-          if (move_x > 0){
-            qDebug() << "Swip right" << endl;
-            scroll =
-              new QWheelEvent(QPoint(320,240), -total * 10, Qt::MidButton,
-                  Qt::NoModifier,Qt::Horizontal);
-            QApplication::sendEvent(view, scroll);
-          }
-          else{
-            scroll =
-              new QWheelEvent(QPoint(320,240), total * 10, Qt::MidButton,
-                  Qt::NoModifier,Qt::Horizontal);
-            QApplication::sendEvent(view, scroll); 
-            qDebug() << "Swip left" << endl;
-          }
-        } else {
-          if (move_y > 0){
-            qDebug() << "Swip down" << endl;
-            scroll =
-              new QWheelEvent(QPoint(320,240), total * 10, Qt::MidButton,
-                  Qt::NoModifier,Qt::Vertical);
-            QApplication::sendEvent(view, scroll); 
-          } else {
-            scroll =
-              new QWheelEvent(QPoint(320,240), -total * 10, Qt::MidButton,
-                  Qt::NoModifier,Qt::Vertical);
-            QApplication::sendEvent(view, scroll); 
-            qDebug() << "Swip up" << endl;
-          }
-        }
-        total = 0;
-        move_x = move_y = 0;
-        delete scroll;
-      }
-    }
-
-}
-
-bool OrionWindow::eventFilter(QObject* watched, QEvent* event){
-
-  if(event->type() == QEvent::MouseMove){
-    QMouseEvent* ev = (QMouseEvent*)event;
-
-    move_x = (ev->globalX()-prev_x) - (prev_x - ev->globalX());
-    move_y = (ev->globalY()-prev_y) - (prev_y - ev->globalY());
-
-    prev_x = ev->globalX();
-    prev_y = ev->globalY();
-    ++total;
-    if (total > 1)
-      return true;
-  }
-  return false;
-}
-
-
-OrionWindow::OrionWindow(const QString defaultUrl) {
+OrionWindow::OrionWindow(void) {
   progress = 0;
   total = 0;
   move_x = 0;
@@ -120,30 +58,33 @@ OrionWindow::OrionWindow(const QString defaultUrl) {
   prev_y = 0;
 
   location = new QLineEdit(this);
-  location->setSizePolicy(QSizePolicy::Expanding, location->sizePolicy().verticalPolicy());
+  location->setSizePolicy(QSizePolicy::Expanding,
+      location->sizePolicy().verticalPolicy());
   connect(location, SIGNAL(returnPressed()), SLOT(changeLocation()));
 
   view = new QWebView(this);
-  view->load(QUrl(defaultUrl));
   connect(view, SIGNAL(loadFinished(bool)), SLOT(onLoadFinished(bool)));
   connect(view, SIGNAL(loadFinished(bool)), SLOT(syncLocation()));
   connect(view, SIGNAL(titleChanged(QString)), SLOT(updateTitle()));
   connect(view, SIGNAL(loadProgress(int)), SLOT(updateProgress(int)));
 
+  homeButton = new QAction(this->style()->standardIcon(QStyle::SP_MediaPlay),
+      "Home", this);
   QToolBar *toolBar = addToolBar("Navigation");
   toolBar->addAction(view->pageAction(QWebPage::Back));
   toolBar->addAction(view->pageAction(QWebPage::Forward));
   toolBar->addAction(view->pageAction(QWebPage::Reload));
   toolBar->addAction(view->pageAction(QWebPage::Stop));
+  toolBar->addAction(homeButton);
   toolBar->addWidget(location);
 
+  connect(homeButton, SIGNAL(triggered(bool)), this, SLOT(gotoHome()));
 
   view->installEventFilter(this);
   startTimer(400);
 
-  
   setCentralWidget(view);
-
+  gotoHome();
 }
 
 
@@ -182,4 +123,62 @@ void OrionWindow::onLoadFinished(bool) {
 void OrionWindow::updateProgress(int prog) {
   progress = prog;
   updateTitle();
+}
+
+void OrionWindow::timerEvent(QTimerEvent* event){
+    QWheelEvent* scroll = NULL;
+    if(event->type() == QEvent::Timer){
+      if (total > 5) {
+        if (abs(move_x) > abs(move_y)) {
+          if (move_x > 0){
+            scroll =
+              new QWheelEvent(QPoint(320,240), -total * 10, Qt::MidButton,
+                  Qt::NoModifier,Qt::Horizontal);
+            QApplication::sendEvent(view, scroll);
+          }
+          else{
+            scroll =
+              new QWheelEvent(QPoint(320,240), total * 10, Qt::MidButton,
+                  Qt::NoModifier,Qt::Horizontal);
+            QApplication::sendEvent(view, scroll); 
+          }
+        } else {
+          if (move_y > 0){
+            scroll =
+              new QWheelEvent(QPoint(320,240), total * 10, Qt::MidButton,
+                  Qt::NoModifier,Qt::Vertical);
+            QApplication::sendEvent(view, scroll); 
+          } else {
+            scroll =
+              new QWheelEvent(QPoint(320,240), -total * 10, Qt::MidButton,
+                  Qt::NoModifier,Qt::Vertical);
+            QApplication::sendEvent(view, scroll); 
+          }
+        }
+        total = 0;
+        move_x = move_y = 0;
+        delete scroll;
+      }
+    }
+
+}
+
+bool OrionWindow::eventFilter(QObject* watched, QEvent* event){
+  if(event->type() == QEvent::MouseMove){
+    QMouseEvent* ev = (QMouseEvent*)event;
+
+    move_x = (ev->globalX()-prev_x) - (prev_x - ev->globalX());
+    move_y = (ev->globalY()-prev_y) - (prev_y - ev->globalY());
+
+    prev_x = ev->globalX();
+    prev_y = ev->globalY();
+    ++total;
+    if (total > 1)
+      return true;
+  }
+  return false;
+}
+
+void OrionWindow::gotoHome(void) {
+  view->load(QUrl("http://www.google.com.tw"));
 }
