@@ -151,7 +151,7 @@ void QinEngine::updateHandler(int type) {
     case QWSInputMethod::FocusOut:
       inputBuffer.clear();
       currentIM->reset();
-      vkeyboard->hide();
+      vkeyboard->hideAll();
       break;
   }
 }

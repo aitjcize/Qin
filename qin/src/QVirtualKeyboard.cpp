@@ -96,15 +96,24 @@ void QVirtualKeyboard::on_opacitySlide_valueChanged(int value) {
   setWindowOpacity((120.0 - value) / 100.0);
 }
 
+void QVirtualKeyboard::hideAll(void) {
+  clearCandStrBar();
+  hide();
+}
+
 void QVirtualKeyboard::on_btnLoc_clicked(void) {
   location = !location;
   if (location) {
     btnLoc->setText("↯");
     this->move((QApplication::desktop()->width() - width())/2, 0);
+    selectPanel->move((QApplication::desktop()->width() - width())/2,
+        height() + 1);
   } else {
     btnLoc->setText("↥");
     this->move((QApplication::desktop()->width() - width())/2,
         QApplication::desktop()->height() - height());
+    selectPanel->move((QApplication::desktop()->width() - width())/2,
+        QApplication::desktop()->height() - height() - 27);
   }
 }
 
