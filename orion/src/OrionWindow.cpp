@@ -45,46 +45,79 @@
 #include <QDebug>
 #include <QTimer>
 #include <QTimerEvent>
+#include <QCoreApplication>
+#include <cmath>
 void
 OrionWindow::mouseMoveEvent(QMouseEvent* event){
 
 }
 void OrionWindow::timerEvent(QTimerEvent* event){
+    QWheelEvent* scroll = NULL;
     if(event->type() == QEvent::Timer){
-        //qDebug()<<"Timer up"<<endl;
-        move_x = 0;
-        move_y = 0;
+      if (total > 5) {
+        if (abs(move_x) > abs(move_y)) {
+          if (move_x > 0){
+            qDebug() << "Swip right" << endl;
+            scroll =
+              new QWheelEvent(QPoint(320,240), -total * 10, Qt::MidButton,
+                  Qt::NoModifier,Qt::Horizontal);
+            QApplication::sendEvent(view, scroll);
+          }
+          else{
+            scroll =
+              new QWheelEvent(QPoint(320,240), total * 10, Qt::MidButton,
+                  Qt::NoModifier,Qt::Horizontal);
+            QApplication::sendEvent(view, scroll); 
+            qDebug() << "Swip left" << endl;
+          }
+        } else {
+          if (move_y > 0){
+            qDebug() << "Swip down" << endl;
+            scroll =
+              new QWheelEvent(QPoint(320,240), total * 10, Qt::MidButton,
+                  Qt::NoModifier,Qt::Vertical);
+            QApplication::sendEvent(view, scroll); 
+          } else {
+            scroll =
+              new QWheelEvent(QPoint(320,240), -total * 10, Qt::MidButton,
+                  Qt::NoModifier,Qt::Vertical);
+            QApplication::sendEvent(view, scroll); 
+            qDebug() << "Swip up" << endl;
+          }
+        }
+        total = 0;
+        move_x = move_y = 0;
+        delete scroll;
+      }
     }
 
 }
 
 bool OrionWindow::eventFilter(QObject* watched, QEvent* event){
 
-    //qDebug()<<"here"<<endl;
-    //qDebug()<<"ha ha"<<endl;
-    if(event->type() == QEvent::MouseMove){
-        QMouseEvent* ev = (QMouseEvent*)event;
+  if(event->type() == QEvent::MouseMove){
+    QMouseEvent* ev = (QMouseEvent*)event;
 
-        qDebug()<<"global X:"<<ev->globalX() <<' ' <<"global Y:"
-          <<ev->globalY()<<endl;
-        qDebug()<<"x:"<<ev->x() <<' ' <<"y:"<<ev->y()<<endl;
-        qDebug()<<"pre x:"<< move_x << "pre y:"<< move_y <<endl;
-        qDebug()<<"                     ";
-        qDebug()<<"x_diff:"<<ev->globalX()-move_x <<"y_diff:"
-          <<ev->globalY()-move_y<<endl;
-        move_x = ev->globalX();
-        move_y = ev->globalY();
+    move_x = (ev->globalX()-prev_x) - (prev_x - ev->globalX());
+    move_y = (ev->globalY()-prev_y) - (prev_y - ev->globalY());
 
-        //if ()
-       // qDebug()<<"here"<<endl;
-    }
-    return false;
-
+    prev_x = ev->globalX();
+    prev_y = ev->globalY();
+    ++total;
+    if (total > 1)
+      return true;
+  }
+  return false;
 }
 
 
 OrionWindow::OrionWindow(const QString defaultUrl) {
   progress = 0;
+  total = 0;
+  move_x = 0;
+  move_y = 0;
+  prev_x = 0;
+  prev_y = 0;
 
   location = new QLineEdit(this);
   location->setSizePolicy(QSizePolicy::Expanding, location->sizePolicy().verticalPolicy());
@@ -106,7 +139,7 @@ OrionWindow::OrionWindow(const QString defaultUrl) {
 
 
   view->installEventFilter(this);
-  startTimer(100);
+  startTimer(400);
 
   
   setCentralWidget(view);

@@ -71,8 +71,11 @@ class OrionWindow: public QMainWindow {
     QTabBar* tabbar;
     QLineEdit *location;
     int progress;
+    int total;
     int move_x;
     int move_y;
+    int prev_x;
+    int prev_y;
 };
 
 #endif /* __ORION_SRC_ORION_WINDOW_H__ */
