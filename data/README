@@ -1,0 +1,14 @@
+boshiamy.db
+================================================================================
+This boshiamy database is from the project "ibus-table-boshiamy" by
+Yu Yuwei <acevery@gmail.com> http://github.com/vicamo/ibus-table-boshiamy under
+GPL General Public License.
+
+I modified the database a little to fix to frequency field of the database.
+If you want to create your own database, follow the following instructions:
+1. Download the source tarball from http://github.com/vicamo/ibus-table-boshiamy
+2. cd tables
+3. mv boshiamy.txt boshiamy.bak.txt; cat boshiamy.bak.txt | awk '{if($3==1){count[$1]++;print $1"\t"$2"\t"$3+100-count[$1]}else{print $0}}' > boshiamy.txt
+4. Done, now cd .. then make.
+
+See more details at http://reic.twbbs.org/post/1/431

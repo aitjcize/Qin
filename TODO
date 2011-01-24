@@ -1,0 +1,4 @@
+TODO:
+
+1. Use Qt-APIs to create a REAL plugin interface(something like GModule)
+2. Clearify Qin XML-spec
