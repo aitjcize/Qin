@@ -249,7 +249,7 @@ QinTableIMBase::QinTableIMBase(QString xmlpath): QinIMBase(xmlpath) {
   keyIndex = 0;
   keyStrokes = new int[maxKeyStrokes + 1];
 
-  database = QSqlDatabase::addDatabase("QSQLITE");
+  database = QSqlDatabase::addDatabase("QSQLITE", dbPath);
   database.setDatabaseName(dbPath);
   if (!database.open()) {
     qDebug() << "Fatal error: can't find database `" << dbPath << "' ..."

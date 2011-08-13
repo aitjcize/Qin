@@ -32,7 +32,7 @@
 # define homedir "/root"
 #else
 # define datadir "/usr"
-# define homedir "/home/embedded"
+# define homedir "/home/aitjcize"
 #endif
 
 /* libchewing related definitions */
