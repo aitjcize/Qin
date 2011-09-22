@@ -27,7 +27,7 @@
   <customkeymap>true</customkeymap>
   <keymap>
     <normal>
-      <key value="~">~</key>
+      <key value="`">`</key>
       <key value="1">1</key>
       <key value="2">2</key>
       <key value="3">3</key>
