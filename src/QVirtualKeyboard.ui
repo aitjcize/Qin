@@ -478,7 +478,7 @@ QToolButton:on {
           </font>
          </property>
          <property name="accessibleName">
-          <string>13</string>
+          <string>0x3d</string>
          </property>
          <property name="text">
           <string>=</string>

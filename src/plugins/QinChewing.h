@@ -39,7 +39,7 @@
 #ifdef ARM
 # define QIN_CHEWING_DATA_PATH datadir"/share/chewing"
 #else
-# define QIN_CHEWING_DATA_PATH datadir"/share/libchewing3/chewing"
+# define QIN_CHEWING_DATA_PATH datadir"/share/chewing"
 #endif
 #define QIN_CHEWING_HASH_PATH homedir"/.chewing"
 #define QIN_CHEWING_CAND_PER_PAGE 10
