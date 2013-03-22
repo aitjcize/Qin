@@ -153,6 +153,7 @@ void QVirtualKeyboard::s_on_btn_clicked(int btn) {
       case 0x39: keyId = 0x28; break;
       case 0x30: keyId = 0x29; break;
       case 0x2d: keyId = 0x5f; break;
+      case 0x3d: keyId = 0x2b; break;
       default: keyId = tolower(keyId);
     }
   }
