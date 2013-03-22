@@ -6,3 +6,6 @@ An input method framework for Qt-Embedded.
 
 ## Planning to support
 * Pinyin - with [SunPinYin](https://code.google.com/p/sunpinyin/) or [libpinyin](https://github.com/libpinyin/libpinyin)
+
+## Demo
+Please visit [my blog](http://berelent.blogspot.tw/2011/01/embedded-system-final-project.html)
