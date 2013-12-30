@@ -39,7 +39,7 @@ QinChewing::QinChewing(void): QinIMBase(":/data/Chewing.xml") {
   chewing_set_ChiEngMode(chewContext, CHINESE_MODE);
   chewing_set_ShapeMode(chewContext, HALFSHAPE_MODE);
   chewing_set_candPerPage(chewContext, QIN_CHEWING_CAND_PER_PAGE);
-  chewing_set_maxChiSymbolLen(chewContext, QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN);
+  chewing_set_maxChiSymbolLen(chewContext, QIN_ENGINE_MAX_CHINESE_SYMBOL_LEN);
   chewing_set_spaceAsSelection(chewContext, true);
   chewing_set_escCleanAllBuf(chewContext, true);
   chewing_set_autoShiftCur(chewContext, true);

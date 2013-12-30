@@ -24,6 +24,7 @@
 
 #include <QDebug>
 
+#include "plugins/QinPinyin.h"
 #include "plugins/QinChewing.h"
 #include "QinIMBases.h"
 #include "QVirtualKeyboard.h"
@@ -32,6 +33,7 @@ QinEngine::QinEngine() {
   vkeyboard = new QVirtualKeyboard(this);
   regInputMethod(new QinIMBase(":/data/English.xml"));
   regInputMethod(new QinChewing());
+  regInputMethod(new QinPinyin());
   regInputMethod(new QinTableIMBase(":/data/Boshiamy.xml"));
   defaultIM = inputMethods[0];
 }

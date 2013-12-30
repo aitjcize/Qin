@@ -23,23 +23,15 @@
 #ifndef __QIN_SRC_PLUGIN_QIN_CHEWING_H__
 #define __QIN_SRC_PLUGIN_QIN_CHEWING_H__
 
+#include "QinConfig.h"
 #include "QinIMBases.h"
 
 #include <chewing.h>
 
-#ifdef ARM
-# define datadir "/usr"
-# define homedir "/root"
-#else
-# define datadir "/usr"
-# define homedir "/tmp"
-#endif
-
 /* libchewing related definitions */
-#define QIN_CHEWING_DATA_PATH datadir"/lib/libchewing"
-#define QIN_CHEWING_HASH_PATH homedir"/.chewing"
+#define QIN_CHEWING_DATA_PATH (datadir S_SEPARATOR "lib/libchewing")
+#define QIN_CHEWING_HASH_PATH (homedir S_SEPARATOR ".chewing")
 #define QIN_CHEWING_CAND_PER_PAGE 10
-#define QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN 10
 
 /* QinChewing class definition */
 class QinChewing: public QinIMBase {

@@ -6,14 +6,26 @@ TEMPLATE = app
 QT += sql xml
 TARGET = 
 DEPENDPATH += . plugins
-INCLUDEPATH += . plugins /usr/include/chewing
-LIBS += -lchewing
+INCLUDEPATH += . plugins /usr/include/chewing /usr/include/sunpinyin-2.0
+LIBS += -lchewing -lsunpinyin
 
 # Input
 RESOURCES += qin.qrc
-HEADERS += QinEngine.h \
-           QinIMBases.h \
-           QVirtualKeyboard.h \
-           plugins/QinChewing.h
+
+HEADERS += \
+  QinConfig.h \
+  QinEngine.h \
+  QinIMBases.h \
+  QVirtualKeyboard.h \
+  plugins/QinChewing.h \
+  plugins/QinPinyin.h
+
 FORMS += QVirtualKeyboard.ui
-SOURCES += Qin.cpp QinEngine.cpp QinIMBases.cpp QVirtualKeyboard.cpp plugins/QinChewing.cpp
+
+SOURCES += \
+  Qin.cpp \
+  QinEngine.cpp \
+  QinIMBases.cpp \
+  QVirtualKeyboard.cpp \
+  plugins/QinChewing.cpp \
+  plugins/QinPinyin.cpp \
