@@ -59,8 +59,9 @@ QVirtualKeyboard::QVirtualKeyboard(QinEngine* im)
     QTextStream ssin(&data);
     selectPanel->setStyleSheet(ssin.readAll());
     data.close();
-  } else
+  } else {
     qDebug() << "Error: failed to set style sheet for selectPanel!";
+  }
 
   /* Setup members */
   imEngine = im;
@@ -278,7 +279,7 @@ void QVirtualKeyboard::changeNormalKeyMap(QinIMBase* imb) {
   btnV->setText(imb->fromStdKB("v"));
   btnB->setText(imb->fromStdKB("b"));
   btnN->setText(imb->fromStdKB("n"));
-  btnM->setText(imb->fromStdKB("m"));        
+  btnM->setText(imb->fromStdKB("m"));
   btnComma->setText(imb->fromStdKB(","));
   btnPeriod->setText(imb->fromStdKB("."));
   btnSlash->setText(imb->fromStdKB("/"));
@@ -330,7 +331,7 @@ void QVirtualKeyboard::changeShiftKeyMap(QinIMBase* imb) {
   btnV->setText(imb->fromShiftStdKB("v"));
   btnB->setText(imb->fromShiftStdKB("b"));
   btnN->setText(imb->fromShiftStdKB("n"));
-  btnM->setText(imb->fromShiftStdKB("m"));        
+  btnM->setText(imb->fromShiftStdKB("m"));
   btnComma->setText(imb->fromShiftStdKB(","));
   btnPeriod->setText(imb->fromShiftStdKB("."));
   btnSlash->setText(imb->fromShiftStdKB("/"));
@@ -349,7 +350,6 @@ bool QVirtualKeyboard::isTextKey(int keyId)
 }
 
 void QVirtualKeyboard::s_on_btnCands_clicked(int btn) {
-  printf("s_on_btnCands_clicked\n");
   QString strKeyId = candButtons[btn]->accessibleName();
   bool isOk;
   int keyId = strKeyId.toInt(&isOk, 16);
@@ -363,12 +363,6 @@ void QVirtualKeyboard::s_on_btnCands_clicked(int btn) {
 }
 
 void QVirtualKeyboard::clearCandStrBar(void) {
-  printf("clearCandStrBar\n");
-  if (candSignalMapper) {
-    delete candSignalMapper;
-    candSignalMapper = NULL;
-  }
-
   for (int i = 0; i < candButtons.size(); ++i) {
     selectPanel->layout()->removeWidget(candButtons[i]);
     delete candButtons[i];
@@ -404,6 +398,11 @@ void QVirtualKeyboard::showCandStrBar(QStringList strlist) {
    * border-right then border-style else it won't work */
   candButtons.last()->setStyleSheet("QPushButton { border-right: 1px "
       "#8A8A8A; border-style: groove; }");
+
+  if (candSignalMapper) {
+    delete candSignalMapper;
+    candSignalMapper = NULL;
+  }
 
   candSignalMapper = new QSignalMapper(selectPanel);
 

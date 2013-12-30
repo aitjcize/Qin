@@ -32,15 +32,11 @@
 # define homedir "/root"
 #else
 # define datadir "/usr"
-# define homedir "/home/aitjcize"
+# define homedir "/tmp"
 #endif
 
 /* libchewing related definitions */
-#ifdef ARM
-# define QIN_CHEWING_DATA_PATH datadir"/share/chewing"
-#else
-# define QIN_CHEWING_DATA_PATH datadir"/share/chewing"
-#endif
+#define QIN_CHEWING_DATA_PATH datadir"/lib/libchewing"
 #define QIN_CHEWING_HASH_PATH homedir"/.chewing"
 #define QIN_CHEWING_CAND_PER_PAGE 10
 #define QIN_CHEWING_MAX_CHINESE_SYMBOL_LEN 10
